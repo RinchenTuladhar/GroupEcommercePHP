@@ -1,0 +1,24 @@
+/* * * * * *
+*
+*  NAVIGATION
+*
+ * * * * */
+
+.navigation-menu {
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
+
+
+
+/* * * * * *
+*
+*  HOME PAGE
+*
+ * * * * */
+
+.main .main-image img {
+    max-width: 100%;
+    z-index: -9999;
+}
