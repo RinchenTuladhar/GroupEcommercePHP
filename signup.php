@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <html>
 <head>
     <?php include 'api/scripts.php'; ?>
-    <title>BuildMyStore: Features</title>
+    <title>BuildMyStore: Signup</title>
 </head>
 
 <body>
@@ -17,24 +17,25 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="signup-form">
 
             <h1>Sign up now to transform your business.</h1>
-            <form action="/action_page.php">
+            <form action="api/register.php" method="POST">
                 <div class="form-group">
-                    <label for="first_name">First Name:</label>
-                    <input type="email" class="form-control" id="first_name">
+                    <label for="first_name">First Name*:</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required>
                 </div>
                 <div class="form-group">
-                    <label for="last_name">Last Name:</label>
-                    <input type="password" class="form-control" id="last_name">
+                    <label for="last_name">Last Name*:</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email address:</label>
-                    <input type="email" class="form-control" id="email">
+                    <label for="email">Email address*:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" class="form-control" id="password">
+                    <label for="password">Password*:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+
+                <input type="submit" class="btn btn-default" value="Register">
             </form>
         </div>
     </div>
