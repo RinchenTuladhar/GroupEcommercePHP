@@ -5,12 +5,34 @@
  * * * * */
 
 .navigation-menu {
+    background: #0E4CC7;
+}
+
+.home-page .navigation-menu {
+    background: transparent !important;
+}
+.navigation-menu {
     position: absolute;
     width: 100%;
     z-index: 2;
+    padding: 10px;
 }
 
+.home-page .navigation-menu:hover {
+    background: #0E4CC7;;
+}
 
+.navigation-menu .navbar-dark .navbar-nav .nav-link {
+    color: white;
+}
+
+.navigation-menu .navbar-dark .navbar-nav .nav-link:hover {
+    cursor: pointer;
+}
+
+.navigation-menu .navbar-nav li.nav-item {
+    margin: 0px 15px;
+}
 
 /* * * * * *
 *
@@ -21,4 +43,21 @@
 .main .main-image img {
     max-width: 100%;
     z-index: -9999;
+}
+
+.main .main-image {
+    position: relative;
+    text-align: center;
+}
+
+.main-image h1 {
+    position: absolute;
+    top: 35%;
+    left: 40%;
+    transform: translate(-40%, -50%);
+    color: white;
+    font-size: 5em;
+    background: #0e4cc7ad;
+    padding: 10px 10px 20px 10px;
+    font-weight: 100;
 }
