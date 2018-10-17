@@ -1,3 +1,7 @@
+body {
+    background: #fafafa !important;
+}
+
 /* * * * * *
 *
 *  NAVIGATION
@@ -10,9 +14,10 @@
 
 .home-page .navigation-menu {
     background: transparent !important;
+    position: absolute !important;
 }
+
 .navigation-menu {
-    position: absolute;
     width: 100%;
     z-index: 2;
     padding: 10px;
@@ -60,4 +65,23 @@
     background: #0e4cc7ad;
     padding: 10px 10px 20px 10px;
     font-weight: 100;
+}
+
+/* * * * * *
+*
+*  SIGN UP PAGE
+*
+ * * * * */
+
+.signup-form h1 {
+    margin: 35px 0px;
+    text-align: center;
+}
+
+.signup-form {
+    height: 80%;
+    background: white;
+    padding: 5px 30px;
+    border: 1px solid #e8e8e8;
+    margin-top: 50px;
 }
