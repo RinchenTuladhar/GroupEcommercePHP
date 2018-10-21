@@ -41,6 +41,76 @@ body {
 
 /* * * * * *
 *
+*  ADMIN NAVBAR
+*
+ * * * * */
+
+.admin-main {
+    margin-left: 275px;
+}
+
+.admin-navigation .sidebar.left {
+    width: 250px;
+    height: 100%;
+}
+
+.admin-navigation .sidebar {
+    position: absolute;
+    background: #0E4CC7;
+}
+
+.admin-navigation .sidebar ul {
+    padding: 0px;
+}
+
+.admin-navigation .sidebar ul li{
+    list-style-type: none;
+    padding: 20px;
+}
+
+.admin-navigation .navbar ul li {
+    list-style-type: none;
+}
+
+.admin-navigation .navbar {
+    background:#0E4CC7;
+}
+.admin-navigation .sidebar ul li a, .navbar ul li {
+    color: white;
+}
+
+.admin-navigation .sidebar ul li a:hover {
+    text-decoration: none;
+}
+
+
+.admin-navigation .sidebar.top {
+    margin-left: 250px;
+    position: absolute;
+    width: 100%;
+}
+
+.admin-main .indicator {
+    margin: auto;
+    width: 90%;
+    padding: 30px;
+    background: #d9d9d9;
+}
+
+.admin-main .indicator i.fa.fa-lock {
+    font-size: 50px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+
+.admin-main .indicator form {
+    margin: auto;
+}
+
+
+/* * * * * *
+*
 *  HOME PAGE
 *
  * * * * */
@@ -85,3 +155,4 @@ body {
     border: 1px solid #e8e8e8;
     margin-top: 50px;
 }
+

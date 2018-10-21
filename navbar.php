@@ -5,8 +5,7 @@
 <div class="navigation-menu">
     <nav class="navbar navbar-expand-md navbar-dark">
         <a class="navbar-brand" href="#">BuildMyStore</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavBar"
-                aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavBar" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa fa-bars"></i>
         </button>
 
@@ -23,21 +22,31 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <?php if ($_SESSION['loggedin'] == null) {
+                <?php if(isset($_SESSION["loggedin"])){
                     ?>
+                    <?php if ($_SESSION['loggedin'] == null) {
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="signup.php">Sign Up</a>
+                        </li>
+                        <?php
+                    } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin.php">Admin Portal</a>
+                        </li>
+                    <?php } ?>
+                <?php
+                }else { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="signup.php">Sign Up</a>
                     </li>
-                    <?php
-                } else { ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin.php">Admin Portal</a>
-                    </li>
                 <?php } ?>
-
             </ul>
         </div>
     </nav>

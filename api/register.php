@@ -10,6 +10,7 @@ $password = $_POST['password'];
 
 $user = $db->createAdmin($first_name, $last_name, $email,  $password);
 
+
 if($user){
     header("Location:../login.php");
 } else {
