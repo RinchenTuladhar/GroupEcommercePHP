@@ -12,26 +12,30 @@
                     <a class="navbar-brand" href="admin.php">Admin Panel</a>
                 </li>
             </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin.php">
-                            <?php echo $_SESSION["FirstName"] . " " . $_SESSION["LastName"]; ?>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="api/logout.php">
-                            Logout
-                        </a>
-                    </li>
-                </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="admin.php">
+                        <?php echo $_SESSION["FirstName"] . " " . $_SESSION["LastName"]; ?>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="api/logout.php">
+                        Logout
+                    </a>
+                </li>
+            </ul>
         </nav>
     </div>
     <div class="sidebar left">
         <ul>
             <li><a href="admin.php">Dashboard</a></li>
-            <li><a href="#">Create Website</a></li>
-            <li><a href="#">Create Categories</a></li>
-            <li><a href="#">Add Products</a></li>
+            <?php if ($_SESSION["hasDomain"]["DomainName"] != null) {
+                ?>
+                <li><a href="#">Create Categories</a></li>
+                <li><a href="#">Create Navigation</a></li>
+                <li><a href="#">Add Products</a></li>
+
+            <?php } ?>
         </ul>
     </div>
 </div> <!--.navigation-menu-->

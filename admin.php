@@ -19,12 +19,12 @@ if ($_SESSION['loggedin'] == null) {
 
 <div class="main admin-main">
     <h1> Welcome <?php echo $_SESSION["FirstName"]; ?></h1>
-    <?php if ($_SESSION["hasDomain"] == null) {
+    <?php if ($_SESSION["hasDomain"]["DomainName"] == null) {
         ?>
         <div class="row indicator">
             <i class="fa fa-lock"></i> <br>
             <form action="api/domainname.php" method="POST">
-                <h3>Please enter a domain name for your website before continuing.</h3> <br>
+                <h3>Step 1: Please enter a domain name to get started.</h3> <br>
                 <div class="col-auto">
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
@@ -39,7 +39,10 @@ if ($_SESSION['loggedin'] == null) {
             </form>
         </div>
         <?php
-    } ?>
+    } else {
+
+     ?>
+    <?php } ?>
 
 </div>
 </body>
