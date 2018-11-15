@@ -14,7 +14,6 @@ body {
 
 .home-page .navigation-menu {
     background: #222222 !important;
-    position: absolute !important;
 }
 
 .navigation-menu {
@@ -115,6 +114,7 @@ body {
 *
  * * * * */
 
+
 .main .main-image img {
     max-width: 100%;
     z-index: -9999;
@@ -156,3 +156,45 @@ body {
     margin-top: 50px;
 }
 
+/* * * * * *
+*
+*  PRODUCTS PAGE
+*
+ * * * * */
+
+.product-list {
+    margin-top: 100px;
+}
+
+.product-list h1 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 50px;
+}
+
+.product-list .product-image {
+    text-align: center;
+}
+
+.product-wrapper {
+    border: 1px solid #dbdbdb;
+    padding: 10px;
+    position: relative;
+}
+
+.product-list .product-wrapper .product-title p {
+    margin-top: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.product-list .product-wrapper .product-price p {
+    text-align: center;
+}
+
+.product-list .product-wrapper .product-image img{
+    height: 350px;
+    width: auto;
+}

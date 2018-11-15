@@ -15,7 +15,16 @@
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="products.php">Products</a>
+                    <a class="nav-link" href="products.php">Shirts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="products.php">Hoodies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="products.php">Shoes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="products.php">Accessories</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

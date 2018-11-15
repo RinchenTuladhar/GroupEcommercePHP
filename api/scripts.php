@@ -13,7 +13,7 @@
 <meta name="keywords" content="">
 <meta name="author" content="Rinchen Tuladhar">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 
 <script
     src="https://code.jquery.com/jquery-3.3.1.min.js"
