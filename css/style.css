@@ -1,0 +1,106 @@
+body {
+  background: #fafafa !important; }
+
+/** NAVIGATION **/
+.navigation-menu {
+  background: #0E4CC7;
+  width: 100%;
+  z-index: 2;
+  padding: 10px; }
+  .navigation-menu .navbar-dark .navbar-nav .nav-link {
+    color: white; }
+  .navigation-menu .navbar-dark .navbar-nav .nav-link:hover {
+    cursor: pointer; }
+  .navigation-menu .navbar-nav li.nav-item {
+    margin: 0px 15px; }
+
+.home-page .navigation-menu {
+  background: transparent !important;
+  position: absolute !important; }
+
+.home-page .navigation-menu:hover {
+  background: #0E4CC7; }
+
+/* * * * * *
+*
+*  ADMIN NAVBAR
+*
+ * * * * */
+.admin-main {
+  margin-left: 275px; }
+  .admin-main .indicator {
+    margin: auto;
+    width: 90%;
+    padding: 30px;
+    background: #d9d9d9; }
+    .admin-main .indicator i.fa.fa-lock {
+      font-size: 50px;
+      margin: auto;
+      width: 100%;
+      text-align: center; }
+    .admin-main .indicator form {
+      margin: auto; }
+
+.admin-navigation .sidebar.left {
+  width: 250px;
+  height: 100%; }
+.admin-navigation .sidebar {
+  position: absolute;
+  background: #0E4CC7; }
+  .admin-navigation .sidebar ul {
+    padding: 0px; }
+    .admin-navigation .sidebar ul li {
+      list-style-type: none;
+      padding: 20px; }
+      .admin-navigation .sidebar ul li a {
+        color: white; }
+      .admin-navigation .sidebar ul li a:hover {
+        text-decoration: none; }
+.admin-navigation .sidebar.top {
+  margin-left: 250px;
+  position: absolute;
+  width: 100%; }
+.admin-navigation .navbar {
+  background: #0E4CC7; }
+  .admin-navigation .navbar ul li {
+    list-style-type: none;
+    color: white; }
+
+/* * * * * *
+*
+*  HOME PAGE
+*
+ * * * * */
+.main .main-image {
+  position: relative;
+  text-align: center; }
+  .main .main-image img {
+    max-width: 100%;
+    z-index: -9999; }
+  .main .main-image h1 {
+    position: absolute;
+    top: 35%;
+    left: 40%;
+    transform: translate(-40%, -50%);
+    color: white;
+    font-size: 5em;
+    background: #0e4cc7ad;
+    padding: 10px 10px 20px 10px;
+    font-weight: 100; }
+
+/* * * * * *
+*
+*  SIGN UP PAGE
+*
+ * * * * */
+.signup-form {
+  height: 80%;
+  background: white;
+  padding: 5px 30px;
+  border: 1px solid #e8e8e8;
+  margin-top: 50px; }
+  .signup-form h1 {
+    margin: 35px 0px;
+    text-align: center; }
+
+/*# sourceMappingURL=style.css.map */
