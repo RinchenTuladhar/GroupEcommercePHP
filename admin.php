@@ -49,11 +49,14 @@ if ($_SESSION['loggedin'] == null) {
         <form action="api/select-theme.php" method="POST">
             <h3>Step 2: Select your theme.</h3> <br>
             <div class="col-auto">
-                <div class="input-group mb-2">
-                    <input type="radio" id="theme-1" name="theme" value="theme-1">
-                    <input type="radio" id="theme-2" name="theme" value="theme-2">
-                </div>
+                    <div class="radio">
+                        <label><input type="radio" id="theme-1" name="theme" value="theme-1"> Theme 1</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio"  id="theme-2" name="theme" value="theme-2"> Theme 2</label>
+                    </div>
                 <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
+
                 <input type="submit" class="btn btn-success float-right" value="Submit">
             </div>
         </form>

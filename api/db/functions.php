@@ -85,6 +85,15 @@ class Functions
 
         return $query;
     }
+
+    public function setWebsiteTheme($websiteID, $theme){
+        $query = $this->conn->prepare("UPDATE websites SET Theme = ? WHERE WebsiteID = ?");
+        $query->bind_param('ss', $theme, $websiteID);
+        $query->execute();
+        $query->close();
+
+        return $query;
+    }
 }
 
 ?>
