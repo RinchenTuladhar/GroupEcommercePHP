@@ -44,6 +44,9 @@ if ($_SESSION['loggedin'] == null) {
      ?>
     <?php } ?>
     <br>
+
+<?php if ($_SESSION["hasDomain"]["Theme"] == null || isset($_SESSION["theme"])) {
+    ?>
     <div class="row indicator">
         <i class="fa fa-lock"></i> <br>
         <form action="api/select-theme.php" method="POST">
@@ -59,6 +62,19 @@ if ($_SESSION['loggedin'] == null) {
 
                 <input type="submit" class="btn btn-success float-right" value="Submit">
             </div>
+        </form>
+    </div>
+    <?php } ?>
+
+    <div class="row indicator">
+        <i class="fa fa-lock"></i> <br>
+        <form action="api/create-category.php" method="POST">
+            <h3>Step 3: Create your category.</h3> <br>
+            <p>Seperate each category by commas.</p>
+            <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies">
+            <br>
+            <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
+            <input type="submit" class="btn btn-success float-right" value="Submit">
         </form>
     </div>
 </div>

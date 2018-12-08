@@ -86,6 +86,28 @@ class Functions
         return $query;
     }
 
+    public function createCategory($category, $websiteID){
+        $str_arr = explode (",", $category);
+        $sqlStatement = "INSERT INTO categories(Title, WebsiteID) VALUES ";
+
+        for($i = 0; $i < sizeof($str_arr); $i++){
+            if($i == (sizeof($str_arr)-1)){
+
+
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID ."');";
+            } else {
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID ."') ,";
+            }
+        }
+
+        $query = $this->conn->prepare($sqlStatement);
+        $query->execute();
+
+        $query->close();
+
+        return $query;
+    }
+
     public function setWebsiteTheme($websiteID, $theme){
         $query = $this->conn->prepare("UPDATE websites SET Theme = ? WHERE WebsiteID = ?");
         $query->bind_param('ss', $theme, $websiteID);
