@@ -14,7 +14,7 @@ if(isset($_POST["theme"])){
         $_SESSION["theme"] = true;
 
         copy_theme("../themes/" . $themeName, "../sites/" . $_SESSION["hasDomain"]["DomainName"]);
-        header("Location:../admin.php");
+        header("Location:../admin/dashboard.php");
     }
 }
 

@@ -4,13 +4,14 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if ($_SESSION['loggedin'] == null) {
-    header("Location:../login.php");
+    header("Location:../../login.php");
 }
 ?>
 
 <html>
 <head>
-    <?php include 'api/scripts.php'; ?>
+    <?php include '../api/scripts.php'; ?>
+    <link rel="stylesheet" href="../css/style.css">
     <title>BuildMyStore: Admin</title>
 </head>
 
@@ -23,7 +24,7 @@ if ($_SESSION['loggedin'] == null) {
         ?>
         <div class="row indicator">
             <i class="fa fa-lock"></i> <br>
-            <form action="api/domainname.php" method="POST">
+            <form action="../api/domainname.php" method="POST">
                 <h3>Step 1: Please enter a domain name to get started.</h3> <br>
                 <div class="col-auto">
                     <div class="input-group mb-2">
@@ -49,7 +50,7 @@ if ($_SESSION['loggedin'] == null) {
     ?>
     <div class="row indicator">
         <i class="fa fa-lock"></i> <br>
-        <form action="api/select-theme.php" method="POST">
+        <form action="../api/select-theme.php" method="POST">
             <h3>Step 2: Select your theme.</h3> <br>
             <div class="col-auto">
                     <div class="radio">
@@ -68,7 +69,7 @@ if ($_SESSION['loggedin'] == null) {
 
     <div class="row indicator">
         <i class="fa fa-lock"></i> <br>
-        <form action="api/create-category.php" method="POST">
+        <form action="../api/create-category.php" method="POST">
             <h3>Step 3: Create your category.</h3> <br>
             <p>Seperate each category by commas.</p>
             <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies">

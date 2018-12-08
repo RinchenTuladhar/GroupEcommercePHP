@@ -35,7 +35,7 @@
                         <?php
                     } else { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="admin.php">Admin Portal</a>
+                            <a class="nav-link" href="admin/dashboard.php">Admin Portal</a>
                         </li>
                     <?php } ?>
                 <?php

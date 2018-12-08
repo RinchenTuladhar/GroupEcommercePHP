@@ -13,7 +13,7 @@ if(isset($_POST["domain_name"])) {
 
     if ($domain != false) {
         $_SESSION["hasDomain"]["DomainName"] = $domainName;
-        header("Location:../admin.php");
+        header("Location:../admin/dashboard.php");
     }
 }
 ?>
