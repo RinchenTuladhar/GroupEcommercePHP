@@ -108,6 +108,12 @@ class Functions
         return $query;
     }
 
+    public function getCategories($websiteID){
+        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID'");
+
+        return $query;
+    }
+
     public function setWebsiteTheme($websiteID, $theme){
         $query = $this->conn->prepare("UPDATE websites SET Theme = ? WHERE WebsiteID = ?");
         $query->bind_param('ss', $theme, $websiteID);

@@ -12,7 +12,7 @@ if(isset($_POST["category"])) {
 
     if ($category != false) {
         $_SESSION["category"] = true;
-        header("Location:../admin/dashboard.php");
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
 ?>

@@ -1,7 +1,26 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rinch
- * Date: 08/12/2018
- * Time: 19:38
- */
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if ($_SESSION['loggedin'] == null) {
+    header("Location:../../login.php");
+}
+?>
+
+<html>
+<head>
+    <?php include '../api/scripts.php'; ?>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>BuildMyStore: Admin</title>
+</head>
+
+
+<body>
+<?php include 'navbar-admin.php'; ?>
+<div class="main admin-main">
+
+</div>
+</body>
+</html>
+

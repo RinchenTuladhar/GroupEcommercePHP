@@ -28,12 +28,12 @@
     </div>
     <div class="sidebar left">
         <ul>
-            <li><a href="dashboard.php">Dashboard</a></li>
+            <li><a href="dashboard.php"><i class="fa fa-home"></i> Dashboard</a></li>
             <?php if ($_SESSION["hasDomain"]["DomainName"] != null) {
                 ?>
-                <li><a href="categories.php">Categories List</a></li>
-                <li><a href="navigation.php">Edit Navigation</a></li>
-                <li><a href="#">Add Products</a></li>
+                <li><a href="categories.php"><i class="fa fa-list-ul"></i> Categories List</a></li>
+                <li><a href="navigation.php"><i class="fa fa-sitemap"></i> Edit Navigation</a></li>
+                <li><a href="products.php"><i class="fa fa-shopping-basket"></i> Manage Products</a></li>
 
             <?php } ?>
         </ul>
