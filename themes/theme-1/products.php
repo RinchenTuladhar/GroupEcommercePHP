@@ -23,7 +23,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             <img src="https://asda.scene7.com/is/image/Asda/5057476079837?hei=560&qlt=85&fmt=pjpg&resmode=sharp&op_usm=1.1,0.5,0,0&defaultimage=default_details_George_rd">
                         </div>
                         <div class="product-title">
-                            <p>Luxury jumper</p>
+                            <p><a href="item.php">Luxury jumper</a></p>
                         </div>
                         <div class="product-price">
                             <p>£60.00</p>

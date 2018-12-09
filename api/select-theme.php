@@ -11,7 +11,7 @@ if(isset($_POST["theme"])){
     $theme = $db->setWebsiteTheme($websiteID, $themeName);
 
     if($theme != false){
-        $_SESSION["theme"] = true;
+        $_SESSION["hasDomain"]["Theme"] = true;
 
         copy_theme("../themes/" . $themeName, "../sites/" . $_SESSION["hasDomain"]["DomainName"]);
         header("Location:../admin/dashboard.php");

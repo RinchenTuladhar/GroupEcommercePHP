@@ -2,21 +2,20 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
-include '../../api/db-access.php';
-
-$query = $_SERVER ['QUERY_STRING'];
 ?>
 
 <html>
 <head>
     <?php include 'api/scripts.php'; ?>
-    <title>Website Name: Item Name</title>
+    <title>BuildMyStore: Home</title>
 </head>
 
 <body>
+<div class="home-page">
+    <?php include 'navbar.php'; ?>
+    <div class="main">
 
-
+    </div>
+</div>
 </body>
-
 </html>

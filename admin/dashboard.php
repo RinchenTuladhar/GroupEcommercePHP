@@ -1,4 +1,6 @@
 <?php
+include '../api/db-access.php';
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -19,6 +21,10 @@ if ($_SESSION['loggedin'] == null) {
 <?php include 'navbar-admin.php'; ?>
 
 <div class="main admin-main">
+    <?php if ($_SESSION["hasDomain"]["Theme"] != null || isset($_SESSION["theme"])) {
+    ?>
+    <p class="view-my-store float-right"><a href="../sites/<?php echo $_SESSION["hasDomain"]["DomainName"] ?>/index.php" class="btn btn-success">View My Store</a></p>
+    <?php } ?>
     <h1> Welcome <?php echo $_SESSION["FirstName"]; ?></h1>
     <?php if ($_SESSION["hasDomain"]["DomainName"] == null) {
         ?>
@@ -46,7 +52,7 @@ if ($_SESSION['loggedin'] == null) {
     <?php } ?>
     <br>
 
-<?php if ($_SESSION["hasDomain"]["Theme"] == null || isset($_SESSION["theme"])) {
+<?php if ($_SESSION["hasDomain"]["Theme"] == null) {
     ?>
     <div class="row indicator">
         <i class="fa fa-lock"></i> <br>
@@ -66,18 +72,6 @@ if ($_SESSION['loggedin'] == null) {
         </form>
     </div>
     <?php } ?>
-
-    <div class="row indicator">
-        <i class="fa fa-lock"></i> <br>
-        <form action="../api/create-category.php" method="POST">
-            <h3>Step 3: Create your category.</h3> <br>
-            <p>Seperate each category by commas.</p>
-            <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies">
-            <br>
-            <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
-            <input type="submit" class="btn btn-success float-right" value="Submit">
-        </form>
-    </div>
 </div>
 </body>
 </html>

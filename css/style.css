@@ -40,6 +40,9 @@ body {
       text-align: center; }
     .admin-main .indicator form {
       margin: auto; }
+  .admin-main .view-my-store a {
+    font-size: 2em;
+    margin-right: 10px; }
 
 .admin-navigation .sidebar.left {
   width: 250px;
