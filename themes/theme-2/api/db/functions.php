@@ -85,6 +85,19 @@ class Functions
 
         return $query;
     }
+
+    public function getCategoryNavigation($websiteName){
+        $query = $this->conn->prepare("SELECT WebsiteID FROM websites WHERE DomainName = ?");
+        $query->bind_param('s', $websiteName);
+        $query->execute();
+
+        $websiteID = $query->get_result()->fetch_assoc();
+        $websiteID = $websiteID["WebsiteID"];
+        $query->close();
+
+        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' AND Navigation = 1");
+        return $query;
+    }
 }
 
 ?>
