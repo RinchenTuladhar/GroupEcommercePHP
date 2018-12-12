@@ -21,42 +21,38 @@ if ($_SESSION['loggedin'] == null) {
 <body>
 <?php include 'navbar-admin.php'; ?>
 <div class="main admin-main">
-    <div class="row">
-        <h2>Add new categories</h2>
-        <div class="col-md-12">
-            <form action="../api/create-category.php" method="POST">
-                <p>Seperate each category by commas.</p>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies">
-                    <br>
-                    <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
-                    <input type="submit" class="btn btn-success float-right" value="Submit">
-                </div>
-            </form>
-        </div>
+    <h2>Add new categories</h2>
+    <div class="col-md-12">
+        <form action="../api/create-category.php" method="POST">
+            <p>Seperate each category by commas.</p>
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies">
+                <br>
+                <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
+                <input type="submit" class="btn btn-success float-right" value="Submit">
+            </div>
+        </form>
     </div>
 
     <h2>List of Categories</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <ul class="list-group">
-                <?php
-                $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
-                if ($categoryList->num_rows > 0) {
-                    while ($row = $categoryList->fetch_assoc()) {
-                        ?>
-                        <li class="list-group-item">
-                            <?php echo $row["Title"]; ?>
-                            <span class="float-right">
+    <div class="col-md-6">
+        <ul class="list-group">
+            <?php
+            $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
+            if ($categoryList->num_rows > 0) {
+                while ($row = $categoryList->fetch_assoc()) {
+                    ?>
+                    <li class="list-group-item">
+                        <?php echo $row["Title"]; ?>
+                        <span class="float-right">
                             <i class="fa fa-times"></i>
                                 </span>
-                        </li>
-                        <?php
-                    }
+                    </li>
+                    <?php
                 }
-                ?>
-            </ul>
-        </div>
+            }
+            ?>
+        </ul>
     </div>
 </div>
 </body>
