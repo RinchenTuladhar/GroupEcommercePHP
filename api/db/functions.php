@@ -124,11 +124,17 @@ class Functions
     }
     
     public function setNavigationMode($websiteID, $title, $mode){
+        $newMode;
+        if($mode == "0"){
+            $newMode = 1;
+        } else {
+            $newMode = 0;
+        }
         $query = $this->conn->prepare("UPDATE categories SET Navigation = ? WHERE WebsiteID = ? AND Title = ?");
-        $query->bind_param('iss', $mode, $websiteID, $title);
+        $query->bind_param('iss', $newMode, $websiteID, $title);
         $result = $query->execute();
         $query->close();
-        return $query;
+        return $result;
     }
 }
 

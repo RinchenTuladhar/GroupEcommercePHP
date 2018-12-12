@@ -33,9 +33,8 @@ if ($_SESSION['loggedin'] == null) {
                             <?php echo $row["Title"]; ?>
                             <span class="float-right">
                                 <?php if ($row["Navigation"] == 1) { ?>
-                                                            <button
-								type="button"
-								onclick="navClick('<?php echo $row["Title"]?>', 1, '<?php echo $_SESSION["WebsiteID"];?>');"
+                                <button type="button"
+								onclick="navClick('<?php echo $row["Title"]?>', 1, '<?php echo $_SESSION["WebsiteID"];?>', this);"
 								id="navClick">
 								<i class="fa fa-check-square"></i>
 							</button>
@@ -44,7 +43,7 @@ if ($_SESSION['loggedin'] == null) {
                         } else {
                             ?>
                             <button type="button" id="navClick"
-								onclick="navClick('<?php echo $row["Title"]?>', 0, '<?php echo $_SESSION["WebsiteID"];?>');">
+								onclick="navClick('<?php echo $row["Title"]?>', 0, '<?php echo $_SESSION["WebsiteID"];?>', this);">
 								<i class="fa fa-square"></i>
 							</button>
                                     <?php
@@ -63,13 +62,17 @@ if ($_SESSION['loggedin'] == null) {
 	</div>
 </body>
 <script type="text/javascript">
-		function navClick(value, isChecked, websiteID){
+		function navClick(value, isChecked, websiteID, input){
 			var request = $.ajax({
 				  url: '../api/update-navigation.php',
 				  type: "POST",
 				  data: {websiteID: websiteID, title : value, mode: isChecked},
 				  success: function(data){
-					console.log(data);
+					if(isChecked == 1){
+						input.innerHTML = '<i class="fa fa-square"></i>';
+				  	} else {
+				  		input.innerHTML = '<i class="fa fa-check-square"></i>';
+				  	}
 				  }
 				});
 		}
