@@ -40,7 +40,6 @@ class Functions
 
     public function checkPassword($email, $password){
         $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ?");
-
         $query->bind_param('s', $email);
         $query->execute();
 
@@ -48,6 +47,7 @@ class Functions
 
         $query->close();
 
+        var_dump(password_verify($password, $user["EncryptedPassword"]));
         if(password_verify($password, $user["EncryptedPassword"])) {
             return $user;
         } else {
@@ -86,48 +86,16 @@ class Functions
         return $query;
     }
 
-    public function createCategory($category, $websiteID){
-        $str_arr = explode (",", $category);
-        $sqlStatement = "INSERT INTO categories(Title, WebsiteID) VALUES ";
-
-        for($i = 0; $i < sizeof($str_arr); $i++){
-            if($i == (sizeof($str_arr)-1)){
-
-
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID ."');";
-            } else {
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID ."') ,";
-            }
-        }
-
-        $query = $this->conn->prepare($sqlStatement);
+    public function getCategoryNavigation($websiteName){
+        $query = $this->conn->prepare("SELECT WebsiteID FROM websites WHERE DomainName = ?");
+        $query->bind_param('s', $websiteName);
         $query->execute();
 
+        $websiteID = $query->get_result()->fetch_assoc();
+        $websiteID = $websiteID["WebsiteID"];
         $query->close();
 
-        return $query;
-    }
-
-    public function getCategories($websiteID){
-        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID'");
-
-        return $query;
-    }
-
-    public function setWebsiteTheme($websiteID, $theme){
-        $query = $this->conn->prepare("UPDATE websites SET Theme = ? WHERE WebsiteID = ?");
-        $query->bind_param('ss', $theme, $websiteID);
-        $query->execute();
-        $query->close();
-
-        return $query;
-    }
-    
-    public function setNavigationMode($websiteID, $title, $mode){
-        $query = $this->conn->prepare("UPDATE categories SET Navigation = ? WHERE WebsiteID = ? AND Title = ?");
-        $query->bind_param('iss', $mode, $websiteID, $title);
-        $result = $query->execute();
-        $query->close();
+        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' AND Navigation = 1");
         return $query;
     }
 }

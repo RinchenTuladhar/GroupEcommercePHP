@@ -11,6 +11,7 @@ if($splitUrl[3] === "sites"){
 }  else {
     $siteName = $splitUrl[3];
 }
+
 ?>
 
 <body>
@@ -53,6 +54,7 @@ if($splitUrl[3] === "sites"){
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
+                
                 <?php 
                     $listOfNavigation = $db->getCategoryNavigation($siteName);
                     while($row = $listOfNavigation->fetch_assoc()){

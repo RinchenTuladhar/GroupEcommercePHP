@@ -14,58 +14,65 @@ if ($_SESSION['loggedin'] == null) {
 <head>
     <?php include '../api/scripts.php'; ?>
     <link rel="stylesheet" href="../css/style.css">
-    <title>BuildMyStore: Admin</title>
+<title>BuildMyStore: Admin</title>
 </head>
-
 
 <body>
 <?php include 'navbar-admin.php'; ?>
 <div class="main admin-main">
-    <h2>Navigation List:</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <ul class="list-group">
+		<h2>Navigation List:</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<ul class="list-group">
                 <?php
                 $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                 if ($categoryList->num_rows > 0) {
                     while ($row = $categoryList->fetch_assoc()) {
                         ?>
-                        <li class="list-group-item">
+                        <li class="list-group-item navigation-list">
                             <?php echo $row["Title"]; ?>
                             <span class="float-right">
                                 <?php if ($row["Navigation"] == 1) { ?>
-                                    <i id="navClick" value="<?php echo row["Title"]?>" class="fa fa-check-square"></i>
+                                                            <button
+								type="button"
+								onclick="navClick('<?php echo $row["Title"]?>', 1, '<?php echo $_SESSION["WebsiteID"];?>');"
+								id="navClick">
+								<i class="fa fa-check-square"></i>
+							</button>
+
                                     <?php
-                                } else {
-                                    ?>
-                                    <i class="fa fa-square"></i>
+                        } else {
+                            ?>
+                            <button type="button" id="navClick"
+								onclick="navClick('<?php echo $row["Title"]?>', 0, '<?php echo $_SESSION["WebsiteID"];?>');">
+								<i class="fa fa-square"></i>
+							</button>
                                     <?php
-                                } ?>
+                        }
+                        ?>
                             </span>
-                        </li>
+					</li>
                         <?php
                     }
                 }
                 ?>
             </ul>
-        </div>
-    </div>
+			</div>
+		</div>
 
-</div>
+	</div>
 </body>
 <script type="text/javascript">
-    /*
-    $(document).ready(function() {
-        $('#navClick').click(function(){
-            $.ajax({
-                type: "POST",
-                url: "../api/update-navigation.php",
-                data: { name: "John" }
-            }).done(function( msg ) {
-                alert( "Data Saved: " + msg );
-            });
-        });
-    }*/
+		function navClick(value, isChecked, websiteID){
+			var request = $.ajax({
+				  url: '../api/update-navigation.php',
+				  type: "POST",
+				  data: {websiteID: websiteID, title : value, mode: isChecked},
+				  success: function(data){
+					console.log(data);
+				  }
+				});
+		}
 </script>
 </html>
 
