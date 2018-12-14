@@ -4,7 +4,13 @@ include 'api/db-access.php';
 $url = $_SERVER['REQUEST_URI'];
 $splitUrl = array_filter(explode('/', $url));
 
-$siteName = $splitUrl[3];
+$siteName;
+
+if($splitUrl[3] === "sites"){
+    $siteName = $splitUrl[4];
+}  else {
+    $siteName = $splitUrl[3];
+}
 ?>
 
 <body>
@@ -47,18 +53,16 @@ $siteName = $splitUrl[3];
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
+                <?php 
+                    $listOfNavigation = $db->getCategoryNavigation($siteName);
+                    while($row = $listOfNavigation->fetch_assoc()){
+                ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="products.php">Shirts</a>
+                    <a class="nav-link" href="products.php"><?php echo $row["Title"]?></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Hoodies</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Shoes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Accessories</a>
-                </li>
+                <?php 
+                    }
+                ?>
             </ul>
         </div>
     </nav>

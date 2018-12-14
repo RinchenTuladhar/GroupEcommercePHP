@@ -43,6 +43,10 @@ body {
   .admin-main .view-my-store a {
     font-size: 2em;
     margin-right: 10px; }
+    .admin-main button {
+    	background: transparent;
+    	border: none;
+    }
 
 .admin-navigation .sidebar.left {
   width: 250px;
