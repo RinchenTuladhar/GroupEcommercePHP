@@ -40,13 +40,12 @@ body {
       text-align: center; }
     .admin-main .indicator form {
       margin: auto; }
+  .admin-main .navigation-list button {
+    background: transparent;
+    border: 0px; }
   .admin-main .view-my-store a {
     font-size: 2em;
     margin-right: 10px; }
-    .admin-main button {
-    	background: transparent;
-    	border: none;
-    }
 
 .admin-navigation .sidebar.left {
   width: 250px;
@@ -63,6 +62,22 @@ body {
         color: white; }
       .admin-navigation .sidebar ul li a:hover {
         text-decoration: none; }
+.admin-navigation .accordion .card {
+  background-color: transparent;
+  border: 0px;
+  border-radius: 0px; }
+  .admin-navigation .accordion .card .card-header {
+    border: 0px;
+    background-color: transparent;
+    padding: 0px; }
+    .admin-navigation .accordion .card .card-header button {
+      background: transparent;
+      border: 0px;
+      color: white;
+      font-size: 1rem;
+      padding: 0px; }
+    .admin-navigation .accordion .card .card-header button:hover {
+      cursor: pointer; }
 .admin-navigation .sidebar.top {
   margin-left: 250px;
   position: absolute;

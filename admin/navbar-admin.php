@@ -1,6 +1,6 @@
 <?php
-
-
+$url = $_SERVER['REQUEST_URI'];
+$splitUrl = array_filter(explode('/', $url));
 ?>
 
 <body>
@@ -36,8 +36,32 @@
                 ?>
                 <li><a href="categories.php"><i class="fa fa-list-ul"></i> Categories List</a></li>
                 <li><a href="navigation.php"><i class="fa fa-sitemap"></i> Edit Navigation</a></li>
-                <li><a href="products.php"><i class="fa fa-shopping-basket"></i> Manage Products</a></li>
+                <li>
+                    <div class="accordion" id="productAccordion">
+                        <div class="card">
+                            <div class="card-header" id="productOptions">
+                                <h5 class="mb-0">
+                                    <button type="button" data-toggle="collapse" data-target="#collapseProductOptions" aria-expanded="true" aria-controls="collapseOne">
+                                        <i class="fa fa-shopping-basket"></i> Products
+                                    </button>
+                                </h5>
+                            </div>
 
+                            <div id="collapseProductOptions" class="collapse
+                            <?php
+                            if(strpos($splitUrl[3], 'add-product') !== false){
+                                echo "show";
+                            } else if(strpos($splitUrl[3], 'manage-product') !== false){
+                                echo "show";
+                            }
+                            ?>" aria-labelledby="productOptions" data-parent="#productAccordion">
+                                <div class="card-body">
+                                    <p><a href="add-product.php"> Add New Product</a></p>
+                                    <p><a href="manage-product.php"> Manage Product</a></p>
+                                </div>
+                            </div>
+                        </div>
+                </li>
             <?php } ?>
         </ul>
     </div>

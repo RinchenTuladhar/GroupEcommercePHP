@@ -56,6 +56,12 @@ body {
     }
   }
 
+  .navigation-list {
+     button {
+       background: transparent;
+       border: 0px;
+     }
+  }
   .view-my-store {
     a {
       font-size: 2em;
@@ -77,7 +83,7 @@ body {
     ul {
       padding: 0px;
 
-      li{
+      li {
         list-style-type: none;
         padding: 20px;
 
@@ -86,6 +92,31 @@ body {
         }
         a:hover {
           text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .accordion {
+    .card {
+      background-color: transparent;
+      border: 0px;
+      border-radius: 0px;
+      .card-header {
+        border: 0px;
+        background-color: transparent;
+        padding: 0px;
+
+        button {
+          background: transparent;
+          border: 0px;
+          color: white;
+          font-size: 1rem;
+          padding: 0px;
+        }
+
+        button:hover {
+          cursor: pointer;
         }
       }
     }

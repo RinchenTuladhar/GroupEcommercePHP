@@ -67,11 +67,18 @@ if ($_SESSION['loggedin'] == null) {
 				  url: '../api/update-navigation.php',
 				  type: "POST",
 				  data: {websiteID: websiteID, title : value, mode: isChecked},
-				  success: function(data){
+				  success: function(){
 					if(isChecked == 1){
-						input.innerHTML = '<i class="fa fa-square"></i>';
+						input.outerHTML = '<button type="button" id="navClick"\n' +
+                            '\t\t\t\t\t\t\t\tonclick="navClick(\''+ value +'\', 0, \'<?php echo $_SESSION["WebsiteID"];?>\', this);">\n' +
+                            '\t\t\t\t\t\t\t\t<i class="fa fa-square"></i>\n' +
+                            '\t\t\t\t\t\t\t</button>';
 				  	} else {
-				  		input.innerHTML = '<i class="fa fa-check-square"></i>';
+				  		input.outerHTML = '<button type="button"\n' +
+                            '\t\t\t\t\t\t\t\tonclick="navClick(\'' + value +'\', 1, \'<?php echo $_SESSION["WebsiteID"];?>\', this);"\n' +
+                            '\t\t\t\t\t\t\t\tid="navClick">\n' +
+                            '\t\t\t\t\t\t\t\t<i class="fa fa-check-square"></i>\n' +
+                            '\t\t\t\t\t\t\t</button>';
 				  	}
 				  }
 				});
