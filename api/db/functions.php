@@ -136,6 +136,16 @@ class Functions
         $query->close();
         return $result;
     }
+
+    public function createProduct($name, $description, $price, $stock, $website_id, $category, $uniqueid){
+
+        $query = $this->conn->prepare("INSERT INTO products(ProductID, Name, Description, Price, Stock, WebsiteID, Category) VALUES(?, ?, ?, ?, ?, ?, ?)");
+        $query->bind_param('ssssiss', $uniqueid, $name, $description, $price, $stock, $website_id, $category);
+
+        $result = $query->execute();
+        $query->close();
+        return $result;
+    }
 }
 
 ?>
