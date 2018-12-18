@@ -11,6 +11,9 @@ if($splitUrl[3] === "sites"){
 }  else {
     $siteName = $splitUrl[3];
 }
+
+$_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
+
 ?>
 
 <body>
@@ -58,7 +61,7 @@ if($splitUrl[3] === "sites"){
                     while($row = $listOfNavigation->fetch_assoc()){
                 ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="products.php"><?php echo $row["Title"]?></a>
+                    <a class="nav-link" href="products.php?<?php echo $row['Title'];?>"><?php echo $row["Title"]?></a>
                 </li>
                 <?php 
                     }

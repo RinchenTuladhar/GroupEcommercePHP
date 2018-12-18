@@ -11,6 +11,9 @@ if($splitUrl[3] === "sites"){
 }  else {
     $siteName = $splitUrl[3];
 }
+
+$_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
+
 ?>
 
 <body>
@@ -39,7 +42,7 @@ if($splitUrl[3] === "sites"){
                             <a class="nav-link" href="basket.php"><i class="fa fa-shopping-cart"></i> £0.00</a>
                         </li>
                     <?php } ?>
-                <?php
+                    <?php
                 }else { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">Login</a>
@@ -53,15 +56,15 @@ if($splitUrl[3] === "sites"){
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
-                <?php 
-                    $listOfNavigation = $db->getCategoryNavigation($siteName);
-                    while($row = $listOfNavigation->fetch_assoc()){
-                ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php"><?php echo $row["Title"]?></a>
-                </li>
-                <?php 
-                    }
+                <?php
+                $listOfNavigation = $db->getCategoryNavigation($siteName);
+                while($row = $listOfNavigation->fetch_assoc()){
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.php?<?php echo $row['Title'];?>"><?php echo $row["Title"]?></a>
+                    </li>
+                    <?php
+                }
                 ?>
             </ul>
         </div>

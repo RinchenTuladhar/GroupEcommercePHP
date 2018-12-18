@@ -28,7 +28,7 @@ if(isset($_POST["product_name"]) && isset($_POST["product_description"]) && isse
         move_uploaded_file($file_tmp, "../sites/" . $website_name. "/img/items/" . $uniqueid .".jpg");
 
     }
-    //header("Location:../admin/dashboard.php");
+    header("Location:../admin/dashboard.php");
 }
 
 ?>

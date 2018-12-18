@@ -146,6 +146,16 @@ class Functions
         $query->close();
         return $result;
     }
+
+    public function displayAllProducts($websiteID){
+        $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ?");
+        $query->bind_param("s", $websiteID);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        return $result;
+    }
 }
 
 ?>

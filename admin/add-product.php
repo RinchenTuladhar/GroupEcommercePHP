@@ -23,7 +23,7 @@ include '../api/db-access.php';
 <?php include 'navbar-admin.php'; ?>
 <div class="main admin-main">
     <div class="col-md-8 col-sm-12">
-        <h1>Add New Product</h1>
+        <h2>Add New Product</h2>
 
         <form method="post" action="../api/add-product.php" enctype="multipart/form-data">
             <label for="product_name">Product Name</label>

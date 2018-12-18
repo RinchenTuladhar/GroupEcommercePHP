@@ -20,6 +20,18 @@ class Functions
 
     }
 
+    public function getWebsiteID($websiteName)
+    {
+        $query = $this->conn->prepare("SELECT * FROM websites WHERE DomainName = ?");
+        $query->bind_param("s", $websiteName);
+        $query->execute();
+        $result = $query->get_result()->fetch_assoc();
+
+        $query->close();
+        return $result;
+
+    }
+
     public function createAdmin($firstName, $lastName, $email, $password)
     {
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -31,14 +43,15 @@ class Functions
         $query->close();
 
         $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin) VALUES(?, ?, ?, ?, ?, 1)");
-        $query->bind_param("sssss", $email, $firstName, $lastName,$encryptedPassword, $websiteID);
+        $query->bind_param("sssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID);
         $result = $query->execute();
         $query->close();
 
         return $result;
     }
 
-    public function checkPassword($email, $password){
+    public function checkPassword($email, $password)
+    {
         $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ?");
         $query->bind_param('s', $email);
         $query->execute();
@@ -48,14 +61,15 @@ class Functions
         $query->close();
 
         var_dump(password_verify($password, $user["EncryptedPassword"]));
-        if(password_verify($password, $user["EncryptedPassword"])) {
+        if (password_verify($password, $user["EncryptedPassword"])) {
             return $user;
         } else {
             return null;
         }
     }
 
-    public function hasDomainName($websiteID){ // Checks to see if user has named their domain
+    public function hasDomainName($websiteID)
+    { // Checks to see if user has named their domain
         $query = $this->conn->prepare("SELECT * FROM websites WHERE WebsiteID = ?");
         $query->bind_param('s', $websiteID);
         $query->execute();
@@ -67,7 +81,8 @@ class Functions
         return $hasDomain;
     }
 
-    public function createDomainName($domain, $websiteID){
+    public function createDomainName($domain, $websiteID)
+    {
         $query = $this->conn->prepare("SELECT * FROM websites WHERE DomainName = ?");
         $query->bind_param('s', $domain);
         $query->execute();
@@ -76,7 +91,7 @@ class Functions
 
         $query->close();
 
-        if($oldDomain == null){
+        if ($oldDomain == null) {
             $query = $this->conn->prepare("UPDATE websites SET DomainName = ? WHERE WebsiteID = ?");
             $query->bind_param('ss', $domain, $websiteID);
             $query->execute();
@@ -86,7 +101,8 @@ class Functions
         return $query;
     }
 
-    public function getCategoryNavigation($websiteName){
+    public function getCategoryNavigation($websiteName)
+    {
         $query = $this->conn->prepare("SELECT WebsiteID FROM websites WHERE DomainName = ?");
         $query->bind_param('s', $websiteName);
         $query->execute();
@@ -97,6 +113,19 @@ class Functions
 
         $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' AND Navigation = 1");
         return $query;
+    }
+
+
+    public function getCategoryProducts($websiteID, $category)
+    {
+        $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ? AND Category = ?");
+        $query->bind_param('ss', $websiteID, $category);
+        $query->execute();
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
     }
 }
 
