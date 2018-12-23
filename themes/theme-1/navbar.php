@@ -25,6 +25,21 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavBar">
+            <ul class="navbar-nav mr-auto navbar-left">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Home</a>
+                </li>
+                <?php
+                $listOfNavigation = $db->getCategoryNavigation($siteName);
+                while($row = $listOfNavigation->fetch_assoc()){
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.php?<?php echo $row['Title'];?>"><?php echo $row["Title"]?></a>
+                    </li>
+                    <?php
+                }
+                ?>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if(isset($_SESSION["loggedin"])){
                     ?>
@@ -51,21 +66,6 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
                         <a class="nav-link" href="signup.php">Sign Up</a>
                     </li>
                 <?php } ?>
-            </ul>
-            <ul class="navbar-nav mr-auto navbar-left">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <?php
-                $listOfNavigation = $db->getCategoryNavigation($siteName);
-                while($row = $listOfNavigation->fetch_assoc()){
-                    ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="products.php?<?php echo $row['Title'];?>"><?php echo $row["Title"]?></a>
-                    </li>
-                    <?php
-                }
-                ?>
             </ul>
         </div>
     </nav>

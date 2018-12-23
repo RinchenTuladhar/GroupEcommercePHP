@@ -169,7 +169,11 @@ body {
 .product-list h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
+    background: #222222;
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
 
 .product-list .product-image {
@@ -195,6 +199,6 @@ body {
 }
 
 .product-list .product-wrapper .product-image img{
-    height: 350px;
-    width: auto;
+    height: auto;
+    width: 100%;
 }
