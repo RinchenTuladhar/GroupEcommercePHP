@@ -29,7 +29,7 @@ $splitUrl = array_filter(explode('/', $url));
     <div class="sidebar left">
         <ul>
             <?php if ($_SESSION["hasDomain"]["DomainName"] != null) {?>
-            <li><a href="../sites/<?php echo $_SESSION["hasDomain"]["DomainName"] ?>/index.php">View My Store</a></li>
+            <li><a href="../sites/<?php echo $_SESSION["hasDomain"]["DomainName"] ?>/index.php" target="_blank">View My Store</a></li>
             <?php } ?>
             <li><a href="dashboard.php"><i class="fa fa-home"></i> Dashboard</a></li>
             <?php if ($_SESSION["hasDomain"]["DomainName"] != null) {

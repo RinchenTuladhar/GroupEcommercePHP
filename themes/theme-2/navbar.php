@@ -1,10 +1,24 @@
 <?php
-?>
+include 'api/db-access.php';
 
+$url = $_SERVER['REQUEST_URI'];
+$splitUrl = array_filter(explode('/', $url));
+
+$siteName;
+
+if($splitUrl[3] === "sites"){
+    $siteName = $splitUrl[4];
+}  else {
+    $siteName = $splitUrl[3];
+}
+
+$_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
+
+?>
 <body>
 
 <div id="top-bar">
-    <a class="navbar-brand" href="index.php">Store Name</a>
+    <a class="navbar-brand" href="index.php"><?php echo $siteName; ?></a>
     <p class="float-right">Signup / Login</p>
 </div>
 
@@ -20,18 +34,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Meat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Vegetables</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Fruit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="products.php">Bakery</a>
-                </li>
+                <?php
+                $listOfNavigation = $db->getCategoryNavigation($siteName);
+                while($row = $listOfNavigation->fetch_assoc()){
+                    ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.php?<?php echo $row['Title'];?>"><?php echo $row["Title"]?></a>
+                    </li>
+                    <?php
+                }
+                ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php if(isset($_SESSION["loggedin"])){

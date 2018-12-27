@@ -23,7 +23,7 @@ if ($_SESSION['loggedin'] == null) {
 <div class="main admin-main">
     <?php if ($_SESSION["hasDomain"]["Theme"] != null || isset($_SESSION["theme"])) {
     ?>
-    <p class="view-my-store float-right"><a href="../sites/<?php echo $_SESSION["hasDomain"]["DomainName"] ?>/index.php" class="btn btn-success">View My Store</a></p>
+    <p class="view-my-store float-right"><a href="../sites/<?php echo $_SESSION["hasDomain"]["DomainName"] ?>/index.php" class="btn btn-success" target="_blank">View My Store</a></p>
     <?php } ?>
     <h1> Welcome <?php echo $_SESSION["FirstName"]; ?></h1>
     <?php if ($_SESSION["hasDomain"]["DomainName"] == null) {

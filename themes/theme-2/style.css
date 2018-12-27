@@ -1,4 +1,6 @@
-
+img {
+    max-width: 100%;
+}
 /* * * * * *
 *
 *  NAVIGATION
@@ -188,14 +190,17 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 50px;
+    font-weight: 100;
 }
 
 .product-list .product-image {
     text-align: center;
+    height: 175px;
+    overflow: hidden;
 }
 
 .product-wrapper {
-    border: 1px solid #dbdbdb;
+    border-right: 1px solid #dbdbdb;
     padding: 10px;
     position: relative;
     height: 300px;
@@ -204,12 +209,19 @@
 .product-list .product-wrapper .product-title p {
     margin-top: 5px;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 2px;
+    text-align:center;
 }
 
 .product-list .product-wrapper .product-image img{
-    max-width: 100%;
+    max-height: 150px;
+}
+.product-list .product-wrapper .product-image img:hover {
+    -webkit-transform: scale(1.75);
+    transform: scale(1.75);
+}
+.product-price p {
+    text-align: center;
 }
 
 .product-list .product-description {

@@ -127,6 +127,17 @@ class Functions
 
         return $result;
     }
+
+    public function getItemInformation($websiteID, $itemID){
+        $query = $this->conn->prepare("select * from products WHERE ProductID = ?");
+        $query->bind_param("s", $itemID);
+        $query->execute();
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
+    }
 }
 
 ?>

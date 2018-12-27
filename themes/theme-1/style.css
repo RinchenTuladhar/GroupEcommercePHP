@@ -209,8 +209,7 @@ img {
 }
 
 .product-list .product-wrapper .product-image img{
-    height: auto;
-    width: 100%;
+    height: 300px;
 }
 
 /* * * * * *

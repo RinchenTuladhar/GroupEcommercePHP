@@ -1,9 +1,9 @@
 <?php
-
 define("DB_HOST", "localhost");
-define("DB_USER", "cmprtula");
+define("DB_USER", "root");
 define("DB_PASSWORD", "");
-define("DB_DATABASE", "");
+define("DB_DATABASE", "commerce");
+
 
 /*
 define("DB_HOST", "commerce.c9l9bem1arqa.eu-west-2.rds.amazonaws.com");

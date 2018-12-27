@@ -4,7 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $query = $_SERVER['QUERY_STRING'];
-$_SESSION["WebsiteDetails"]
 
 ?>
 
@@ -19,7 +18,7 @@ $_SESSION["WebsiteDetails"]
     <?php include 'navbar.php'; ?>
     <div class="main">
         <div class="product-list container">
-            <h1></h1>
+            <h1><?php echo $query; ?></h1>
             <div class="row">
                 <?php
                 $products = $db->getCategoryProducts($_SESSION["WebsiteDetails"]["WebsiteID"], $query);

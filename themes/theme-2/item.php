@@ -3,8 +3,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-include '../../api/db-access.php';
-
 $query = $_SERVER ['QUERY_STRING'];
 ?>
 
@@ -15,7 +13,11 @@ $query = $_SERVER ['QUERY_STRING'];
 </head>
 
 <body>
-
+<div class="home-page">
+    <?php include 'navbar.php'; ?>
+    <div class="main">
+    </div>
+</div>
 
 </body>
 
