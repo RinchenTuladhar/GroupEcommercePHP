@@ -24,6 +24,7 @@ $query = $_SERVER ['QUERY_STRING'];
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th>Item</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
@@ -34,6 +35,7 @@ $query = $_SERVER ['QUERY_STRING'];
                                 <td>
                                     <img src="img/items/5c24dcb5accef.jpg">
                                 </td>
+                                <td>Salad</td>
                                 <td>£45.00</td>
                                 <td>
                                     <select class="form-control">
@@ -49,6 +51,7 @@ $query = $_SERVER ['QUERY_STRING'];
                                 <td>
                                     <img src="img/items/5c24dcb5accef.jpg">
                                 </td>
+                                <td>Salad</td>
                                 <td>£45.00</td>
                                 <td>
                                     <select class="form-control">
@@ -64,6 +67,7 @@ $query = $_SERVER ['QUERY_STRING'];
                                 <td>
                                     <img src="img/items/5c24dcb5accef.jpg">
                                 </td>
+                                <td>Salad</td>
                                 <td>£45.00</td>
                                 <td>
                                     <select class="form-control">

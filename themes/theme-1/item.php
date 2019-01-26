@@ -35,7 +35,8 @@ $query = $_SERVER['QUERY_STRING'];
                     <p>£<?php echo $item["Price"]; ?></p>
                     <h2>Description</h2>
                     <p><?php echo $item["Description"]; ?></p>
-                    <input type="button" class="btn btn-default" value="Add To Basket">
+                    <input type="hidden" class="item-id" value="<?php echo $item['ProductID']?>">
+                    <input type="button" id="basketBtn" class="btn btn-default" value="Add To Basket">
                 </div>
             </div>
 
@@ -45,4 +46,17 @@ $query = $_SERVER['QUERY_STRING'];
 
 </body>
 
+<script type="text/javascript">
+    $('#basketBtn').click(function() {
+        var itemID = $('.item-id').val();
+        $.ajax({
+            type: "POST",
+            url: "api/add-to-basket.php",
+            data: { id: itemID}
+        }).done(function( value ) {
+        });
+
+
+    });
+</script>
 </html>

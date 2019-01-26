@@ -32,17 +32,11 @@ class Functions
 
     }
 
-    public function createAdmin($firstName, $lastName, $email, $password)
+    public function createCustomer($firstName, $lastName, $email, $password, $websiteID)
     {
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $websiteID = md5(uniqid($email, true));
 
-        $query = $this->conn->prepare("INSERT INTO websites(WebsiteID, OwnerEmail, DomainName) VALUES(?, ?, null)");
-        $query->bind_param("ss", $websiteID, $email);
-        $query->execute();
-        $query->close();
-
-        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin) VALUES(?, ?, ?, ?, ?, 1)");
+        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin) VALUES(?, ?, ?, ?, ?, 0)");
         $query->bind_param("sssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID);
         $result = $query->execute();
         $query->close();
@@ -50,17 +44,16 @@ class Functions
         return $result;
     }
 
-    public function checkPassword($email, $password)
+    public function checkPassword($email, $password, $websiteID)
     {
-        $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ?");
-        $query->bind_param('s', $email);
+        $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $email, $websiteID);
         $query->execute();
 
         $user = $query->get_result()->fetch_assoc();
 
         $query->close();
 
-        var_dump(password_verify($password, $user["EncryptedPassword"]));
         if (password_verify($password, $user["EncryptedPassword"])) {
             return $user;
         } else {
@@ -137,6 +130,26 @@ class Functions
         $query->close();
 
         return $result;
+    }
+
+    public function addToBasket($websiteID, $userEmail, $productID, $quantity){
+
+        $query = $this->conn->prepare("SELECT COUNT(*) As count FROM cart WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
+        $query->bind_param("sss", $websiteID, $userEmail, $productID);
+        $query->execute();
+
+        $result = $query->get_result()->fetch_assoc();
+        $query->close();
+
+        if($result["count"] > 0){
+
+        } else {
+            $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?)");
+            $query->bind_param("ssss", $websiteID, $userEmail, $productID, $quantity);
+            $query->execute();
+            $query->close();
+        }
+
     }
 }
 
