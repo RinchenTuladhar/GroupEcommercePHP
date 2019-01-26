@@ -32,7 +32,7 @@ $query = $_SERVER['QUERY_STRING'];
                 </div>
                 <div class="col-md-7">
                     <h2>Price</h2>
-                    <p>£<?php echo $item["Price"]; ?></p>
+                    <p>£<span class="item-price"><?php echo $item["Price"]; ?></span></p>
                     <h2>Description</h2>
                     <p><?php echo $item["Description"]; ?></p>
                     <input type="hidden" class="item-id" value="<?php echo $item['ProductID']?>">
@@ -49,12 +49,12 @@ $query = $_SERVER['QUERY_STRING'];
 <script type="text/javascript">
     $('#basketBtn').click(function() {
         var itemID = $('.item-id').val();
-        var email = $('.user-email').val();
+        var price = parseFloat($('.item-price').text());
 
         $.ajax({
             type: "POST",
             url: "api/add-to-basket.php",
-            data: { id: itemID}
+            data: { id: itemID, price: price}
         }).done(function( value ) {
             console.log(value);
         });

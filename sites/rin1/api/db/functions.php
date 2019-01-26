@@ -142,7 +142,9 @@ class Functions
         $query->close();
 
         if($result["count"] > 0){
-
+            $query = $this->conn->prepare("UPDATE cart SET Quantity = Quantity + ? WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
+            $query->bind_param("ssss", $quantity, $websiteID, $userEmail, $productID);
+            $query->execute();
         } else {
             $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?)");
             $query->bind_param("ssss", $websiteID, $userEmail, $productID, $quantity);
