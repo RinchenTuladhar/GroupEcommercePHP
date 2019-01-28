@@ -24,31 +24,27 @@ $query = $_SERVER['QUERY_STRING'];
             <div class="col-md-12 row">
                 <div class=" col-md-8">
                     <?php
-                    foreach($_SESSION["BasketItems"] as $item){
-                     ?>
+                    $basketItems = $db->getBasket($_SESSION['customer']['email'], $_SESSION["WebsiteDetails"]["WebsiteID"]);
+                    while($row = $basketItems->fetch_assoc()){
+                        $item = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $row["ProductID"]);
+                        ?>
                     <div class="item-row">
                         <div class="row">
                             <div class="col-md-2">
-                                <img src="img/items/<?php echo $item->id ?>.jpg">
+                                <img src="img/items/<?php echo $row["ProductID"]; ?>.jpg">
                             </div>
                             <div class="col-md-5">
-                                <p><?php echo $item->name; ?></p>
+                                <p><?php echo($item["Name"]); ?></p>
                             </div>
                             <div class="col-md-2">
-                                <select class="form-control">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                                <input type="number" class="form-control" value="<?php echo $row["Quantity"]; ?>">
                             </div>
                             <div class="col-md-3">
-                                <?php echo $item->price ?>
+                                £<?php echo $item["Price"]; ?>
                             </div>
                         </div>
                     </div>
-                    <?php }?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-4">
                     <h2>Total</h2>

@@ -121,27 +121,32 @@ class Functions
         return $result;
     }
 
-    public function getItemInformation($websiteID, $itemID){
+    public function getItemInformation($websiteID, $itemID)
+    {
         $query = $this->conn->prepare("select * from products WHERE ProductID = ?");
         $query->bind_param("s", $itemID);
         $query->execute();
-        $result = $query->get_result();
+        $result = $query->get_result()->fetch_assoc();
 
         $query->close();
 
         return $result;
     }
 
-    public function addToBasket($websiteID, $userEmail, $productID, $quantity){
-        $query = $this->conn->prepare("SELECT COUNT(*) FROM cart WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ? AND Quantity = ?");
-        $query->bind_param("ssss", $websiteID, $userEmail, $productID, $quantity);
+    public function addToBasket($websiteID, $userEmail, $productID, $quantity)
+    {
+
+        $query = $this->conn->prepare("SELECT COUNT(*) As count FROM cart WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
+        $query->bind_param("sss", $websiteID, $userEmail, $productID);
         $query->execute();
 
         $result = $query->get_result()->fetch_assoc();
         $query->close();
 
-        if($result >= 0){
-
+        if ($result["count"] > 0) {
+            $query = $this->conn->prepare("UPDATE cart SET Quantity = Quantity + ? WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
+            $query->bind_param("ssss", $quantity, $websiteID, $userEmail, $productID);
+            $query->execute();
         } else {
             $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?)");
             $query->bind_param("ssss", $websiteID, $userEmail, $productID, $quantity);
@@ -149,6 +154,19 @@ class Functions
             $query->close();
         }
 
+    }
+
+    public function getBasket($userEmail, $websiteID)
+    {
+        $query = $this->conn->prepare("SELECT * FROM cart WHERE WebsiteID = ? AND UserEmail = ?");
+        $query->bind_param("ss", $websiteID, $userEmail);
+        $query->execute();
+
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
     }
 }
 

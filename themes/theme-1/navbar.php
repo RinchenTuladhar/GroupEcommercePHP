@@ -48,9 +48,8 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
                 <li class="nav-item">
                     <a class="nav-link" href="basket.php"><i class="fa fa-shopping-cart"></i>
                         £<span id="basket-price"><?php
-
                             if (isset($_SESSION["TotalPrice"])) {
-                                echo $_SESSION["TotalPrice"];
+                                echo number_format((float)$_SESSION["TotalPrice"], 2, '.', '');
                             } else {
                                 echo "0.00";
                             } ?></span></a>

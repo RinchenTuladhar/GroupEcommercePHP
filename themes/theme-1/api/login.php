@@ -13,7 +13,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 
     if ($user != false) {
         $_SESSION['store_loggedin'] = true;
-        $_SESSION['customer']['email'] = $user["email"];
+        $_SESSION['customer']['email'] = $user["Email"];
         $_SESSION['customer']['FirstName'] = $user["FirstName"];
         $_SESSION["customer"]["LastName"] = $user["LastName"];
 

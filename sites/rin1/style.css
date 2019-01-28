@@ -232,3 +232,7 @@ img {
     padding: 15px;
     margin-bottom: 10px;
 }
+
+.item-container .item-amount {
+    width: 200px;
+}

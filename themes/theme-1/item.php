@@ -17,8 +17,7 @@ $query = $_SERVER['QUERY_STRING'];
 <div class="home-page item-main">
     <?php
     include 'navbar.php';
-    $itemArray = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $query);
-    $item = $itemArray->fetch_assoc();
+    $item = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $query);
     ?>
     <div class="main">
         <div class="item-container container">
@@ -32,10 +31,11 @@ $query = $_SERVER['QUERY_STRING'];
                 </div>
                 <div class="col-md-7">
                     <h2>Price</h2>
-                    <p>£<?php echo $item["Price"]; ?></p>
+                    <p>£<span class="item-price"><?php echo $item["Price"]; ?></span></p>
                     <h2>Description</h2>
                     <p><?php echo $item["Description"]; ?></p>
                     <input type="hidden" class="item-id" value="<?php echo $item['ProductID']?>">
+                    <input type="number" class="form-control item-amount" value="1" id="item-amount"> <br>
                     <input type="button" id="basketBtn" class="btn btn-default" value="Add To Basket">
                 </div>
             </div>
@@ -49,11 +49,15 @@ $query = $_SERVER['QUERY_STRING'];
 <script type="text/javascript">
     $('#basketBtn').click(function() {
         var itemID = $('.item-id').val();
+        var price = parseFloat($('.item-price').text());
+        var quantity = $('#item-amount').val();
+
         $.ajax({
             type: "POST",
             url: "api/add-to-basket.php",
-            data: { id: itemID}
+            data: { id: itemID, price: price, quantity: quantity}
         }).done(function( value ) {
+            $('#basket-price').text(value);
         });
 
 
