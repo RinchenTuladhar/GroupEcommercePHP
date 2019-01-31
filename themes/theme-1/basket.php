@@ -5,6 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $query = $_SERVER['QUERY_STRING'];
 
+$totalPrice = 0;
 ?>
 
 <html>
@@ -27,6 +28,7 @@ $query = $_SERVER['QUERY_STRING'];
                     $basketItems = $db->getBasket($_SESSION['customer']['email'], $_SESSION["WebsiteDetails"]["WebsiteID"]);
                     while($row = $basketItems->fetch_assoc()){
                         $item = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $row["ProductID"]);
+                        $totalPrice = $totalPrice + $item["Price"] * $row["Quantity"];
                         ?>
                     <div class="item-row">
                         <div class="row">
@@ -48,6 +50,9 @@ $query = $_SERVER['QUERY_STRING'];
                 </div>
                 <div class="col-md-4">
                     <h2>Total</h2>
+                    <hr/>
+                    <p><strong>Sub-total: </strong>£<?php echo $totalPrice?></p>
+                    <a class="btn btn-success" value="Checkout" href="api/checkout.php">Checkout</a>
                 </div>
             </div>
         </div>

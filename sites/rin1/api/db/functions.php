@@ -168,6 +168,29 @@ class Functions
 
         return $result;
     }
+
+    public function checkOut($orderID, $productID, $quantity, $email){
+        $time = time();
+
+        $query = $this->conn->prepare("INSERT INTO orderdetails VALUES(?, ?, ?)");
+        $query->bind_param("sss", $orderID, $productID, $quantity);
+        $query->execute();
+
+        $query->close();
+
+        $query = $this->conn->prepare("INSERT INTO orders VALUES(?, ?, ?)");
+        $query->bind_param("sss", $orderID, $email, $time);
+        $query->execute();
+        $query->close();
+
+    }
+
+    public function clearBasket($websiteID, $userEmail){
+        $query = $this->conn->prepare("DELETE FROM cart WHERE WebsiteID = ? AND UserEmail = ?");
+        $query->bind_param("ss", $websiteID, $userEmail);
+        $query->execute();
+        $query->close();
+    }
 }
 
 ?>
