@@ -124,7 +124,7 @@ class Functions
     }
     
     public function setNavigationMode($websiteID, $title, $mode){
-        $newMode;
+        $newMode = null;
         if($mode == "0"){
             $newMode = 1;
         } else {
@@ -153,6 +153,50 @@ class Functions
         $query->execute();
         $result = $query->get_result();
         $query->close();
+
+        return $result;
+    }
+
+    public function getProductInfo($productID){
+    $query = $this->conn->prepare("SELECT * FROM products WHERE ProductID = ?");
+        $query->bind_param("s", $productID);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        return $result;
+    }
+
+
+    /**************** DATA CHART ************/
+
+    public function getMostSold($timeBefore, $websiteID){
+        $timestampBefore = strtotime("-$timeBefore day");
+
+
+        $query = $this->conn->prepare("SELECT OrderID FROM orders WHERE WebsiteID = ? AND Timestamp >= ?");
+        $query->bind_param("ss", $websiteID, $timestampBefore);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        $i = 1;
+
+        $orderQuery = "SELECT ProductID, SUM(Quantity) As Quantity FROM orderdetails WHERE OrderID = ";
+        while($orders = $result->fetch_assoc()){
+            $orderQuery .= "'" . $orders["OrderID"] . "'";
+
+            if($i < $result->num_rows){
+                $orderQuery .= " OR ";
+            }
+            $i++;
+        }
+
+        $orderQuery .= " GROUP BY ProductID ORDER BY SUM(Quantity) DESC LIMIT 3";
+
+        $query = $this->conn->prepare($orderQuery);
+        $query->execute();
+        $result = $query->get_result();
 
         return $result;
     }
