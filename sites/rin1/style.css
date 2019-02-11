@@ -236,3 +236,20 @@ img {
 .item-container .item-amount {
     width: 200px;
 }
+
+/* * * * * *
+*
+*  MY ORDERS PAGE
+*
+ * * * * */
+.order-wrapper .order-header {
+    background: #dddddd;
+    padding: 10px 10px 0px 10px;
+    border-radius: 5px;
+}
+
+.order-wrapper {
+    margin-top: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}

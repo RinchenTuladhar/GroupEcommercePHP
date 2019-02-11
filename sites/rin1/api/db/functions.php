@@ -169,7 +169,7 @@ class Functions
         return $result;
     }
 
-    public function checkOut($orderID, $productID, $quantity, $email){
+    public function checkOut($orderID, $productID, $quantity, $email, $websiteID){
         $time = time();
 
         $query = $this->conn->prepare("INSERT INTO orderdetails VALUES(?, ?, ?)");
@@ -178,8 +178,8 @@ class Functions
 
         $query->close();
 
-        $query = $this->conn->prepare("INSERT INTO orders VALUES(?, ?, ?)");
-        $query->bind_param("sss", $orderID, $email, $time);
+        $query = $this->conn->prepare("INSERT INTO orders VALUES(?, ?, ?, ?)");
+        $query->bind_param("ssss", $orderID, $email, $time, $websiteID);
         $query->execute();
         $query->close();
 
@@ -190,6 +190,28 @@ class Functions
         $query->bind_param("ss", $websiteID, $userEmail);
         $query->execute();
         $query->close();
+    }
+
+    public function getMyOrders($email, $websiteID){
+        $query = $this->conn->prepare("SELECT * FROM orders WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $email, $websiteID);
+        $query->execute();
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
+    }
+
+    public function getOrderDetails($orderID){
+        $query = $this->conn->prepare("SELECT ProductID, Quantity FROM orderdetails WHERE OrderID = ?");
+        $query->bind_param("s", $orderID);
+        $query->execute();
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
     }
 }
 

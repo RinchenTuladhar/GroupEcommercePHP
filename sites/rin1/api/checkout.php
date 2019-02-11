@@ -11,7 +11,7 @@ $basketItems = $db->getBasket($_SESSION['customer']['email'], $_SESSION["Website
 $orderID = uniqid();
 
 while($item = $basketItems->fetch_assoc()){
-    $db->checkOut($orderID, $item["ProductID"], $item["Quantity"], $_SESSION['customer']['email']);
+    $db->checkOut($orderID, $item["ProductID"], $item["Quantity"], $_SESSION['customer']['email'], $_SESSION["WebsiteDetails"]["WebsiteID"]);
 }
 
 $db->clearBasket($_SESSION["WebsiteDetails"]["WebsiteID"], $_SESSION['customer']['email']);
