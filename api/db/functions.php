@@ -230,11 +230,12 @@ class Functions
     {
         $timestampBefore = strtotime("-$timeBefore day");
 
-        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity, products.Price * Quantity As Price
+        echo $timestampBefore;
+        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  (products.Price * SUM(orderdetails.Quantity)) As Price
         FROM orderdetails
         INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
         INNER JOIN products ON orderdetails.ProductID = products.ProductID
-        WHERE orders.Timestamp > ? AND orders.WebsiteID = ? GROUP BY ProductID");
+        WHERE orders.Timestamp >= ? AND orders.WebsiteID = ? GROUP BY ProductID");
         $query->bind_param("ss", $timestampBefore, $websiteID);
         $query->execute();
         $result  = $query->get_result();
