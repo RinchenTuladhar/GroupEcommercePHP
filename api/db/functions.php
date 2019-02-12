@@ -200,6 +200,24 @@ class Functions
 
         return $result;
     }
+
+    public function getTotalSales($timeBefore, $websiteID){
+        $timestampBefore = strtotime("-$timeBefore day");
+
+        $query = $this->conn->prepare("SELECT Count(OrderID) As AmountOfOrders FROM orders WHERE Timestamp >= ? AND WebsiteID = ?");
+        $query->bind_param("ss", $timestampBefore, $websiteID);
+        $query->execute();
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
+    }
+
+    public function getTotalRevenue($timeBefore, $websiteID){
+        $timestampBefore = strtotime("-$timeBefore day");
+
+    }
 }
 
 ?>

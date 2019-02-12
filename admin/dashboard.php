@@ -74,68 +74,115 @@ if ($_SESSION['loggedin'] == null) {
                 </div>
             </form>
         </div>
-    <?php } ?>
+    <?php }
 
-    <h4>Top 3 Products in the last 30 days</h4>
-    <?php
-    $mostSold = $db->getMostSold(30, $_SESSION["WebsiteID"]);
+    $mostSold7 = $db->getMostSold(7, $_SESSION["WebsiteID"]);
 
+    $amountOfSales = ($db->getTotalSales(7, $_SESSION["WebsiteID"]));
     ?>
-    <div class="col-md-4">
-        <div class="ct-chart ct-golden-section">
-            <script type="text/javascript">
-                var data = {
-                    labels: [
+
+    <div class="dashboard-statistics">
+        <h2>This Week's Stats</h2>
+        <div class="dashboard-week-stats row">
+            <div class="col-md-3">
+                <h5>Orders Made</h5>
+                <span id="stat-week-sales"><p>
                         <?php
+                        $i = 0;
+                        while ($row = $amountOfSales->fetch_assoc()){
+                            if ($i == 0){
+                                ?>
+                    <p>
+                        <?php echo $row["AmountOfOrders"]; ?></p>
+                    <?php }
+                    $i++;
+                    } ?>
 
-                        while ($row = $mostSold->fetch_assoc()) {
-                            echo "'" . $db->getProductInfo($row["ProductID"])->fetch_assoc()["Name"] . "' , ";
-                        }
-                        
-                        mysqli_data_seek($mostSold,0);
-                        ?>
-                    ],
-                    series: [
-                        <?php
-                        while ($row = $mostSold->fetch_assoc()) {
-                            echo($row["Quantity"] . ", ");
-                        }
-                        ?>
-                    ],
-                };
-
-                var sum = function(a, b) { return a + b };
-
-
-                var options = {
-                    labelInterpolationFnc: function(value) {
-                        return Math.round(value / data.series.reduce(sum) * 100) + '%';
-                    }
-                };
-
-                var responsiveOptions = [
-                    ['screen and (min-width: 640px)', {
-                        chartPadding: 30,
-                        labelOffset: 100,
-                        labelDirection: 'explode',
-                        labelInterpolationFnc: function (value) {
-                            return value;
-                        }
-                    }],
-                    ['screen and (min-width: 1024px)', {
-                        labelOffset: 80,
-                        chartPadding: 20
-                    }]
-                ];
-
-                new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
-            </script>
-            <?php
-            while ($test = $mostSold->fetch_assoc()) {
-                echo($test["Quantity"] . ", ");
-            }
-            ?>
+                    </p></span>
+            </div>
+            <div class="col-md-4">
+                <h5>Revenue</h5>
+                <span id="stat-week-sales"><p>[£150.00]</p></span>
+            </div>
+            <div class="col-md-5">
+                <h5>Most Popular Item</h5>
+                <span id="stat-week-sales">
+                    <?php
+                    $i = 0;
+                    while ($row = $mostSold7->fetch_assoc()) {
+                        if ($i == 0) {
+                            ?>
+                            <p><?php echo ($db->getProductInfo($row["ProductID"])->fetch_assoc())["Name"]; ?></p>
+                        <?php }
+                        $i++;
+                    } ?>
+                </span>
+            </div>
         </div>
+        <h4>Top 3 Products in the last 30 days</h4>
+        <?php
+        $mostSold30 = $db->getMostSold(30, $_SESSION["WebsiteID"]);
+
+        ?>
+        <div class="col-md-4">
+            <div class="ct-chart ct-golden-section">
+                <script type="text/javascript">
+                    var data = {
+                        labels: [
+                            <?php
+
+                            while ($row = $mostSold30->fetch_assoc()) {
+                                echo "'" . $db->getProductInfo($row["ProductID"])->fetch_assoc()["Name"] . "' , ";
+                            }
+
+                            mysqli_data_seek($mostSold30, 0);
+                            ?>
+                        ],
+                        series: [
+                            <?php
+                            while ($row = $mostSold30->fetch_assoc()) {
+                                echo($row["Quantity"] . ", ");
+                            }
+                            ?>
+                        ],
+                    };
+
+                    var sum = function (a, b) {
+                        return a + b
+                    };
+
+
+                    var options = {
+                        labelInterpolationFnc: function (value) {
+                            return Math.round(value / data.series.reduce(sum) * 100) + '%';
+                        }
+                    };
+
+                    var responsiveOptions = [
+                        ['screen and (min-width: 640px)', {
+                            chartPadding: 30,
+                            labelOffset: 100,
+                            labelDirection: 'explode',
+                            labelInterpolationFnc: function (value) {
+                                return value;
+                            }
+                        }],
+                        ['screen and (min-width: 1024px)', {
+                            labelOffset: 80,
+                            chartPadding: 20
+                        }]
+                    ];
+
+                    new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+                </script>
+                <?php
+                while ($test = $mostSold30->fetch_assoc()) {
+                    echo($test["Quantity"] . ", ");
+                }
+                ?>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>

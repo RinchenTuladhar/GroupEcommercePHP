@@ -109,6 +109,12 @@ body {
     background: #0e4cc7ad;
     padding: 10px 10px 20px 10px;
     font-weight: 100; }
+.main .dashboard-week-stats h5 {
+  text-align: center; }
+.main .dashboard-week-stats #stat-week-sales p {
+  color: green;
+  font-size: 30px;
+  text-align: center; }
 
 /* * * * * *
 *
