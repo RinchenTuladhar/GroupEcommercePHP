@@ -76,35 +76,46 @@ if ($_SESSION['loggedin'] == null) {
         </div>
     <?php }
 
+    // Dashboard Statistics
     $mostSold7 = $db->getMostSold(7, $_SESSION["WebsiteID"]);
-
     $amountOfSales = ($db->getTotalSales(7, $_SESSION["WebsiteID"]));
+    $revenue = $db->getTotalRevenue(7, $_SESSION["WebsiteID"]);
+
     ?>
 
     <div class="dashboard-statistics">
-        <h2>This Week's Stats</h2>
+        <h2 class="text-center">This Week's Stats</h2>
+        <hr/>
         <div class="dashboard-week-stats row">
-            <div class="col-md-3">
+            <div class="col-md-3 stat-box">
                 <h5>Orders Made</h5>
                 <span id="stat-week-sales"><p>
                         <?php
                         $i = 0;
                         while ($row = $amountOfSales->fetch_assoc()){
-                            if ($i == 0){
-                                ?>
+                        if ($i == 0){
+                        ?>
                     <p>
                         <?php echo $row["AmountOfOrders"]; ?></p>
                     <?php }
                     $i++;
                     } ?>
-
                     </p></span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 stat-box">
                 <h5>Revenue</h5>
-                <span id="stat-week-sales"><p>[£150.00]</p></span>
+                <span id="stat-week-sales"><p>
+                        £<?php
+                        $total = 0;
+                        while ($row = $revenue->fetch_assoc()) {
+                            $total = $total + $row["Price"];
+                        }
+
+                        echo $total;
+                        ?>
+                    </p></span>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 stat-box">
                 <h5>Most Popular Item</h5>
                 <span id="stat-week-sales">
                     <?php
@@ -119,6 +130,7 @@ if ($_SESSION['loggedin'] == null) {
                 </span>
             </div>
         </div>
+        </hr>
         <h4>Top 3 Products in the last 30 days</h4>
         <?php
         $mostSold30 = $db->getMostSold(30, $_SESSION["WebsiteID"]);

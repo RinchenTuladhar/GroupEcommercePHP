@@ -31,14 +31,15 @@ class Functions
         $query->close();
 
         $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin) VALUES(?, ?, ?, ?, ?, 1)");
-        $query->bind_param("sssss", $email, $firstName, $lastName,$encryptedPassword, $websiteID);
+        $query->bind_param("sssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID);
         $result = $query->execute();
         $query->close();
 
         return $result;
     }
 
-    public function checkPassword($email, $password){
+    public function checkPassword($email, $password)
+    {
         $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ?");
 
         $query->bind_param('s', $email);
@@ -48,14 +49,15 @@ class Functions
 
         $query->close();
 
-        if(password_verify($password, $user["EncryptedPassword"])) {
+        if (password_verify($password, $user["EncryptedPassword"])) {
             return $user;
         } else {
             return null;
         }
     }
 
-    public function hasDomainName($websiteID){ // Checks to see if user has named their domain
+    public function hasDomainName($websiteID)
+    { // Checks to see if user has named their domain
         $query = $this->conn->prepare("SELECT * FROM websites WHERE WebsiteID = ?");
         $query->bind_param('s', $websiteID);
         $query->execute();
@@ -67,7 +69,8 @@ class Functions
         return $hasDomain;
     }
 
-    public function createDomainName($domain, $websiteID){
+    public function createDomainName($domain, $websiteID)
+    {
         $query = $this->conn->prepare("SELECT * FROM websites WHERE DomainName = ?");
         $query->bind_param('s', $domain);
         $query->execute();
@@ -76,7 +79,7 @@ class Functions
 
         $query->close();
 
-        if($oldDomain == null){
+        if ($oldDomain == null) {
             $query = $this->conn->prepare("UPDATE websites SET DomainName = ? WHERE WebsiteID = ?");
             $query->bind_param('ss', $domain, $websiteID);
             $query->execute();
@@ -86,17 +89,18 @@ class Functions
         return $query;
     }
 
-    public function createCategory($category, $websiteID){
-        $str_arr = explode (",", $category);
+    public function createCategory($category, $websiteID)
+    {
+        $str_arr = explode(",", $category);
         $sqlStatement = "INSERT INTO categories(Title, WebsiteID) VALUES ";
 
-        for($i = 0; $i < sizeof($str_arr); $i++){
-            if($i == (sizeof($str_arr)-1)){
+        for ($i = 0; $i < sizeof($str_arr); $i++) {
+            if ($i == (sizeof($str_arr) - 1)) {
 
 
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID ."');";
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "');";
             } else {
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID ."') ,";
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "') ,";
             }
         }
 
@@ -108,13 +112,15 @@ class Functions
         return $query;
     }
 
-    public function getCategories($websiteID){
+    public function getCategories($websiteID)
+    {
         $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID'");
 
         return $query;
     }
 
-    public function setWebsiteTheme($websiteID, $theme){
+    public function setWebsiteTheme($websiteID, $theme)
+    {
         $query = $this->conn->prepare("UPDATE websites SET Theme = ? WHERE WebsiteID = ?");
         $query->bind_param('ss', $theme, $websiteID);
         $query->execute();
@@ -122,10 +128,11 @@ class Functions
 
         return $query;
     }
-    
-    public function setNavigationMode($websiteID, $title, $mode){
+
+    public function setNavigationMode($websiteID, $title, $mode)
+    {
         $newMode = null;
-        if($mode == "0"){
+        if ($mode == "0") {
             $newMode = 1;
         } else {
             $newMode = 0;
@@ -137,7 +144,8 @@ class Functions
         return $result;
     }
 
-    public function createProduct($name, $description, $price, $stock, $website_id, $category, $uniqueid){
+    public function createProduct($name, $description, $price, $stock, $website_id, $category, $uniqueid)
+    {
 
         $query = $this->conn->prepare("INSERT INTO products(ProductID, Name, Description, Price, Stock, WebsiteID, Category) VALUES(?, ?, ?, ?, ?, ?, ?)");
         $query->bind_param('ssssiss', $uniqueid, $name, $description, $price, $stock, $website_id, $category);
@@ -147,7 +155,8 @@ class Functions
         return $result;
     }
 
-    public function displayAllProducts($websiteID){
+    public function displayAllProducts($websiteID)
+    {
         $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ?");
         $query->bind_param("s", $websiteID);
         $query->execute();
@@ -157,8 +166,9 @@ class Functions
         return $result;
     }
 
-    public function getProductInfo($productID){
-    $query = $this->conn->prepare("SELECT * FROM products WHERE ProductID = ?");
+    public function getProductInfo($productID)
+    {
+        $query = $this->conn->prepare("SELECT * FROM products WHERE ProductID = ?");
         $query->bind_param("s", $productID);
         $query->execute();
         $result = $query->get_result();
@@ -170,7 +180,8 @@ class Functions
 
     /**************** DATA CHART ************/
 
-    public function getMostSold($timeBefore, $websiteID){
+    public function getMostSold($timeBefore, $websiteID)
+    {
         $timestampBefore = strtotime("-$timeBefore day");
 
 
@@ -183,10 +194,10 @@ class Functions
         $i = 1;
 
         $orderQuery = "SELECT ProductID, SUM(Quantity) As Quantity FROM orderdetails WHERE OrderID = ";
-        while($orders = $result->fetch_assoc()){
+        while ($orders = $result->fetch_assoc()) {
             $orderQuery .= "'" . $orders["OrderID"] . "'";
 
-            if($i < $result->num_rows){
+            if ($i < $result->num_rows) {
                 $orderQuery .= " OR ";
             }
             $i++;
@@ -201,7 +212,8 @@ class Functions
         return $result;
     }
 
-    public function getTotalSales($timeBefore, $websiteID){
+    public function getTotalSales($timeBefore, $websiteID)
+    {
         $timestampBefore = strtotime("-$timeBefore day");
 
         $query = $this->conn->prepare("SELECT Count(OrderID) As AmountOfOrders FROM orders WHERE Timestamp >= ? AND WebsiteID = ?");
@@ -214,9 +226,21 @@ class Functions
         return $result;
     }
 
-    public function getTotalRevenue($timeBefore, $websiteID){
+    public function getTotalRevenue($timeBefore, $websiteID)
+    {
         $timestampBefore = strtotime("-$timeBefore day");
 
+        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity, products.Price * Quantity As Price
+        FROM orderdetails
+        INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
+        INNER JOIN products ON orderdetails.ProductID = products.ProductID
+        WHERE orders.Timestamp > ? AND orders.WebsiteID = ? GROUP BY ProductID");
+        $query->bind_param("ss", $timestampBefore, $websiteID);
+        $query->execute();
+        $result  = $query->get_result();
+        $query->close();
+
+        return $result;
     }
 }
 

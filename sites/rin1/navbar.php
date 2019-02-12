@@ -67,6 +67,7 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Your Account</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="my-orders.php">Orders</a>
+                            <a class="dropdown-item" href="my-account.php">Settings</a>
                             <a class="dropdown-item" href="api/logout.php">Sign out</a>
                         </div>
                     </li>
