@@ -44,6 +44,15 @@ class Functions
         return $result;
     }
 
+    public function updateCustomer($firstName, $lastName, $oldEmail, $email, $websiteID){
+        $query = $this->conn->prepare("UPDATE users SET FirstName = ?, LastName = ?, Email = ? WHERE Email = ? AND Admin = 0 AND WebsiteID = ?");
+        $query->bind_param("sssss", $firstName, $lastName, $email, $oldEmail, $websiteID);
+        $result = $query->execute();
+        $query->close();
+
+        return $result;
+    }
+
     public function checkPassword($email, $password, $websiteID)
     {
         $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ? AND WebsiteID = ?");

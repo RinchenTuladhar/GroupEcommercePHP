@@ -87,9 +87,10 @@ if ($_SESSION['loggedin'] == null) {
         <h2 class="text-center">This Week's Stats</h2>
         <hr/>
         <div class="dashboard-week-stats row">
-            <div class="col-md-3 stat-box">
-                <h5>Orders Made</h5>
-                <span id="stat-week-sales"><p>
+            <div class="col-md-12 row">
+                <div class="col-md-4 stat-box">
+                    <h5>Orders Made</h5>
+                    <span id="stat-week-sales"><p>
                         <?php
                         $i = 0;
                         while ($row = $amountOfSales->fetch_assoc()){
@@ -97,27 +98,27 @@ if ($_SESSION['loggedin'] == null) {
                         ?>
                     <p>
                         <?php echo $row["AmountOfOrders"]; ?></p>
-                    <?php }
-                    $i++;
-                    } ?>
-                    </p></span>
-            </div>
-            <div class="col-md-4 stat-box">
-                <h5>Revenue</h5>
-                <span id="stat-week-sales"><p>
+                        <?php }
+                        $i++;
+                        } ?>
+                        </p></span>
+                </div>
+                <div class="col-md-4 stat-box">
+                    <h5>Revenue</h5>
+                    <span id="stat-week-sales"><p>
                         £<?php
-                        $total = 0;
-                        while ($row = $revenue->fetch_assoc()) {
-                            $total = $total + $row["Price"];
-                        }
+                            $total = 0;
+                            while ($row = $revenue->fetch_assoc()) {
+                                $total = $total + $row["Price"];
+                            }
 
-                        echo $total;
-                        ?>
+                            echo $total;
+                            ?>
                     </p></span>
-            </div>
-            <div class="col-md-5 stat-box">
-                <h5>Most Popular Item</h5>
-                <span id="stat-week-sales">
+                </div>
+                <div class="col-md-4 stat-box">
+                    <h5>Most Popular Item</h5>
+                    <span id="stat-week-sales">
                     <?php
                     $i = 0;
                     while ($row = $mostSold7->fetch_assoc()) {
@@ -128,9 +129,10 @@ if ($_SESSION['loggedin'] == null) {
                         $i++;
                     } ?>
                 </span>
+                </div>
             </div>
+            <hr/>
         </div>
-        </hr>
         <h4>Top 3 Products in the last 30 days</h4>
         <?php
         $mostSold30 = $db->getMostSold(30, $_SESSION["WebsiteID"]);
