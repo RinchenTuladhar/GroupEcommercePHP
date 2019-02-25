@@ -57,6 +57,10 @@ if ($_SESSION['loggedin'] == null) {
                 ?>
             </ul>
 			</div>
+            <div class="col-md-6">
+
+
+            </div>
 		</div>
 
 	</div>

@@ -30,9 +30,14 @@ include '../api/db-access.php';
             <input type="text" id="product_name" name="product_name" class="form-control" required>
             <br>
             <label for="product_description">Description</label>
-            <textarea type="text" id="product_description" name="product_description" class="form-control" required></textarea>
+            <textarea type="text" id="product_description" name="product_description" class="form-control"
+                      required></textarea>
             <br>
-            <label for="product_price">Price</label>
+            <label for="product_original_price">Original Cost of Product</label>
+            <input type="number" id="product_original_price" name="product_original_price" min="0.01" step="0.01"
+                   class="form-control" required>
+            <br>
+            <label for="product_price">Price to Sell Product</label>
             <input type="number" id="product_price" name="product_price" min="0.01" step="0.01"
                    class="form-control" required>
             <br>
@@ -47,7 +52,7 @@ include '../api/db-access.php';
                     while ($row = $categoryList->fetch_assoc()) {
                         ?>
                         <option value="<?php echo $row['Title']; ?>">
-                        <?php echo $row["Title"]; ?>
+                            <?php echo $row["Title"]; ?>
                         </option>
                         <?php
                     }
@@ -56,7 +61,7 @@ include '../api/db-access.php';
             </select>
             <br>
             <label for="image">Product Image</label> <br>
-            <input type="file" name="image" />
+            <input type="file" name="image"/>
             <br>
             <input type="hidden" name="website_name" value="<?php echo $_SESSION["hasDomain"]["DomainName"]; ?>">
             <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">

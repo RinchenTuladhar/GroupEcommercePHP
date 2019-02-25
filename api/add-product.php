@@ -8,6 +8,7 @@ $db = new Functions();
 if(isset($_POST["product_name"]) && isset($_POST["product_description"]) && isset($_POST["product_price"]) && isset($_POST["product_stock"])){
     $product_name = $_POST["product_name"];
     $product_description = $_POST["product_description"];
+    $product_original_price = $_POST["product_original_price"];
     $product_price = $_POST["product_price"];
     $product_stock = $_POST["product_stock"];
     $website_id = $_POST["website_id"];
@@ -15,7 +16,7 @@ if(isset($_POST["product_name"]) && isset($_POST["product_description"]) && isse
     $website_name = $_POST["website_name"];
 
     $uniqueid = uniqid();
-    $product = $db->createProduct($product_name, $product_description, $product_price, $product_stock, $website_id, $category, $uniqueid);
+    $product = $db->createProduct($product_name, $product_description, $product_original_price, $product_price, $product_stock, $website_id, $category, $uniqueid);
 
     if($product != false){
         $file_tmp = $_FILES['image']['tmp_name'];

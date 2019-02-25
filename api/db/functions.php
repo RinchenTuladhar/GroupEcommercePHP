@@ -92,18 +92,17 @@ class Functions
     public function createCategory($category, $websiteID)
     {
         $str_arr = explode(",", $category);
-        $sqlStatement = "INSERT INTO categories(Title, WebsiteID) VALUES ";
+        $sqlStatement = "INSERT INTO categories(Title, WebsiteID, SubCategory) VALUES ";
 
         for ($i = 0; $i < sizeof($str_arr); $i++) {
             if ($i == (sizeof($str_arr) - 1)) {
-
-
                 $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "');";
             } else {
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "') ,";
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "');";
             }
         }
 
+        echo $sqlStatement;
         $query = $this->conn->prepare($sqlStatement);
         $query->execute();
 
@@ -112,11 +111,25 @@ class Functions
         return $query;
     }
 
+    public function createSubCategory($category, $websiteID, $subCategory){
+        $query = $this->conn->prepare("INSERT INTO subcategory(Category, WebsiteID, SubCategory) VALUES(?, ?, ?)");
+        $query->bind_param('sss', $category, $websiteID, $subCategory);
+
+        $result = $query->execute();
+        $query->close();
+        return $result;
+    }
+
     public function getCategories($websiteID)
     {
         $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID'");
-
         return $query;
+    }
+
+    public function getSubCategories($category, $websiteID){
+        $query = $this->conn->query("SELECT * FROM subcategory WHERE Category = '$category' AND WebsiteID = '$websiteID'");
+        return $query;
+
     }
 
     public function setWebsiteTheme($websiteID, $theme)
@@ -144,11 +157,11 @@ class Functions
         return $result;
     }
 
-    public function createProduct($name, $description, $price, $stock, $website_id, $category, $uniqueid)
+    public function createProduct($name, $description, $originalPrice, $price, $stock, $website_id, $category, $uniqueid)
     {
 
-        $query = $this->conn->prepare("INSERT INTO products(ProductID, Name, Description, Price, Stock, WebsiteID, Category) VALUES(?, ?, ?, ?, ?, ?, ?)");
-        $query->bind_param('ssssiss', $uniqueid, $name, $description, $price, $stock, $website_id, $category);
+        $query = $this->conn->prepare("INSERT INTO products(ProductID, Name, Description, OriginalPrice, Price, Stock, WebsiteID, Category) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+        $query->bind_param('sssssiss', $uniqueid, $name, $description, $originalPrice, $price, $stock, $website_id, $category);
 
         $result = $query->execute();
         $query->close();
@@ -203,11 +216,13 @@ class Functions
             $i++;
         }
 
-        $orderQuery .= " GROUP BY ProductID ORDER BY SUM(Quantity) DESC LIMIT 3";
+        if($i > 1){
+            $orderQuery .= " GROUP BY ProductID ORDER BY SUM(Quantity) DESC LIMIT 3";
 
-        $query = $this->conn->prepare($orderQuery);
-        $query->execute();
-        $result = $query->get_result();
+            $query = $this->conn->prepare($orderQuery);
+            $query->execute();
+            $result = $query->get_result();
+        }
 
         return $result;
     }

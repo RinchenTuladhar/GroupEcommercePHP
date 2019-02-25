@@ -8,8 +8,11 @@ include '../api/db-access.php';
 if ($_SESSION['loggedin'] == null) {
     header("Location:../../login.php");
 }
-?>
 
+
+$categoryList = $db->getCategories($_SESSION["WebsiteID"]);
+
+?>
 <html>
 <head>
     <?php include '../api/scripts.php'; ?>
@@ -21,35 +24,81 @@ if ($_SESSION['loggedin'] == null) {
 <body>
 <?php include 'navbar-admin.php'; ?>
 <div class="main admin-main">
-    <h2>Add new categories</h2>
-    <div class="col-md-12">
-        <form action="../api/create-category.php" method="POST">
-            <p>Seperate each category by commas.</p>
-            <div class="col-md-6">
+    <div class="row col-md-12">
+        <div class="col-md-6">
+            <h2>Add new categories</h2>
+            <form action="../api/create-category.php" method="POST">
+                <p>Seperate each category by commas.</p>
                 <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies">
                 <br>
                 <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
                 <input type="submit" class="btn btn-success float-right" value="Submit">
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h2>Add Sub Categories</h2>
+            <form action="../api/create-sub-category.php" method="POST">
+                <p>Seperate each category by commas.</p>
+                <select class="form-control" name="category">
+                    <?php
+                    if ($categoryList->num_rows > 0) {
+                        while ($row = $categoryList->fetch_assoc()) {
+                            ?>
+                            <option><?php echo $row["Title"]; ?></option>
+                            <?php
+                        }
+                    }
+
+
+                    mysqli_data_seek($categoryList, 0);
+                    ?>
+                </select>
+                <br>
+                <input type="text" class="form-control" name="sub-category"
+                       placeholder="E.g for Accessories - Bags, Ties, Wallets">
+                <br>
+                <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
+                <input type="submit" class="btn btn-success float-right" value="Submit">
+            </form>
+        </div>
     </div>
 
-    <h2>List of Categories</h2>
     <div class="col-md-6">
+        <h2>List of Categories</h2>
         <ul class="list-group">
             <?php
-            $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
             if ($categoryList->num_rows > 0) {
                 while ($row = $categoryList->fetch_assoc()) {
+                    $subCategories = $db->getSubCategories($row["Title"], $row["WebsiteID"]);
                     ?>
                     <li class="list-group-item">
                         <?php echo $row["Title"]; ?>
                         <span class="float-right">
                             <i class="fa fa-times"></i>
-                                </span>
+                        </span>
                     </li>
                     <?php
+
+                    if ($subCategories->num_rows > 0) {
+                        ?>
+                        <ul>
+                            <?php
+                            while ($subRow = $subCategories->fetch_assoc()) {
+                                ?>
+                                <li class="list-group-item">
+                                    <?php echo $subRow["SubCategory"]; ?>
+                                    <span class="float-right">
+                            <i class="fa fa-times"></i>
+                        </span>
+                                </li>
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                        <?php
+                    }
                 }
+
             }
             ?>
         </ul>
