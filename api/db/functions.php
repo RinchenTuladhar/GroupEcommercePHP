@@ -157,11 +157,10 @@ class Functions
         return $result;
     }
 
-    public function createProduct($name, $description, $originalPrice, $price, $stock, $website_id, $category, $uniqueid)
+    public function createProduct($name, $description, $originalPrice, $price, $stock, $website_id, $category, $sub_category, $uniqueid)
     {
-
-        $query = $this->conn->prepare("INSERT INTO products(ProductID, Name, Description, OriginalPrice, Price, Stock, WebsiteID, Category) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-        $query->bind_param('sssssiss', $uniqueid, $name, $description, $originalPrice, $price, $stock, $website_id, $category);
+        $query = $this->conn->prepare("INSERT INTO products(ProductID, Name, Description, OriginalPrice, Price, Stock, WebsiteID, Category, SubCategory) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $query->bind_param('sssssisss', $uniqueid, $name, $description, $originalPrice, $price, $stock, $website_id, $category, $sub_category);
 
         $result = $query->execute();
         $query->close();

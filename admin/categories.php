@@ -63,7 +63,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h2>List of Categories</h2>
         <ul class="list-group">
             <?php
@@ -88,7 +88,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                                 <li class="list-group-item">
                                     <?php echo $subRow["SubCategory"]; ?>
                                     <span class="float-right">
-                            <i class="fa fa-times"></i>
+                            <i c lass="fa fa-times"></i>
                         </span>
                                 </li>
                                 <?php

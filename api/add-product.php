@@ -13,10 +13,13 @@ if(isset($_POST["product_name"]) && isset($_POST["product_description"]) && isse
     $product_stock = $_POST["product_stock"];
     $website_id = $_POST["website_id"];
     $category = $_POST["category"];
+    $sub_category = $_POST["sub_category"];
     $website_name = $_POST["website_name"];
 
+    echo $category;
+
     $uniqueid = uniqid();
-    $product = $db->createProduct($product_name, $product_description, $product_original_price, $product_price, $product_stock, $website_id, $category, $uniqueid);
+    $product = $db->createProduct($product_name, $product_description, $product_original_price, $product_price, $product_stock, $website_id, $category, $sub_category, $uniqueid);
 
     if($product != false){
         $file_tmp = $_FILES['image']['tmp_name'];
