@@ -24,7 +24,6 @@ $query = $_SERVER['QUERY_STRING'];
             <h1><?php
                 echo $item["Name"];
                 ?></h1>
-
             <div class="row">
                 <div class="col-md-5">
                     <img class="item-image" src="img/items/<?php echo $item["ProductID"]; ?>.jpg">

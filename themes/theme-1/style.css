@@ -41,6 +41,10 @@ img {
     margin: 0px 15px;
 }
 
+.navigation-menu .dropdown:hover>.dropdown-menu{
+    display: block;
+}
+
 /* * * * * *
 *
 *  ADMIN NAVBAR

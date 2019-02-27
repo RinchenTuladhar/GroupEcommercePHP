@@ -118,10 +118,10 @@ class Functions
     }
 
 
-    public function getCategoryProducts($websiteID, $category)
+    public function getCategoryProducts($websiteID, $subcategory)
     {
-        $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ? AND Category = ?");
-        $query->bind_param('ss', $websiteID, $category);
+        $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ? AND SubCategory = ?");
+        $query->bind_param('ss', $websiteID, $subcategory);
         $query->execute();
         $result = $query->get_result();
 
@@ -221,6 +221,12 @@ class Functions
         $query->close();
 
         return $result;
+    }
+
+    public function getSubCategories($category, $websiteID){
+        $query = $this->conn->query("SELECT * FROM subcategory WHERE Category = '$category' AND WebsiteID = '$websiteID'");
+        return $query;
+
     }
 }
 

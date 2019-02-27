@@ -35,10 +35,19 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
                 <?php
                 $listOfNavigation = $db->getCategoryNavigation($siteName);
                 while ($row = $listOfNavigation->fetch_assoc()) {
+                    $listOfSubCategories = $db->getSubCategories($row["Title"], $_SESSION["WebsiteDetails"]["WebsiteID"]);
                     ?>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="products.php?<?php echo $row['Title']; ?>"><?php echo $row["Title"] ?></a>
+                    <li class="nav-item <?php if($listOfSubCategories->num_rows > 0){echo "dropdown"; }?>"">
+                        <a class="nav-link <?php if($listOfSubCategories->num_rows > 0){echo "dropdown-toggle"; }?>" href="#" id="navbarDropdown" role="button" <?php if($listOfSubCategories->num_rows > 0){echo "data-toggle='dropdown'"; }?> aria-haspopup="true" aria-expanded="false">
+                            <?php echo $row["Title"] ?>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <?php while($subCat = $listOfSubCategories->fetch_assoc()) {
+                                ?>
+                                <a class="dropdown-item" href="products.php?<?php echo $subCat['SubCategory'];?>"><?php echo $subCat["SubCategory"]; ?></a>
+                                <?php
+                            }?>
+                        </div>
                     </li>
                     <?php
                 }
