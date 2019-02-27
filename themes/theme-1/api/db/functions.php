@@ -228,6 +228,15 @@ class Functions
         return $query;
 
     }
+
+    public function getContent($websiteID, $page){
+        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
+        $query->bind_param("ss", $websiteID, $page);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+        return $result;
+    }
 }
 
 ?>

@@ -36,6 +36,8 @@ $splitUrl = array_filter(explode('/', $url));
                 ?>
                 <li><a href="categories.php"><i class="fa fa-list-ul"></i> Categories List</a></li>
                 <li><a href="navigation.php"><i class="fa fa-sitemap"></i> Edit Navigation</a></li>
+                <li><a href="edit-pages.php"><i class="fa fa-pencil"></i> Edit Pages</a></li>
+
                 <li>
                     <div class="accordion" id="productAccordion">
                         <div class="card">

@@ -111,7 +111,8 @@ class Functions
         return $query;
     }
 
-    public function createSubCategory($category, $websiteID, $subCategory){
+    public function createSubCategory($category, $websiteID, $subCategory)
+    {
         $query = $this->conn->prepare("INSERT INTO subcategory(Category, WebsiteID, SubCategory) VALUES(?, ?, ?)");
         $query->bind_param('sss', $category, $websiteID, $subCategory);
 
@@ -126,7 +127,8 @@ class Functions
         return $query;
     }
 
-    public function getSubCategories($category, $websiteID){
+    public function getSubCategories($category, $websiteID)
+    {
         $query = $this->conn->query("SELECT * FROM subcategory WHERE Category = '$category' AND WebsiteID = '$websiteID'");
         return $query;
 
@@ -189,6 +191,45 @@ class Functions
         return $result;
     }
 
+    public function updatePage($websiteID, $page, $content)
+    {
+        $pageContent = $this->getPageContent($websiteID, $page);
+        $result = "";
+
+        if($pageContent->num_rows > 0){
+            $query = $this->conn->prepare("UPDATE pages SET Content = ? WHERE WebsiteID = ? AND Page = ?");
+            $query->bind_param("sss", $content, $websiteID, $page);
+            $result = $query->execute();
+            $query->close();
+        } else {
+            $query = $this->conn->prepare("INSERT INTO pages(WebsiteID, Page, Content) VALUES(?, ?, ?)");
+            $query->bind_param("sss", $websiteID, $page, $content);
+            $result = $query->execute();
+            $query->close();
+        }
+        return $result;
+    }
+
+    public function getPageContent($websiteID, $page)
+    {
+        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
+        $query->bind_param("ss", $websiteID, $page);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+        return $result;
+    }
+
+
+    public function getContent($websiteID, $page){
+        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
+        $query->bind_param("ss", $websiteID, $page);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+        return $result;
+    }
+
 
     /**************** DATA CHART ************/
 
@@ -215,7 +256,7 @@ class Functions
             $i++;
         }
 
-        if($i > 1){
+        if ($i > 1) {
             $orderQuery .= " GROUP BY ProductID ORDER BY SUM(Quantity) DESC LIMIT 3";
 
             $query = $this->conn->prepare($orderQuery);
@@ -251,7 +292,7 @@ class Functions
         WHERE orders.Timestamp >= ? AND orders.WebsiteID = ? GROUP BY ProductID");
         $query->bind_param("ss", $timestampBefore, $websiteID);
         $query->execute();
-        $result  = $query->get_result();
+        $result = $query->get_result();
         $query->close();
 
         return $result;
