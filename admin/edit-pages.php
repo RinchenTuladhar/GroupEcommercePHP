@@ -31,7 +31,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
         <form method="post" action="../api/update-page.php" enctype="multipart/form-data">
             <textarea name="text_editor" id="text_editor" rows="10" cols="80">
                 <?php
-                $content = $db->getContent($_SESSION["WebsiteDetails"]["WebsiteID"], "index");
+                $content = $db->getContent($_SESSION["WebsiteID"], "index");
                 echo(htmlspecialchars_decode($content->fetch_assoc()["Content"]));?>
             </textarea>
             <script>
@@ -42,6 +42,9 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
             <br>
             <button type="submit" class="btn btn-success">Update</button>
         </form>
+
+        <h1>Update Page</h1>
+
     </div>
 </div>
 </body>

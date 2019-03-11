@@ -113,7 +113,7 @@ class Functions
         $websiteID = $websiteID["WebsiteID"];
         $query->close();
 
-        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' AND Navigation = 1");
+        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' AND Navigation = 1 ORDER BY NavOrder ASC");
         return $query;
     }
 

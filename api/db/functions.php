@@ -123,7 +123,7 @@ class Functions
 
     public function getCategories($websiteID)
     {
-        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID'");
+        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' ORDER BY NavOrder ASC");
         return $query;
     }
 
@@ -157,6 +157,21 @@ class Functions
         $result = $query->execute();
         $query->close();
         return $result;
+    }
+
+    public function setNavigationOrder($websiteID, $navigationList){
+        $query = "";
+
+        for($i = 0; $i < sizeof($navigationList); $i++){
+            $query = $this->conn->prepare("UPDATE categories SET NavOrder = ? WHERE Title = ? AND WebsiteID = ?");
+            $query->bind_param("iss", $i, $navigationList[$i], $websiteID);
+            $query->execute();
+        }
+        $result = $query;
+        $query->close();
+
+        return $result;
+
     }
 
     public function createProduct($name, $description, $originalPrice, $price, $stock, $website_id, $category, $sub_category, $uniqueid)
