@@ -131,4 +131,20 @@ body {
     margin: 35px 0px;
     text-align: center; }
 
+/* * * * *
+*
+* REPORTS PAGE
+*
+ */
+.admin-reports .report-filter {
+  border: 1px solid #cdcaca;
+  background: #dcdcdc;
+  padding: 10px 0px; }
+.admin-reports .report-box .box {
+  height: 250px;
+  text-align: center; }
+  .admin-reports .report-box .box p {
+    color: #0e4cc7;
+    font-size: 7vw; }
+
 /*# sourceMappingURL=style.css.map */

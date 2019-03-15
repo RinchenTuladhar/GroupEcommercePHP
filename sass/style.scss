@@ -199,3 +199,29 @@ body {
     text-align: center;
   }
 }
+
+/* * * * *
+*
+* REPORTS PAGE
+*
+ */
+
+.admin-reports {
+  .report-filter {
+    border: 1px solid #cdcaca;
+    background: #dcdcdc;
+    padding: 10px 0px;
+  }
+
+  .report-box {
+    .box {
+      height: 250px;
+      text-align: center;
+
+      p {
+        color: #0e4cc7;
+        font-size: 7vw;
+      }
+    }
+  }
+}
