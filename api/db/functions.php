@@ -121,7 +121,8 @@ class Functions
         return $result;
     }
 
-    public function checkCategoryItems($category, $websiteID){
+    // Checks how many subcategories are linked with a category
+    public function checkCategorySubs($category, $websiteID){
         $query = $this->conn->prepare("SELECT COUNT(*) As Total FROM subcategory WHERE Category = ? AND WebsiteID = ?");
         $query->bind_param("ss", $category, $websiteID);
         $query->execute();
@@ -131,11 +132,21 @@ class Functions
         return $result;
     }
 
-    public function deleteCategory($category, $websiteID){
-        // If category has no sub categories
-        $result = false;
+    // Checks how many items linked to a subcategory
+    public function checkSubCategoryItems($category, $subCategory, $websiteID){
+        $query = $this->conn->prepare("SELECT COUNT(*) As Total FROM products WHERE Category = ? AND SubCategory = ? AND WebsiteID = ?");
+        $query->bind_param("sss", $category, $subCategory, $websiteID);
+        $query->execute();
+        $result = $query->get_result()->fetch_assoc();
+        $query->close();
 
-        if($this->checkCategoryItems($category, $websiteID)["Total"] === 0){
+        return $result;
+    }
+
+    public function deleteCategory($category, $websiteID){
+        $result = false;
+        // If category has no sub categories
+        if($this->checkCategorySubs($category, $websiteID)["Total"] === 0){
             echo "DELETE FROM category WHERE Title = $category AND WebsiteID = $websiteID";
             $query = $this->conn->prepare("DELETE FROM categories WHERE Title = ? AND WebsiteID = ?");
             $query->bind_param("ss", $category, $websiteID);
@@ -149,7 +160,18 @@ class Functions
     }
 
     public function deleteSubCategory($category, $subCategory, $websiteID){
+        $result = false;
 
+        if($this->checkSubCategoryItems($category, $subCategory, $websiteID)["Total"] === 0){
+            $query = $this->conn->prepare("DELETE FROM subcategory WHERE Category = ? AND SubCategory = ? AND WebsiteID = ?");
+            $query->bind_param("sss", $category, $subCategory, $websiteID);
+            $query->execute();
+            $query->close();
+
+            $result = true;
+        }
+
+        return $result;
     }
 
     public function getCategories($websiteID)
