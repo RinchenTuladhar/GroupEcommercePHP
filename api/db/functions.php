@@ -92,13 +92,13 @@ class Functions
     public function createCategory($category, $websiteID)
     {
         $str_arr = explode(",", $category);
-        $sqlStatement = "INSERT INTO categories(Title, WebsiteID, SubCategory) VALUES ";
+        $sqlStatement = "INSERT INTO categories(Title, WebsiteID, Navigation, NavOrder) VALUES ";
 
         for ($i = 0; $i < sizeof($str_arr); $i++) {
             if ($i == (sizeof($str_arr) - 1)) {
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "');";
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "', 0, $i);";
             } else {
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "');";
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "', 0, $i);";
             }
         }
 
@@ -119,6 +119,37 @@ class Functions
         $result = $query->execute();
         $query->close();
         return $result;
+    }
+
+    public function checkCategoryItems($category, $websiteID){
+        $query = $this->conn->prepare("SELECT COUNT(*) As Total FROM subcategory WHERE Category = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $category, $websiteID);
+        $query->execute();
+        $result = $query->get_result()->fetch_assoc();
+        $query->close();
+
+        return $result;
+    }
+
+    public function deleteCategory($category, $websiteID){
+        // If category has no sub categories
+        $result = false;
+
+        if($this->checkCategoryItems($category, $websiteID)["Total"] === 0){
+            echo "DELETE FROM category WHERE Title = $category AND WebsiteID = $websiteID";
+            $query = $this->conn->prepare("DELETE FROM categories WHERE Title = ? AND WebsiteID = ?");
+            $query->bind_param("ss", $category, $websiteID);
+            $query->execute();
+            $query->close();
+
+            $result = true;
+        }
+
+        return $result;
+    }
+
+    public function deleteSubCategory($category, $subCategory, $websiteID){
+
     }
 
     public function getCategories($websiteID)

@@ -74,7 +74,8 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                     <li class="list-group-item">
                         <?php echo $row["Title"]; ?>
                         <span class="float-right">
-                            <i class="fa fa-times"></i>
+                            <i class="fa fa-times"
+                                           onclick="deleteCategory('<?php echo $row["Title"]; ?>', null);"></i>
                         </span>
                     </li>
                     <?php
@@ -86,10 +87,12 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                             while ($subRow = $subCategories->fetch_assoc()) {
                                 ?>
                                 <li class="list-group-item">
+
                                     <?php echo $subRow["SubCategory"]; ?>
                                     <span class="float-right">
-                            <i c lass="fa fa-times"></i>
-                        </span>
+                                        <i class="fa fa-times"
+                                           onclick="deleteCategory('<?php echo $subRow["Category"]; ?>', '<?php echo $subRow["SubCategory"]; ?>');"></i>
+                                    </span>
                                 </li>
                                 <?php
                             }
@@ -104,6 +107,19 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
         </ul>
     </div>
 </div>
+<script type="text/javascript">
+    function deleteCategory(cat, subcat) {
+        var request = $.ajax({
+            url: '../api/delete-category.php',
+            type: "POST",
+            data: {cat: cat, subcat: subcat},
+            success: function (data) {
+                console.log(data);
+            }
+        });
+        return request;
+    }
+</script>
 </body>
 </html>
 
