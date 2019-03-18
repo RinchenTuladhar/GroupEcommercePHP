@@ -56,20 +56,17 @@ if ($_SESSION['loggedin'] == null) {
                     </div>
                     <div class="row report-box">
                         <div class="col-md-6 box">
-                            <h3>New Customer (Last 7 days)</h3>
-                            <p>50</p>
+                            <h3>Total Customers</h3>
+                            <p><?php echo $db->getNewCustomerTotal(-1)->fetch_assoc()["Total"]; ?></p>
                         </div>
                         <div class="col-md-6 box">
-                            <h3>Items Sold</h3>
-                            <p>600</p>
+                            <h3>Total Items Sold</h3>
+                            <p><?php echo $db->getAmountOfOrders(-1)->fetch_assoc()["Total"]; ?></p>
                         </div>
-                    </div>
-                    <div class="ct-chart ct-golden-section">
-
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                 <form id="filter-form" method="GET">
                     <div class="row report-filter">
                         <div class="col-md-5">

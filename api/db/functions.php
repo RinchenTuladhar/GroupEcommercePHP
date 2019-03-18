@@ -123,7 +123,8 @@ class Functions
     }
 
     // Checks how many subcategories are linked with a category
-    public function checkCategorySubs($category, $websiteID){
+    public function checkCategorySubs($category, $websiteID)
+    {
         $query = $this->conn->prepare("SELECT COUNT(*) As Total FROM subcategory WHERE Category = ? AND WebsiteID = ?");
         $query->bind_param("ss", $category, $websiteID);
         $query->execute();
@@ -134,7 +135,8 @@ class Functions
     }
 
     // Checks how many items linked to a subcategory
-    public function checkSubCategoryItems($category, $subCategory, $websiteID){
+    public function checkSubCategoryItems($category, $subCategory, $websiteID)
+    {
         $query = $this->conn->prepare("SELECT COUNT(*) As Total FROM products WHERE Category = ? AND SubCategory = ? AND WebsiteID = ?");
         $query->bind_param("sss", $category, $subCategory, $websiteID);
         $query->execute();
@@ -144,10 +146,11 @@ class Functions
         return $result;
     }
 
-    public function deleteCategory($category, $websiteID){
+    public function deleteCategory($category, $websiteID)
+    {
         $result = false;
         // If category has no sub categories
-        if($this->checkCategorySubs($category, $websiteID)["Total"] === 0){
+        if ($this->checkCategorySubs($category, $websiteID)["Total"] === 0) {
             echo "DELETE FROM category WHERE Title = $category AND WebsiteID = $websiteID";
             $query = $this->conn->prepare("DELETE FROM categories WHERE Title = ? AND WebsiteID = ?");
             $query->bind_param("ss", $category, $websiteID);
@@ -160,10 +163,11 @@ class Functions
         return $result;
     }
 
-    public function deleteSubCategory($category, $subCategory, $websiteID){
+    public function deleteSubCategory($category, $subCategory, $websiteID)
+    {
         $result = false;
 
-        if($this->checkSubCategoryItems($category, $subCategory, $websiteID)["Total"] === 0){
+        if ($this->checkSubCategoryItems($category, $subCategory, $websiteID)["Total"] === 0) {
             $query = $this->conn->prepare("DELETE FROM subcategory WHERE Category = ? AND SubCategory = ? AND WebsiteID = ?");
             $query->bind_param("sss", $category, $subCategory, $websiteID);
             $query->execute();
@@ -213,10 +217,11 @@ class Functions
         return $result;
     }
 
-    public function setNavigationOrder($websiteID, $navigationList){
+    public function setNavigationOrder($websiteID, $navigationList)
+    {
         $query = "";
 
-        for($i = 0; $i < sizeof($navigationList); $i++){
+        for ($i = 0; $i < sizeof($navigationList); $i++) {
             $query = $this->conn->prepare("UPDATE categories SET NavOrder = ? WHERE Title = ? AND WebsiteID = ?");
             $query->bind_param("iss", $i, $navigationList[$i], $websiteID);
             $query->execute();
@@ -265,7 +270,7 @@ class Functions
         $pageContent = $this->getPageContent($websiteID, $page);
         $result = "";
 
-        if($pageContent->num_rows > 0){
+        if ($pageContent->num_rows > 0) {
             $query = $this->conn->prepare("UPDATE pages SET Content = ? WHERE WebsiteID = ? AND Page = ?");
             $query->bind_param("sss", $content, $websiteID, $page);
             $result = $query->execute();
@@ -290,7 +295,8 @@ class Functions
     }
 
 
-    public function getContent($websiteID, $page){
+    public function getContent($websiteID, $page)
+    {
         $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
         $query->bind_param("ss", $websiteID, $page);
         $query->execute();
@@ -354,7 +360,7 @@ class Functions
     {
         $timestampBefore = strtotime("-$timeBefore day");
 
-        if($timeBefore < 0){
+        if ($timeBefore < 0) {
             $timestampBefore = 0;
         }
         $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  (products.Price * SUM(orderdetails.Quantity)) As Price
@@ -370,10 +376,11 @@ class Functions
         return $result;
     }
 
-    public function getTotalProfit($timeBefore, $websiteID){
+    public function getTotalProfit($timeBefore, $websiteID)
+    {
         $timestampBefore = strtotime("-$timeBefore day");
 
-        if($timeBefore < 0){
+        if ($timeBefore < 0) {
             $timestampBefore = 0;
         }
 
@@ -383,6 +390,42 @@ class Functions
         INNER JOIN products ON orderdetails.ProductID = products.ProductID
         WHERE orders.Timestamp >= ? AND orders.WebsiteID = ? GROUP BY ProductID");
         $query->bind_param("ss", $timestampBefore, $websiteID);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        return $result;
+    }
+
+    public function getNewCustomerTotal($timeBefore)
+    {
+        $timestampBefore = strtotime("-$timeBefore day");
+
+        if ($timeBefore < 0) {
+            $timestampBefore = 0;
+        }
+
+        $query = $this->conn->prepare("SELECT COUNT(*) As Total FROM users WHERE Timestamp >= ?");
+        $query->bind_param("s", $timestampBefore);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        return $result;
+    }
+
+    public function getAmountOfOrders($timeBefore)
+    {
+        $timestampBefore = strtotime("-$timeBefore day");
+
+        if ($timeBefore < 0) {
+            $timestampBefore = 0;
+        }
+
+        $query = $this->conn->prepare("SELECT SUM(orderdetails.Quantity) As Total FROM commerce.orderdetails 
+INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
+WHERE orders.Timestamp >= ?;");
+        $query->bind_param("s", $timestampBefore);
         $query->execute();
         $result = $query->get_result();
         $query->close();
