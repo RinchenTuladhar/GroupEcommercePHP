@@ -116,7 +116,7 @@ if ($_SESSION['loggedin'] == null) {
             type: "POST",
             data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', navigationList: navigationList},
             success: function (data) {
-console.log(data);
+                $.notify("Successfully Updated!", "success");
             }
         });
 

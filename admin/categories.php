@@ -114,7 +114,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
             type: "POST",
             data: {cat: cat, subcat: subcat},
             success: function (data) {
-                $.notify("Successfully Deleted", "success");
+                location.reload();
             }
         });
         return request;

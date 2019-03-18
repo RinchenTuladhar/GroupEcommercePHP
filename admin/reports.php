@@ -47,11 +47,11 @@ if ($_SESSION['loggedin'] == null) {
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Net Revenue</h3>
-                            <p>£100.00</p>
+                            <p>£<?php echo $db->getTotalRevenue(-1, $_SESSION["WebsiteID"])->fetch_assoc()["Price"]; ?></p>
                         </div>
                         <div class="col-md-6 box">
                             <h3>Net Profit</h3>
-                            <p>£100.00</p>
+                            <p>£<?php echo $db->getTotalProfit(-1, $_SESSION["WebsiteID"])->fetch_assoc()["Profit"];?></p>
                         </div>
                     </div>
                     <div class="row report-box">

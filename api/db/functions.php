@@ -22,6 +22,7 @@ class Functions
 
     public function createAdmin($firstName, $lastName, $email, $password)
     {
+        $timestamp = time();
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
         $websiteID = md5(uniqid($email, true));
 
@@ -30,8 +31,8 @@ class Functions
         $query->execute();
         $query->close();
 
-        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin) VALUES(?, ?, ?, ?, ?, 1)");
-        $query->bind_param("sssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID);
+        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES(?, ?, ?, ?, ?, 1, ?)");
+        $query->bind_param("ssssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID, $timestamp);
         $result = $query->execute();
         $query->close();
 
@@ -353,7 +354,30 @@ class Functions
     {
         $timestampBefore = strtotime("-$timeBefore day");
 
+        if($timeBefore < 0){
+            $timestampBefore = 0;
+        }
         $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  (products.Price * SUM(orderdetails.Quantity)) As Price
+        FROM orderdetails
+        INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
+        INNER JOIN products ON orderdetails.ProductID = products.ProductID
+        WHERE orders.Timestamp >= ? AND orders.WebsiteID = ? GROUP BY ProductID");
+        $query->bind_param("ss", $timestampBefore, $websiteID);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        return $result;
+    }
+
+    public function getTotalProfit($timeBefore, $websiteID){
+        $timestampBefore = strtotime("-$timeBefore day");
+
+        if($timeBefore < 0){
+            $timestampBefore = 0;
+        }
+
+        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  (products.Price - products.OriginalPrice) As Profit
         FROM orderdetails
         INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
         INNER JOIN products ON orderdetails.ProductID = products.ProductID
