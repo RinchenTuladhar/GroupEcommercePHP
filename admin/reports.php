@@ -67,7 +67,7 @@ if ($_SESSION['loggedin'] == null) {
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <form id="filter-form" method="GET">
+                <form>
                     <div class="row report-filter">
                         <div class="col-md-5">
                             <label for="from_date">
@@ -83,7 +83,7 @@ if ($_SESSION['loggedin'] == null) {
                         </div>
                         <div class="col-md-2">
                             <br>
-                            <input type="submit" id="btnSubmit" class="btn btn-success" value="Filter">
+                            <input type="button" id="btnSubmit" class="btn btn-success" value="Filter" onclick="ordersReport();">
                         </div>
                     </div>
                 </form>
@@ -92,17 +92,23 @@ if ($_SESSION['loggedin'] == null) {
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Orders Created</h3>
+                            <p id="report-orders-created">
+
+                            </p>
                         </div>
                         <div class="col-md-6 box">
                             <h3>Revenue</h3>
+                            <p id="report-orders-revenue"></p>
                         </div>
                     </div>
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Profit</h3>
+                            <p id="report-orders-profit"></p>
                         </div>
                         <div class="col-md-6 box">
                             <h3>Items Purchased</h3>
+                            <p id="report-orders-items-purchased"></p>
                         </div>
                     </div>
                     <div class="ct-chart ct-golden-section">
@@ -148,6 +154,39 @@ if ($_SESSION['loggedin'] == null) {
 
 <script type="text/javascript">
     document.getElementById('to_date').valueAsDate = new Date();
+
+    function ordersReport(){
+        var fromDate = $('#from_date').val();
+        var toDate = $('#to_date').val();
+
+        var request = $.ajax({
+            url: '../api/orders-report.php',
+            type: "GET",
+            data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
+            success: function (data) {
+                var results = JSON.parse(data);
+                for(var i = 0; i < results.length; i++){
+                    switch(results[i]["type"]){
+                        case "Orders":
+                            $("#report-orders-created").html(results[i]["result"]);
+                            break;
+                        case "Revenue":
+                            $("#report-orders-revenue").html(results[i]["result"]);
+                            break;
+                        case "Profit":
+                            $("#report-orders-profit").html(results[i]["result"]);
+                            break;
+                        case "Purchased":
+                            $("#report-orders-items-purchased").html(results[i]["result"]);
+                            break;
+                    }
+                }
+                $.notify("Successfully Updated!", "success");
+            }
+        });
+
+        return request;
+    }
 </script>
 </body>
 </html>
