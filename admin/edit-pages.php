@@ -27,7 +27,8 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 <div class="main admin-main">
     <h2>Edit Home Page</h2>
     <hr/>
-    <div class="row col-md-12">
+    <div class="col-md-12">
+
         <form method="post" action="../api/update-page.php" enctype="multipart/form-data">
             <textarea name="text_editor" id="text_editor" rows="10" cols="80">
                 <?php
@@ -43,7 +44,6 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
             <button type="submit" class="btn btn-success">Update</button>
         </form>
 
-        <h1>Update Page</h1>
 
     </div>
 </div>

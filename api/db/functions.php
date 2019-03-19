@@ -384,7 +384,7 @@ class Functions
             $timestampBefore = 0;
         }
 
-        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  (products.Price - products.OriginalPrice) As Profit
+        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  SUM(products.Price - products.OriginalPrice) As Profit
         FROM orderdetails
         INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
         INNER JOIN products ON orderdetails.ProductID = products.ProductID
@@ -451,7 +451,7 @@ WHERE orders.Timestamp >= ?;");
 
     public function getAmountOfOrdersByDate($from, $to, $websiteID)
     {
-        $query = $this->conn->prepare("SELECT SUM(orderdetails.Quantity) As Total FROM commerce.orderdetails 
+        $query = $this->conn->prepare("SELECT COUNT(*) As Total FROM commerce.orderdetails 
 INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
 WHERE orders.Timestamp >= ? AND orders.Timestamp <= ? AND orders.WebsiteID = ?;");
         $query->bind_param("sss", $from, $to, $websiteID);
@@ -465,7 +465,7 @@ WHERE orders.Timestamp >= ? AND orders.Timestamp <= ? AND orders.WebsiteID = ?;"
     public function getTotalProfitByDate($from, $to, $websiteID)
     {
 
-        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  (products.Price - products.OriginalPrice) As Profit
+        $query = $this->conn->prepare("SELECT orders.websiteID, orderdetails.OrderID, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity,  SUM(products.Price - products.OriginalPrice) As Profit
         FROM orderdetails
         INNER JOIN orders ON orderdetails.OrderID = orders.OrderID
         INNER JOIN products ON orderdetails.ProductID = products.ProductID

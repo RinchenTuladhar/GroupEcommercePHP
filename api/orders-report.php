@@ -28,7 +28,6 @@ if(isset($_GET["to"]) && isset($_GET["from"])){
 
     //Profit
     $profit = $db->getTotalProfitByDate($from, $to, $_SESSION["WebsiteID"])->fetch_assoc()["Profit"];
-
     $profitObject = new stdClass();
     $profitObject->type = "Profit";
     $profitObject->result = $profit;

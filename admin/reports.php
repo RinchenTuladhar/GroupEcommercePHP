@@ -171,10 +171,10 @@ if ($_SESSION['loggedin'] == null) {
                             $("#report-orders-created").html(results[i]["result"]);
                             break;
                         case "Revenue":
-                            $("#report-orders-revenue").html(results[i]["result"]);
+                            $("#report-orders-revenue").html("£" + results[i]["result"]);
                             break;
                         case "Profit":
-                            $("#report-orders-profit").html(results[i]["result"]);
+                            $("#report-orders-profit").html("£" + results[i]["result"]);
                             break;
                         case "Purchased":
                             $("#report-orders-items-purchased").html(results[i]["result"]);
