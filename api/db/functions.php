@@ -373,6 +373,37 @@ class Functions
         return $result;
     }
 
+    public function getLeastSoldByDate($from, $to, $websiteID)
+    {
+        $query = $this->conn->prepare("SELECT OrderID FROM orders WHERE WebsiteID = ? AND Timestamp >= ? AND Timestamp <= ?");
+        $query->bind_param("sss", $websiteID, $from, $to);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        $i = 1;
+
+        $orderQuery = "SELECT products.Name, orderdetails.ProductID, SUM(orderdetails.Quantity) As Quantity FROM orderdetails INNER JOIN products ON products.ProductID = orderdetails.ProductID WHERE orderdetails.OrderID = ";
+        while ($orders = $result->fetch_assoc()) {
+            $orderQuery .= "'" . $orders["OrderID"] . "'";
+
+            if ($i < $result->num_rows) {
+                $orderQuery .= " OR ";
+            }
+            $i++;
+        }
+
+        if ($i > 1) {
+            $orderQuery .= "GROUP BY orderdetails.ProductID ORDER BY SUM(Quantity) ASC LIMIT 3";
+
+            $query = $this->conn->prepare($orderQuery);
+            $query->execute();
+            $result = $query->get_result();
+        }
+
+        return $result;
+    }
+
     public function getTotalSales($timeBefore, $websiteID)
     {
         $timestampBefore = strtotime("-$timeBefore day");

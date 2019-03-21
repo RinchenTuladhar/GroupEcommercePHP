@@ -18,47 +18,8 @@ if ($_SESSION['loggedin'] == null) {
     <title>BuildMyStore: Admin</title>
 
     <script type="text/javascript">
-        var fromDate = $('#product_from_date').val();
-        var toDate = $('#product_to_date').val();
-
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
-
-        // Set a callback to run when the Google Visualization API is loaded.
-
-
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawChart() {
-            // Create the data table.
-            var jsonData = $.ajax({
-                url: '../api/products-report.php',
-                dataType: "json",
-                data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
-                async: true,
-                success: function (data) {
-                    console.log(data);
-                    $.notify("Successfully Updated!", "success");
-                }
-            }).responseText;
-
-            // Set chart options
-            var options = {'title':'Top 3 Most Sold Item',
-                'width':400,
-                'height':300,
-                'backgroundColor': {fill: 'transparent'}
-            };
-
-            // Instantiate and draw our chart, passing in some options.
-            // Create our data table out of JSON data loaded from server.
-            var data = new google.visualization.DataTable(jsonData);
-
-            // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, {width: 400, height: 240});
-
-        }
     </script>
 </head>
 
@@ -172,7 +133,7 @@ if ($_SESSION['loggedin'] == null) {
                     </div>
                     <div class="col-md-2">
                         <br>
-                        <input type="button" id="btnSubmit" class="btn btn-success" value="Filter" onclick="productsReport();">
+                        <input type="button" id="btnSubmit" class="btn btn-success" value="Filter" onclick="soldItemReport();">
                     </div>
                 </div>
                 <div class="jumbotron">
@@ -182,10 +143,11 @@ if ($_SESSION['loggedin'] == null) {
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Most Sold Item</h3>
-                            <div id="chart_area"></div>
+                            <div id="most_sold_item_chart"></div>
                         </div>
                         <div class="col-md-6 box">
                             <h3>Least Sold Item</h3>
+                            <div id="least_sold_item_chart"></div>
                         </div>
                     </div>
                 </div>
@@ -245,31 +207,45 @@ if ($_SESSION['loggedin'] == null) {
         return request;
     }
 
-    function productsReport(){
+    function soldItemReport(){
         var fromDate = $('#product_from_date').val();
         var toDate = $('#product_to_date').val();
 
 
         var temp_title = "Top Items Sold (MAX 3)";
         $.ajax({
-            url: '../api/products-report.php',
+            url: '../api/products-most-sold-report.php',
             type: "GET",
             data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
             success:function(data)
             {
-               drawMonthwiseChart(data, temp_title);
+               itemSoldChart(data, temp_title, 'most_sold_item_chart');
+            }
+        });
+
+        leastSoldItemReport(fromDate, toDate)
+    }
+
+    function leastSoldItemReport(fromDate, toDate){
+        var temp_title = "Least Items Sold (MAX 3)";
+        $.ajax({
+            url: '../api/products-least-sold-report.php',
+            type: "GET",
+            data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
+            success:function(data)
+            {
+                itemSoldChart(data, temp_title, 'least_sold_item_chart');
             }
         });
     }
 
-    function drawMonthwiseChart(chart_data, chart_main_title)
+    function itemSoldChart(chart_data, chart_main_title, div)
     {
         var jsonData = JSON.parse(chart_data);
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Name');
         data.addColumn('number', 'Quantity');
         $.each(jsonData, function(i, jsonData){
-            console.log(jsonData);
             var name = jsonData.name;
             var quantity = parseInt(jsonData.quantity);
             data.addRows([[name, quantity]]);
@@ -284,7 +260,7 @@ if ($_SESSION['loggedin'] == null) {
             }
         };
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_area'));
+        var chart = new google.visualization.ColumnChart(document.getElementById(div));
         chart.draw(data, options);
     }
 </script>
