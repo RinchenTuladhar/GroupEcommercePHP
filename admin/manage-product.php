@@ -100,10 +100,6 @@ include '../api/db-access.php';
 
         const formNode = document.querySelector(".product-table");
         formNode.classList.remove('animated', 'slideInDown');
-
-        animateCSS('.product-table', 'slideInRight', function(){
-            animateCSS('.edit-product-form', 'slideOutDown');
-        });
     });
 
     $("#edit_button").click(function(){

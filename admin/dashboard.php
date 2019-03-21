@@ -141,62 +141,7 @@ if ($_SESSION['loggedin'] == null) {
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <div class="ct-chart ct-golden-section">
-                    <script type="text/javascript">
-                        var data = {
-                            labels: [
-                                <?php
 
-                                while ($row = $mostSold30->fetch_assoc()) {
-                                    echo "'" . $db->getProductInfo($row["ProductID"])->fetch_assoc()["Name"] . "' , ";
-                                }
-
-                                mysqli_data_seek($mostSold30, 0);
-                                ?>
-                            ],
-                            series: [
-                                <?php
-                                while ($row = $mostSold30->fetch_assoc()) {
-                                    echo($row["Quantity"] . ", ");
-                                }
-                                ?>
-                            ],
-                        };
-
-                        var sum = function (a, b) {
-                            return a + b
-                        };
-
-
-                        var options = {
-                            labelInterpolationFnc: function (value) {
-                                return Math.round(value / data.series.reduce(sum) * 100) + '%';
-                            }
-                        };
-
-                        var responsiveOptions = [
-                            ['screen and (min-width: 640px)', {
-                                chartPadding: 30,
-                                labelOffset: 100,
-                                labelDirection: 'explode',
-                                labelInterpolationFnc: function (value) {
-                                    return value;
-                                }
-                            }],
-                            ['screen and (min-width: 1024px)', {
-                                labelOffset: 80,
-                                chartPadding: 20
-                            }]
-                        ];
-
-                        new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
-                    </script>
-                    <?php
-                    while ($test = $mostSold30->fetch_assoc()) {
-                        echo($test["Quantity"] . ", ");
-                    }
-                    ?>
-                </div>
             </div>
             <div class="col-md-4"></div>
         </div>

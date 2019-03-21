@@ -16,6 +16,50 @@ if ($_SESSION['loggedin'] == null) {
     <?php include '../api/scripts.php'; ?>
     <link rel="stylesheet" href="../css/style.css">
     <title>BuildMyStore: Admin</title>
+
+    <script type="text/javascript">
+        var fromDate = $('#product_from_date').val();
+        var toDate = $('#product_to_date').val();
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+            // Create the data table.
+            var jsonData = $.ajax({
+                url: '../api/products-report.php',
+                dataType: "json",
+                data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
+                async: true,
+                success: function (data) {
+                    console.log(data);
+                    $.notify("Successfully Updated!", "success");
+                }
+            }).responseText;
+
+            // Set chart options
+            var options = {'title':'Top 3 Most Sold Item',
+                'width':400,
+                'height':300,
+                'backgroundColor': {fill: 'transparent'}
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            // Create our data table out of JSON data loaded from server.
+            var data = new google.visualization.DataTable(jsonData);
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, {width: 400, height: 240});
+
+        }
+    </script>
 </head>
 
 
@@ -67,7 +111,6 @@ if ($_SESSION['loggedin'] == null) {
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <form>
                     <div class="row report-filter">
                         <div class="col-md-5">
                             <label for="from_date">
@@ -86,7 +129,6 @@ if ($_SESSION['loggedin'] == null) {
                             <input type="button" id="btnSubmit" class="btn btn-success" value="Filter" onclick="ordersReport();">
                         </div>
                     </div>
-                </form>
 
                 <div class="jumbotron">
                     <div class="row report-box">
@@ -111,24 +153,40 @@ if ($_SESSION['loggedin'] == null) {
                             <p id="report-orders-items-purchased"></p>
                         </div>
                     </div>
-                    <div class="ct-chart ct-golden-section">
 
-                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="row report-filter">
+                    <div class="col-md-5">
+                        <label for="product_from_date">
+                            From:
+                        </label>
+                        <input type="date" name="product_from_date" id="product_from_date" class="form-control">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="product_to_date">
+                            To:
+                        </label>
+                        <input type="date" name="product_to_date" id="product_to_date" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <input type="button" id="btnSubmit" class="btn btn-success" value="Filter" onclick="productsReport();">
+                    </div>
+                </div>
                 <div class="jumbotron">
+                    <?php
+                    $mostSold30 = $db->getMostSold(30, $_SESSION["WebsiteID"]);
+                    ?>
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Most Sold Item</h3>
+                            <div id="chart_area"></div>
                         </div>
                         <div class="col-md-6 box">
                             <h3>Least Sold Item</h3>
                         </div>
-                    </div>
-
-                    <div class="ct-chart ct-golden-section">
-
                     </div>
                 </div>
             </div>
@@ -143,9 +201,7 @@ if ($_SESSION['loggedin'] == null) {
                         </div>
                     </div>
 
-                    <div class="ct-chart ct-golden-section">
 
-                    </div>
                 </div>
             </div>
         </div>
@@ -154,6 +210,7 @@ if ($_SESSION['loggedin'] == null) {
 
 <script type="text/javascript">
     document.getElementById('to_date').valueAsDate = new Date();
+    document.getElementById('product_to_date').valueAsDate = new Date();
 
     function ordersReport(){
         var fromDate = $('#from_date').val();
@@ -186,6 +243,49 @@ if ($_SESSION['loggedin'] == null) {
         });
 
         return request;
+    }
+
+    function productsReport(){
+        var fromDate = $('#product_from_date').val();
+        var toDate = $('#product_to_date').val();
+
+
+        var temp_title = "Top Items Sold (MAX 3)";
+        $.ajax({
+            url: '../api/products-report.php',
+            type: "GET",
+            data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
+            success:function(data)
+            {
+               drawMonthwiseChart(data, temp_title);
+            }
+        });
+    }
+
+    function drawMonthwiseChart(chart_data, chart_main_title)
+    {
+        var jsonData = JSON.parse(chart_data);
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Name');
+        data.addColumn('number', 'Quantity');
+        $.each(jsonData, function(i, jsonData){
+            console.log(jsonData);
+            var name = jsonData.name;
+            var quantity = parseInt(jsonData.quantity);
+            data.addRows([[name, quantity]]);
+        });
+        var options = {
+            title:chart_main_title,
+            hAxis: {
+                title: "Name"
+            },
+            vAxis: {
+                title: 'Quantity'
+            }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_area'));
+        chart.draw(data, options);
     }
 </script>
 </body>
