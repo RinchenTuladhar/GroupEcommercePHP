@@ -24,25 +24,29 @@ include '../api/db-access.php';
     <div class="col-md-12">
         <h2>Product List</h2>
         <div class="edit-product-form" style="display: none;">
+            <h5>Edit Product:</h5>
             <br>
             <div class="col-md-6">
-                <label for="product-name">
-                    Product Name:
-                </label>
-                <input type="text" class="form-control" name="name" id="product-name">
+                <form method="POST" action="../api/edit-product.php">
+                    <label for="product-name">
+                        Product Name:
+                    </label>
+                    <input type="text" class="form-control" name="name" id="product-name">
 
-                <label for="product-stock">
-                    Stock:
-                </label>
-                <input type="number" class="form-control" name="stock" id="product-stock">
+                    <label for="product-stock">
+                        Stock:
+                    </label>
+                    <input type="number" class="form-control" name="stock" id="product-stock">
 
-                <label for="product-price">
-                    Product Name:
-                </label>
-                <input type="text" class="form-control" name="price" id="product-price">
-                <br>
-                <input type="button" id="cancelBtn" class="btn btn-danger float-right" value="Cancel">
-                <input type="submit" value="Update" class="btn btn-success">
+                    <label for="product-price">
+                        Product Price (£):
+                    </label>
+                    <input type="text" class="form-control" name="price" id="product-price">
+                    <input type="hidden" class="form-control" name="product-id" id="product-id">
+                    <br>
+                    <input type="button" id="cancelBtn" class="btn btn-danger float-right" value="Cancel">
+                    <input type="submit" value="Update" class="btn btn-success">
+                </form>
             </div>
         </div>
         <table class="table product-table">
@@ -68,7 +72,7 @@ include '../api/db-access.php';
                     <td><?php echo $row["Stock"]; ?></td>
                     <td><?php echo $row["Category"]; ?></td>
                     <td><input type="button" value="Edit"
-                               onclick="editProduct('<?php echo $row["Name"]; ?>','<?php echo $row["Price"]; ?>', '<?php echo $row["Stock"]; ?>', '<?php echo $row["Stock"]; ?>')"
+                               onclick="editProduct('<?php echo $row["Name"]; ?>','<?php echo $row["Price"]; ?>', '<?php echo $row["Stock"]; ?>', '<?php echo $row["ProductID"]; ?>')"
                                class="btn btn-success"></td>
                 </tr>
                 <?php
@@ -101,13 +105,13 @@ include '../api/db-access.php';
         const formNode = document.querySelector(".product-table");
         formNode.classList.remove('animated', 'slideOutRight');
 
-        animateCSS('.edit-product-form', 'slideOutUp', function(){
+        animateCSS('.edit-product-form', 'slideOutUp', function () {
             $('.edit-product-form').css("display", "none");
             document.querySelector('.edit-product-form').classList.remove('slideOutUp');
         });
     });
 
-    function editProduct(name, price, stock, category) {
+    function editProduct(name, price, stock, productID) {
         animateCSS('.product-table', 'slideOutRight', function () {
             $('.edit-product-form').css("display", "block");
             animateCSS('.edit-product-form', 'slideInUp');
@@ -116,6 +120,7 @@ include '../api/db-access.php';
         $('#product-name').val(name);
         $('#product-stock').val(price);
         $('#product-price').val(stock);
+        $('#product-id').val(productID);
     }
 </script>
 </body>

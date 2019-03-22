@@ -265,6 +265,15 @@ class Functions
         return $result;
     }
 
+    public function updateProductInfo($productID, $name, $price, $stock){
+        $query = $this->conn->prepare("UPDATE products SET Name = ?, Price = ?, Stock = ? WHERE ProductID = ?");
+        $query->bind_param("ssis", $name, $price, $stock, $productID);
+        $query->execute();
+        $query->close();
+
+        return $query;
+    }
+
     public function updatePage($websiteID, $page, $content)
     {
         $pageContent = $this->getPageContent($websiteID, $page);
