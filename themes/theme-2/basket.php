@@ -31,54 +31,23 @@ $query = $_SERVER ['QUERY_STRING'];
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>
-                                    <img src="img/items/5c24dcb5accef.jpg">
-                                </td>
-                                <td>Salad</td>
-                                <td>£45.00</td>
-                                <td>
-                                    <select class="form-control">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="img/items/5c24dcb5accef.jpg">
-                                </td>
-                                <td>Salad</td>
-                                <td>£45.00</td>
-                                <td>
-                                    <select class="form-control">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="img/items/5c24dcb5accef.jpg">
-                                </td>
-                                <td>Salad</td>
-                                <td>£45.00</td>
-                                <td>
-                                    <select class="form-control">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </td>
-                            </tr>
+                            <?php
+                            $basketItems = $db->getBasket($_SESSION['customer']['email'], $_SESSION["WebsiteDetails"]["WebsiteID"]);
+                            while($row = $basketItems->fetch_assoc()){
+                            $item = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $row["ProductID"]);
+                            $totalPrice = $totalPrice + $item["Price"] * $row["Quantity"];
+                            ?>
+                                <tr>
+                                    <td>
+                                        <img src="img/items/5c24dcb5accef.jpg">
+                                    </td>
+                                    <td><?php echo($item["Name"]); ?></td>
+                                    <td><?php echo $item["Price"]; ?></td>
+                                    <td>
+                                        <input type="number" class="form-control" value="<?php echo $row["Quantity"]; ?>">
+                                    </td>
+                                </tr>
+                            <?php }?>
                             </tbody>
                         </table>
                     </div>

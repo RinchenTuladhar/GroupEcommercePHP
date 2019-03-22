@@ -137,9 +137,6 @@ if ($_SESSION['loggedin'] == null) {
                     </div>
                 </div>
                 <div class="jumbotron">
-                    <?php
-                    $mostSold30 = $db->getMostSold(30, $_SESSION["WebsiteID"]);
-                    ?>
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Most Sold Item</h3>
@@ -153,17 +150,35 @@ if ($_SESSION['loggedin'] == null) {
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div class="row report-filter">
+                    <div class="col-md-5">
+                        <label for="category_from_date">
+                            From:
+                        </label>
+                        <input type="date" name="category_from_date" id="category_from_date" class="form-control">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="category_to_date">
+                            To:
+                        </label>
+                        <input type="date" name="category_to_date" id="category_to_date" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <br>
+                        <input type="button" id="btnSubmit" class="btn btn-success" value="Filter" onclick="categoryReport();">
+                    </div>
+                </div>
                 <div class="jumbotron">
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Most Popular Category</h3>
+                            <div id="most_popular_category_chart"></div>
                         </div>
                         <div class="col-md-6 box">
                             <h3>Least Popular Category</h3>
+                            <div id="least_popular_category_chart"></div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -173,6 +188,7 @@ if ($_SESSION['loggedin'] == null) {
 <script type="text/javascript">
     document.getElementById('to_date').valueAsDate = new Date();
     document.getElementById('product_to_date').valueAsDate = new Date();
+    document.getElementById('category_to_date').valueAsDate = new Date();
 
     function ordersReport(){
         var fromDate = $('#from_date').val();
@@ -187,16 +203,33 @@ if ($_SESSION['loggedin'] == null) {
                 for(var i = 0; i < results.length; i++){
                     switch(results[i]["type"]){
                         case "Orders":
-                            $("#report-orders-created").html(results[i]["result"]);
+                            if(results[i]["result"] == null){
+                                $("#report-orders-created").html("0");
+                            } else {
+                                $("#report-orders-created").html(results[i]["result"]);
+                            }
+
                             break;
                         case "Revenue":
-                            $("#report-orders-revenue").html("£" + results[i]["result"]);
+                            if(results[i]["result"] == null){
+                                $("#report-orders-revenue").html("£0");
+                            } else {
+                                $("#report-orders-revenue").html("£" + results[i]["result"]);
+                            }
                             break;
                         case "Profit":
-                            $("#report-orders-profit").html("£" + results[i]["result"]);
+                            if(results[i]["result"] == null){
+                                $("#report-orders-profit").html("£0");
+                            } else {
+                                $("#report-orders-profit").html("£" + results[i]["result"]);
+                            }
                             break;
                         case "Purchased":
-                            $("#report-orders-items-purchased").html(results[i]["result"]);
+                            if(results[i]["result"] == null){
+                                $("#report-orders-items-purchased").html("0");
+                            } else {
+                                $("#report-orders-items-purchased").html(results[i]["result"]);
+                            }
                             break;
                     }
                 }
@@ -223,7 +256,7 @@ if ($_SESSION['loggedin'] == null) {
             }
         });
 
-        leastSoldItemReport(fromDate, toDate)
+        leastSoldItemReport(fromDate, toDate);
     }
 
     function leastSoldItemReport(fromDate, toDate){
@@ -239,8 +272,7 @@ if ($_SESSION['loggedin'] == null) {
         });
     }
 
-    function itemSoldChart(chart_data, chart_main_title, div)
-    {
+    function itemSoldChart(chart_data, chart_main_title, div){
         var jsonData = JSON.parse(chart_data);
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Name');
@@ -262,6 +294,38 @@ if ($_SESSION['loggedin'] == null) {
 
         var chart = new google.visualization.ColumnChart(document.getElementById(div));
         chart.draw(data, options);
+    }
+
+    function categoryReport(){
+        var fromDate = $('#category_from_date').val();
+        var toDate = $('#category_to_date').val();
+
+        var title = "Most Popular Category";
+        $.ajax({
+            url: '../api/category-most-popular-report.php',
+            type: "GET",
+            data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
+            success:function(data)
+            {
+                itemSoldChart(data, title, 'most_popular_category_chart');
+            }
+        });
+
+        leastpopularCategoryReport(fromDate, toDate);
+    }
+
+    function leastpopularCategoryReport(fromDate, toDate){
+        var title = "Least Popular Category"
+
+        $.ajax({
+            url: '../api/category-least-popular-report.php',
+            type: "GET",
+            data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
+            success:function(data)
+            {
+                itemSoldChart(data, title, 'least_popular_category_chart');
+            }
+        });
     }
 </script>
 </body>

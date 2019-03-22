@@ -32,35 +32,38 @@ class Functions
 
     }
 
-    public function createAdmin($firstName, $lastName, $email, $password)
+    public function createCustomer($firstName, $lastName, $email, $password, $websiteID)
     {
+        $timestamp = time();
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $websiteID = md5(uniqid($email, true));
 
-        $query = $this->conn->prepare("INSERT INTO websites(WebsiteID, OwnerEmail, DomainName) VALUES(?, ?, null)");
-        $query->bind_param("ss", $websiteID, $email);
-        $query->execute();
-        $query->close();
-
-        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin) VALUES(?, ?, ?, ?, ?, 1)");
-        $query->bind_param("sssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID);
+        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES(?, ?, ?, ?, ?, 0, ?)");
+        $query->bind_param("ssssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID, $timestamp);
         $result = $query->execute();
         $query->close();
 
         return $result;
     }
 
-    public function checkPassword($email, $password)
+    public function updateCustomer($firstName, $lastName, $oldEmail, $email, $websiteID){
+        $query = $this->conn->prepare("UPDATE users SET FirstName = ?, LastName = ?, Email = ? WHERE Email = ? AND Admin = 0 AND WebsiteID = ?");
+        $query->bind_param("sssss", $firstName, $lastName, $email, $oldEmail, $websiteID);
+        $result = $query->execute();
+        $query->close();
+
+        return $result;
+    }
+
+    public function checkPassword($email, $password, $websiteID)
     {
-        $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ?");
-        $query->bind_param('s', $email);
+        $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $email, $websiteID);
         $query->execute();
 
         $user = $query->get_result()->fetch_assoc();
 
         $query->close();
 
-        var_dump(password_verify($password, $user["EncryptedPassword"]));
         if (password_verify($password, $user["EncryptedPassword"])) {
             return $user;
         } else {
@@ -111,15 +114,15 @@ class Functions
         $websiteID = $websiteID["WebsiteID"];
         $query->close();
 
-        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' AND Navigation = 1");
+        $query = $this->conn->query("SELECT * FROM categories WHERE WebsiteID = '$websiteID' AND Navigation = 1 ORDER BY NavOrder ASC");
         return $query;
     }
 
 
-    public function getCategoryProducts($websiteID, $category)
+    public function getCategoryProducts($websiteID, $subcategory)
     {
-        $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ? AND Category = ?");
-        $query->bind_param('ss', $websiteID, $category);
+        $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ? AND SubCategory = ?");
+        $query->bind_param('ss', $websiteID, $subcategory);
         $query->execute();
         $result = $query->get_result();
 
@@ -128,14 +131,111 @@ class Functions
         return $result;
     }
 
-    public function getItemInformation($websiteID, $itemID){
+    public function getItemInformation($websiteID, $itemID)
+    {
         $query = $this->conn->prepare("select * from products WHERE ProductID = ?");
         $query->bind_param("s", $itemID);
+        $query->execute();
+        $result = $query->get_result()->fetch_assoc();
+
+        $query->close();
+
+        return $result;
+    }
+
+    public function addToBasket($websiteID, $userEmail, $productID, $quantity)
+    {
+
+        $query = $this->conn->prepare("SELECT COUNT(*) As count FROM cart WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
+        $query->bind_param("sss", $websiteID, $userEmail, $productID);
+        $query->execute();
+
+        $result = $query->get_result()->fetch_assoc();
+        $query->close();
+
+        if ($result["count"] > 0) {
+            $query = $this->conn->prepare("UPDATE cart SET Quantity = Quantity + ? WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
+            $query->bind_param("ssss", $quantity, $websiteID, $userEmail, $productID);
+            $query->execute();
+        } else {
+            $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?)");
+            $query->bind_param("ssss", $websiteID, $userEmail, $productID, $quantity);
+            $query->execute();
+            $query->close();
+        }
+
+    }
+
+    public function getBasket($userEmail, $websiteID)
+    {
+        $query = $this->conn->prepare("SELECT * FROM cart WHERE WebsiteID = ? AND UserEmail = ?");
+        $query->bind_param("ss", $websiteID, $userEmail);
+        $query->execute();
+
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
+    }
+
+    public function checkOut($orderID, $productID, $quantity, $email, $websiteID){
+        $time = time();
+
+        $query = $this->conn->prepare("INSERT INTO orderdetails VALUES(?, ?, ?)");
+        $query->bind_param("sss", $orderID, $productID, $quantity);
+        $query->execute();
+
+        $query->close();
+
+        $query = $this->conn->prepare("INSERT INTO orders VALUES(?, ?, ?, ?)");
+        $query->bind_param("ssss", $orderID, $email, $time, $websiteID);
+        $query->execute();
+        $query->close();
+
+    }
+
+    public function clearBasket($websiteID, $userEmail){
+        $query = $this->conn->prepare("DELETE FROM cart WHERE WebsiteID = ? AND UserEmail = ?");
+        $query->bind_param("ss", $websiteID, $userEmail);
+        $query->execute();
+        $query->close();
+    }
+
+    public function getMyOrders($email, $websiteID){
+        $query = $this->conn->prepare("SELECT * FROM orders WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $email, $websiteID);
         $query->execute();
         $result = $query->get_result();
 
         $query->close();
 
+        return $result;
+    }
+
+    public function getOrderDetails($orderID){
+        $query = $this->conn->prepare("SELECT ProductID, Quantity FROM orderdetails WHERE OrderID = ?");
+        $query->bind_param("s", $orderID);
+        $query->execute();
+        $result = $query->get_result();
+
+        $query->close();
+
+        return $result;
+    }
+
+    public function getSubCategories($category, $websiteID){
+        $query = $this->conn->query("SELECT * FROM subcategory WHERE Category = '$category' AND WebsiteID = '$websiteID'");
+        return $query;
+
+    }
+
+    public function getContent($websiteID, $page){
+        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
+        $query->bind_param("ss", $websiteID, $page);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
         return $result;
     }
 }

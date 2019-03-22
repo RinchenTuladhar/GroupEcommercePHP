@@ -553,6 +553,34 @@ WHERE orders.Timestamp >= ? AND orders.Timestamp <= ? AND orders.WebsiteID = ?;"
         return $result;
     }
 
+    public function getMostPopularCategoryByDate($from, $to, $websiteID){
+        $query = $this->conn->prepare("SELECT SUM(orderdetails.Quantity) As Quantity, products.Category FROM products 
+INNER JOIN orderdetails ON orderdetails.ProductID = products.ProductID
+INNER JOIN orders ON orders.OrderID = orderdetails.OrderID
+WHERE orders.websiteID = ? AND orders.Timestamp >= ? AND orders.Timestamp <= ?
+GROUP BY products.Category ORDER BY SUM(orderdetails.Quantity) DESC;");
+        $query->bind_param("sss", $websiteID, $from, $to);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        return $result;
+    }
+
+    public function getLeastPopularCategoryByDate($from, $to, $websiteID){
+        $query = $this->conn->prepare("SELECT SUM(orderdetails.Quantity) As Quantity, products.Category FROM products 
+INNER JOIN orderdetails ON orderdetails.ProductID = products.ProductID
+INNER JOIN orders ON orders.OrderID = orderdetails.OrderID
+WHERE orders.websiteID = ? AND orders.Timestamp >= ? AND orders.Timestamp <= ?
+GROUP BY products.Category ORDER BY SUM(orderdetails.Quantity) ASC;");
+        $query->bind_param("sss", $websiteID, $from, $to);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+
+        return $result;
+    }
+
 }
 
 ?>

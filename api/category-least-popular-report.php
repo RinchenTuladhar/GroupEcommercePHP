@@ -9,11 +9,11 @@ if(isset($_GET["to"]) && isset($_GET["from"])) {
     $to = strtotime($_GET["to"]);
     $from = strtotime($_GET["from"]);
 
-    $mostSold = $db->getLeastSoldByDate($from, $to, $_SESSION["WebsiteID"]);
+    $mostSold = $db->getLeastPopularCategoryByDate($from, $to, $_SESSION["WebsiteID"]);
 
     foreach($mostSold as $row){
         $result[] = array(
-            'name'   => $row["Name"],
+            'name'   => $row["Category"],
             'quantity'  => $row["Quantity"]
         );
     }

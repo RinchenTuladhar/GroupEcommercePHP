@@ -34,10 +34,11 @@ class Functions
 
     public function createCustomer($firstName, $lastName, $email, $password, $websiteID)
     {
+        $timestamp = time();
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin) VALUES(?, ?, ?, ?, ?, 0)");
-        $query->bind_param("sssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID);
+        $query = $this->conn->prepare("INSERT INTO users(Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES(?, ?, ?, ?, ?, 0, ?)");
+        $query->bind_param("ssssss", $email, $firstName, $lastName, $encryptedPassword, $websiteID, $timestamp);
         $result = $query->execute();
         $query->close();
 
