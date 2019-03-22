@@ -67,7 +67,9 @@ include '../api/db-access.php';
                     <td><?php echo $row["Price"]; ?></td>
                     <td><?php echo $row["Stock"]; ?></td>
                     <td><?php echo $row["Category"]; ?></td>
-                    <td><i class="fa fa-edit" id="edit_button"></i></td>
+                    <td><input type="button" value="Edit"
+                               onclick="editProduct('<?php echo $row["Name"]; ?>','<?php echo $row["Price"]; ?>', '<?php echo $row["Stock"]; ?>', '<?php echo $row["Stock"]; ?>')"
+                               class="btn btn-success"></td>
                 </tr>
                 <?php
             }
@@ -92,22 +94,29 @@ include '../api/db-access.php';
         node.addEventListener('animationend', handleAnimationEnd);
     }
 
-
-
-    $('#cancelBtn').click(function(){
-        const node = document.querySelector(".product-table");
-        node.classList.remove('animated', 'slideOutRight');
+    $('#cancelBtn').click(function () {
+        const node = document.querySelector(".edit-product-form");
+        node.classList.remove('animated', 'slideInUp');
 
         const formNode = document.querySelector(".product-table");
-        formNode.classList.remove('animated', 'slideInDown');
+        formNode.classList.remove('animated', 'slideOutRight');
+
+        animateCSS('.edit-product-form', 'slideOutUp', function(){
+            $('.edit-product-form').css("display", "none");
+            document.querySelector('.edit-product-form').classList.remove('slideOutUp');
+        });
     });
 
-    $("#edit_button").click(function(){
-        animateCSS('.product-table', 'slideOutRight', function(){
+    function editProduct(name, price, stock, category) {
+        animateCSS('.product-table', 'slideOutRight', function () {
             $('.edit-product-form').css("display", "block");
             animateCSS('.edit-product-form', 'slideInUp');
         });
-    });
+
+        $('#product-name').val(name);
+        $('#product-stock').val(price);
+        $('#product-price').val(stock);
+    }
 </script>
 </body>
 </html>
