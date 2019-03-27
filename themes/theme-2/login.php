@@ -16,7 +16,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="container">
         <div class="signup-form">
 
-            <h1>Sign in to your store.</h1>
+            <h1>Sign in to <?php echo $_SESSION["SiteName"]?>.</h1>
             <form action="api/login.php" method="POST">
                 <div class="form-group">
                     <label for="email">Email*:</label>
@@ -26,8 +26,8 @@ if (session_status() == PHP_SESSION_NONE) {
                     <label for="last_name">Password*:</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
+                <input type="hidden" value="<?php echo $_SESSION["WebsiteDetails"]["WebsiteID"]?>" name="website-id">
                 <input type="submit" class="btn btn-default" value="Sign In">
-
             </form>
         </div>
     </div>

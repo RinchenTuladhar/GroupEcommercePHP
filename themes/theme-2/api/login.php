@@ -7,22 +7,17 @@ $db = new Functions();
 if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $websiteID = $_POST['website-id'];
 
-    $user = $db->checkPassword($email, $password);
+    $user = $db->checkPassword($email, $password, $websiteID);
 
     if ($user != false) {
-        $hasDomain = $db->hasDomainName($user["WebsiteID"]);
+        $_SESSION['store_loggedin'] = true;
+        $_SESSION['customer']['email'] = $user["Email"];
+        $_SESSION['customer']['FirstName'] = $user["FirstName"];
+        $_SESSION["customer"]["LastName"] = $user["LastName"];
 
-        $_SESSION['loggedin'] = true;
-        $_SESSION["email"] = $user["email"];
-        $_SESSION["FirstName"] = $user["FirstName"];
-        $_SESSION["LastName"] = $user["LastName"];
-        $_SESSION["WebsiteID"] = $user["WebsiteID"];
-
-        $_SESSION["hasDomain"] = $hasDomain;
-
-
-        header("Location: ../dashboard.php");
+        header("Location: ../index.php");
     } else {
         $_SESSION['Error'] = "Your email / password is Incorrect. Please try again!";
         header("Location:../login.php");

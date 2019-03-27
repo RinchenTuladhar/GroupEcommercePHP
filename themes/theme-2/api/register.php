@@ -7,8 +7,9 @@ $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
 $email = $_POST['email'];
 $password = $_POST['password'];
+$websiteID = $_POST['website-id'];
 
-$user = $db->createAdmin($first_name, $last_name, $email,  $password);
+$user = $db->createCustomer($first_name, $last_name, $email,  $password, $websiteID);
 
 
 if($user){

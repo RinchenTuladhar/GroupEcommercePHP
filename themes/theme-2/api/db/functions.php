@@ -193,6 +193,12 @@ class Functions
         $query->execute();
         $query->close();
 
+        $query = $this->conn->prepare("UPDATE products SET stock = (stock - $quantity) WHERE WebsiteID = ?
+AND ProductID = ?");
+        $query->bind_param("ss", $websiteID, $productID);
+        $query->execute();
+        $query->close();
+
     }
 
     public function clearBasket($websiteID, $userEmail){

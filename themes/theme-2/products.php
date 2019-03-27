@@ -25,7 +25,7 @@ $query = $_SERVER['QUERY_STRING'];
 
                 while ($row = $products->fetch_assoc()) {
                     ?>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="product-wrapper">
                             <div class="product-image">
                                 <img src="<?php echo "img/items/" . $row["ProductID"] . ".jpg";?>">
