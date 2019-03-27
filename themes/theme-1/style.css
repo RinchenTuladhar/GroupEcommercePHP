@@ -173,7 +173,7 @@ img {
     margin-top: 100px;
 }
 
-.product-list h1{
+.product-list h1.product-title{
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 25px;

@@ -130,6 +130,16 @@ class Functions
 
         return $result;
     }
+    
+    public function getParentCategory($websiteID, $subCategory){
+        $query = $this->conn->prepare("SELECT Category FROM subcategory WHERE SubCategory = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $subCategory, $websiteID);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+        
+        return $result;
+    }
 
     public function getItemInformation($websiteID, $itemID)
     {
@@ -236,9 +246,9 @@ AND ProductID = ?");
 
     }
 
-    public function getContent($websiteID, $page){
-        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
-        $query->bind_param("ss", $websiteID, $page);
+    public function getContent($websiteID, $category, $subCategory){
+        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Category = ? AND SubCategory = ?");
+        $query->bind_param("sss", $websiteID, $category, $subCategory);
         $query->execute();
         $result = $query->get_result();
         $query->close();

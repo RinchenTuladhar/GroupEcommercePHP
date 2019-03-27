@@ -19,7 +19,7 @@ if (session_status() == PHP_SESSION_NONE) {
             <div class="col-md-12">
                 <?php
 
-                $content = $db->getContent($_SESSION["WebsiteDetails"]["WebsiteID"], "index");
+                $content = $db->getContent($_SESSION["WebsiteDetails"]["WebsiteID"], "index", "null");
 
                 echo(htmlspecialchars_decode($content->fetch_assoc()["Content"]));
                 ?>

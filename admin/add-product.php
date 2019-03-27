@@ -67,7 +67,6 @@ include '../api/db-access.php';
             <input type="file" name="image"/>
             <br>
             <input type="hidden" name="website_name" value="<?php echo $_SESSION["hasDomain"]["DomainName"]; ?>">
-            <input type="hidden" name="website_id" id="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
             <span class="float-right">
                 <button type="submit" class="btn btn-success">Create</button>
             </span>
@@ -75,15 +74,25 @@ include '../api/db-access.php';
     </div>
 </div>
 <script type="text/javascript">
-    $("#category").on('change', function() {
-        $.ajax({
-            type: "GET",
-            url: "../api/get-sub-categories.php",
-            data: { websiteID: $('#website_id').val(), category: $('#category').val()}
-        }).done(function( value ) {
-            $('#sub-category-list').html(value);
-        });
+$( document ).ready(function() {
+	 $.ajax({
+        type: "GET",
+        url: "../api/get-sub-categories.php",
+        data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val()}
+    }).done(function( value ) {
+        $('#sub-category-list').html(value);
     });
+});
+
+$("#category").on('change', function() {
+   $.ajax({
+       type: "GET",
+       url: "../api/get-sub-categories.php",
+       data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val()}
+   }).done(function( value ) {
+       $('#sub-category-list').html(value);
+   });
+});
 </script>
 </body>
 </html>

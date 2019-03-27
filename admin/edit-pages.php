@@ -9,7 +9,6 @@ if ($_SESSION['loggedin'] == null) {
     header("Location:../../login.php");
 }
 
-
 $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 
 ?>
@@ -17,35 +16,106 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 <head>
     <?php include '../api/scripts.php'; ?>
     <link rel="stylesheet" href="../css/style.css">
-    <script src="../plugins/ckeditor/ckeditor.js"></script>
-    <title>BuildMyStore: Admin</title>
+<script src="../plugins/ckeditor/ckeditor.js"></script>
+<title>BuildMyStore: Admin</title>
 </head>
 
 
 <body>
 <?php include 'navbar-admin.php'; ?>
 <div class="main admin-main">
-    <h2>Edit Home Page</h2>
-    <hr/>
-    <div class="col-md-12">
-
-        <form method="post" action="../api/update-page.php" enctype="multipart/form-data">
-            <textarea name="text_editor" id="text_editor" rows="10" cols="80">
+		<h2>Edit Home Page</h2>
+		<hr />
+		<div class="col-md-12">
+			<form method="post" action="../api/update-page.php"
+				enctype="multipart/form-data">
+				<textarea name="text_editor" id="text_editor" rows="10" cols="80">
                 <?php
-                $content = $db->getContent($_SESSION["WebsiteID"], "index");
-                echo(htmlspecialchars_decode($content->fetch_assoc()["Content"]));?>
+                $content = $db->getContent($_SESSION["WebsiteID"], "index", "null");
+                echo (htmlspecialchars_decode($content->fetch_assoc()["Content"]));
+                ?>
             </textarea>
-            <script>
+				<script>
                 CKEDITOR.replace( 'text_editor' );
             </script>
-            <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
-            <input type="hidden" name="page" value="index">
-            <br>
-            <button type="submit" class="btn btn-success">Update</button>
-        </form>
+				<input type="hidden" name="category" value="index"> <input
+					type="hidden" name="sub_category" value="null"> <br>
+				<button type="submit" class="btn btn-success">Update</button>
+			</form>
 
+			<h2>Edit Sub Category Page</h2>
 
-    </div>
-</div>
+			<form method="post" action="../api/update-page.php">
+				<label for="category">Select Category:</label> <select
+					name="category" class="form-control" id="category" required>
+                <?php
+                $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
+                if ($categoryList->num_rows > 0) {
+                    while ($row = $categoryList->fetch_assoc()) {
+                        ?>
+                        <option value="<?php echo $row['Title']; ?>">
+                            <?php echo $row["Title"]; ?>
+                        </option>
+                        <?php
+                    }
+                }
+                ?>
+            </select> <br> <select name="sub_category"
+					class="form-control" id="sub-category-list" required>
+				</select> <br>
+				<textarea name="category_text_editor" id="category_text_editor"
+					rows="10" cols="80">
+            </textarea>
+				<script>
+                CKEDITOR.replace( 'category_text_editor' );
+            </script>
+
+				<button type="submit" class="btn btn-success">Update</button>
+			</form>
+		</div>
+
+	</div>
 </body>
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+    	 $.ajax({
+             type: "GET",
+             url: "../api/get-sub-categories.php",
+             data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val()}
+         }).done(function( value ) {
+             $('#sub-category-list').html(value);
+
+           	// Load text for categories straight after retrieving them
+        	 $.ajax({
+                 type: "GET",
+                 url: "../api/get-page-content.php",
+                 data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val(), subCategory: $('#sub-category-list').val()}
+             }).done(function( value ) {
+            	 CKEDITOR.instances["category_text_editor"].setData(value);
+             });
+         });
+
+
+    });
+
+    $("#category").on('change', function() {
+        $.ajax({
+            type: "GET",
+            url: "../api/get-sub-categories.php",
+            data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val()}
+        }).done(function( value ) {
+            $('#sub-category-list').html(value);
+
+           	// Load text for categories straight after retrieving them
+       	 $.ajax({
+                type: "GET",
+                url: "../api/get-page-content.php",
+                data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val(), subCategory: $('#sub-category-list').val()}
+            }).done(function( value ) {
+           	 CKEDITOR.instances["category_text_editor"].setData(value);
+            });
+        });
+    });
+</script>
 </html>

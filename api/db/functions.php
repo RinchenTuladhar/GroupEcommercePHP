@@ -274,29 +274,30 @@ class Functions
         return $query;
     }
 
-    public function updatePage($websiteID, $page, $content)
+    public function updatePage($websiteID, $category, $subCategory, $content)
     {
-        $pageContent = $this->getPageContent($websiteID, $page);
+        $pageContent = $this->getPageContent($websiteID, $category, $subCategory);
         $result = "";
-
+        
         if ($pageContent->num_rows > 0) {
-            $query = $this->conn->prepare("UPDATE pages SET Content = ? WHERE WebsiteID = ? AND Page = ?");
-            $query->bind_param("sss", $content, $websiteID, $page);
+            $query = $this->conn->prepare("UPDATE pages SET Content = ? WHERE WebsiteID = ? AND Category = ? AND SubCategory = ?");
+            $query->bind_param("ssss", $content, $websiteID, $category, $subCategory);
             $result = $query->execute();
             $query->close();
         } else {
-            $query = $this->conn->prepare("INSERT INTO pages(WebsiteID, Page, Content) VALUES(?, ?, ?)");
-            $query->bind_param("sss", $websiteID, $page, $content);
+            $query = $this->conn->prepare("INSERT INTO pages(WebsiteID, Category, SubCategory, Content) VALUES(?, ?, ?, ?)");
+            $query->bind_param("ssss", $websiteID, $category, $subCategory, $content);
             $result = $query->execute();
             $query->close();
         }
+        
         return $result;
     }
 
-    public function getPageContent($websiteID, $page)
+    public function getPageContent($websiteID, $category, $subCategory)
     {
-        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
-        $query->bind_param("ss", $websiteID, $page);
+        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Category = ? AND SubCategory = ?");
+        $query->bind_param("sss", $websiteID, $category, $subCategory);
         $query->execute();
         $result = $query->get_result();
         $query->close();
@@ -304,10 +305,10 @@ class Functions
     }
 
 
-    public function getContent($websiteID, $page)
+    public function getContent($websiteID, $category, $subCategory)
     {
-        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Page = ?");
-        $query->bind_param("ss", $websiteID, $page);
+        $query = $this->conn->prepare("SELECT Content FROM pages WHERE WebsiteID = ? AND Category = ? AND SubCategory = ?");
+        $query->bind_param("sss", $websiteID, $category, $subCategory);
         $query->execute();
         $result = $query->get_result();
         $query->close();
