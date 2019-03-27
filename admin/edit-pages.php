@@ -69,7 +69,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 				<script>
                 CKEDITOR.replace( 'category_text_editor' );
             </script>
-
+			<br>
 				<button type="submit" class="btn btn-success">Update</button>
 			</form>
 		</div>
@@ -113,9 +113,21 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                 url: "../api/get-page-content.php",
                 data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val(), subCategory: $('#sub-category-list').val()}
             }).done(function( value ) {
-           	 CKEDITOR.instances["category_text_editor"].setData(value);
+            	console.log(value);
+           	 	CKEDITOR.instances["category_text_editor"].setData(value);
             });
         });
+    });
+
+    $('#sub-category-list').on('change', function(){
+       	 $.ajax({
+             type: "GET",
+             url: "../api/get-page-content.php",
+             data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val(), subCategory: $('#sub-category-list').val()}
+         }).done(function( value ) {
+         	console.log(value);
+        	 	CKEDITOR.instances["category_text_editor"].setData(value);
+         });
     });
 </script>
 </html>
