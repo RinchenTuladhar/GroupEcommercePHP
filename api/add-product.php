@@ -11,7 +11,7 @@ if(isset($_POST["product_name"]) && isset($_POST["product_description"]) && isse
     $product_original_price = $_POST["product_original_price"];
     $product_price = $_POST["product_price"];
     $product_stock = $_POST["product_stock"];
-    $website_id = $_POST["website_id"];
+    $website_id = $_SESSION["WebsiteID"];
     $category = $_POST["category"];
     $sub_category = $_POST["sub_category"];
     $website_name = $_POST["website_name"];

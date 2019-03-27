@@ -253,6 +253,16 @@ class Functions
 
         return $result;
     }
+    
+    public function getProductBySubCategory($websiteID, $category, $subCategory){
+        $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ? AND Category = ? AND SubCategory = ?");
+        $query->bind_param("sss", $websiteID, $category, $subCategory);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
+        
+        return $result;
+    }
 
     public function getProductInfo($productID)
     {

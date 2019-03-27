@@ -65,7 +65,7 @@ $splitUrl = array_filter(explode('/', $url));
                         </div>
                 </li>
             <?php } ?>
-            <li><a href="reports.php"><i class="fas fa-chart-line"></i>Reports</a></li>
+            <li><a href="reports.php"><i class="fa fa-bar-chart" aria-hidden="true"></i> Reports</a></li>
         </ul>
     </div>
 </div> <!--.navigation-menu-->

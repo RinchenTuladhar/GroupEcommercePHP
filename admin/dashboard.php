@@ -8,6 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 if ($_SESSION['loggedin'] == null) {
     header("Location:../../login.php");
 }
+
 ?>
 
 <html>
