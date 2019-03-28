@@ -89,6 +89,18 @@ class Functions
 
         return $query;
     }
+    
+    public function getWebsiteID($websiteName)
+    {
+        $query = $this->conn->prepare("SELECT * FROM websites WHERE DomainName = ?");
+        $query->bind_param("s", $websiteName);
+        $query->execute();
+        $result = $query->get_result()->fetch_assoc();
+        
+        $query->close();
+        return $result;
+        
+    }
 
     public function createCategory($category, $websiteID)
     {
