@@ -47,7 +47,10 @@ include '../api/db-access.php';
             <label for="category">Category</label>
             <select name="category" class="form-control" id="category"  required>
                 <?php
+                // Get all categories of website
                 $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
+
+                // If there are categories, loop through them all & print Title.
                 if ($categoryList->num_rows > 0) {
                     while ($row = $categoryList->fetch_assoc()) {
                         ?>
@@ -75,6 +78,7 @@ include '../api/db-access.php';
 </div>
 <script type="text/javascript">
 $( document ).ready(function() {
+    // Retrieves Sub Categories upon page loading
 	 $.ajax({
         type: "GET",
         url: "../api/get-sub-categories.php",
@@ -85,7 +89,8 @@ $( document ).ready(function() {
 });
 
 $("#category").on('change', function() {
-   $.ajax({
+    // Retrieves Sub Categories upon drop down clicked
+    $.ajax({
        type: "GET",
        url: "../api/get-sub-categories.php",
        data: { websiteID: '<?php echo $_SESSION["WebsiteID"]?>', category: $('#category').val()}

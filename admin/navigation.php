@@ -16,6 +16,7 @@ if ($_SESSION['loggedin'] == null) {
     <link rel="stylesheet" href="../css/style.css">
     <title>BuildMyStore: Admin</title>
 
+    <!-- Script for drag+drop -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(function () {
@@ -23,6 +24,7 @@ if ($_SESSION['loggedin'] == null) {
             $("#sortable").disableSelection();
         });
     </script>
+
 </head>
 
 <body>
@@ -33,10 +35,13 @@ if ($_SESSION['loggedin'] == null) {
         <div class="col-md-6">
             <ul class="list-group" id="sortable">
                 <?php
+
+                // List of categories
                 $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                 if ($categoryList->num_rows > 0) {
                     while ($row = $categoryList->fetch_assoc()) {
                         ?>
+                        <!-- CATEGORY DETAILS-->
                         <li class="list-group-item navigation-list ui-state-default">
                             <?php echo $row["Title"]; ?>
                             <span class="float-right">
@@ -50,6 +55,7 @@ if ($_SESSION['loggedin'] == null) {
                                     <?php
                                 } else {
                                     ?>
+                                    <!-- SELECT CATEGORY -->
                                     <button type="button" id="navClick"
                                             onclick="navClick('<?php echo $row["Title"] ?>', 0, '<?php echo $_SESSION["WebsiteID"]; ?>', this);">
 								<i class="fa fa-square"></i>
@@ -75,11 +81,14 @@ if ($_SESSION['loggedin'] == null) {
 </body>
 <script type="text/javascript">
     function navClick(value, isChecked, websiteID, input) {
+
+        // Request executed when navigation square clicked.
         var request = $.ajax({
             url: '../api/update-navigation.php',
             type: "POST",
             data: {websiteID: websiteID, title: value, mode: isChecked},
             success: function () {
+                // Updates check / uncheck box
                 if (isChecked == 1) {
                     input.outerHTML = '<button type="button" id="navClick"\n' +
                         '\t\t\t\t\t\t\t\tonclick="navClick(\'' + value + '\', 0, \'<?php echo $_SESSION["WebsiteID"];?>\', this);">\n' +
@@ -97,6 +106,7 @@ if ($_SESSION['loggedin'] == null) {
     }
 </script>
 <script>
+    // Auto updates navigation on mouse up
     $(".navigation-list").mouseup(function () {
         var draggedCat = $.trim($(this).text());
         var navigationList = [];
@@ -111,6 +121,7 @@ if ($_SESSION['loggedin'] == null) {
             }
         });
 
+        // Sends request to update navigation order
         var request = $.ajax({
             url: '../api/update-navigation.php',
             type: "POST",

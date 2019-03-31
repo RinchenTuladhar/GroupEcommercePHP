@@ -9,6 +9,7 @@ if ($_SESSION['loggedin'] == null) {
     header("Location:../../login.php");
 }
 
+// Gets all categories belonging to the website
 $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 
 ?>
@@ -31,6 +32,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 				enctype="multipart/form-data">
 				<textarea name="text_editor" id="text_editor" rows="10" cols="80">
                 <?php
+                // Gets content of home page
                 $content = $db->getContent($_SESSION["WebsiteID"], "index", "null");
                 echo (htmlspecialchars_decode($content->fetch_assoc()["Content"]));
                 ?>
@@ -49,6 +51,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 				<label for="category">Select Category:</label> <select
 					name="category" class="form-control" id="category" required>
                 <?php
+                // Gets content of each sub category
                 $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                 if ($categoryList->num_rows > 0) {
                     while ($row = $categoryList->fetch_assoc()) {
@@ -79,6 +82,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 
 <script type="text/javascript">
     $( document ).ready(function() {
+        // Loads home page category
     	 $.ajax({
              type: "GET",
              url: "../api/get-sub-categories.php",

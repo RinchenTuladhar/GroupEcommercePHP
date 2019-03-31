@@ -28,6 +28,7 @@ if ($_SESSION['loggedin'] == null) {
 <?php include 'navbar-admin.php'; ?>
 <div class="main admin-main admin-reports">
     <div class="col-md-12">
+        <!-- Report Navigation -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-overview" role="tab"
@@ -46,9 +47,12 @@ if ($_SESSION['loggedin'] == null) {
                    aria-controls="pills-contact" aria-selected="false">Categories</a>
             </li>
         </ul>
+        <!-- Report Navigation End -->
+
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-overview" role="tabpanel" aria-labelledby="pills-home-tab">
                 <div class="jumbotron">
+                    <!-- Overview Report -->
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Net Revenue</h3>
@@ -69,6 +73,7 @@ if ($_SESSION['loggedin'] == null) {
                             <p><?php echo $db->getAmountOfOrders(-1)->fetch_assoc()["Total"]; ?></p>
                         </div>
                     </div>
+                    <!-- Overview Report End -->
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -92,6 +97,7 @@ if ($_SESSION['loggedin'] == null) {
                     </div>
 
                 <div class="jumbotron">
+                    <!-- Orders Report -->
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Orders Created</h3>
@@ -114,7 +120,7 @@ if ($_SESSION['loggedin'] == null) {
                             <p id="report-orders-items-purchased"></p>
                         </div>
                     </div>
-
+                    <!-- Orders Report End -->
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
@@ -137,6 +143,7 @@ if ($_SESSION['loggedin'] == null) {
                     </div>
                 </div>
                 <div class="jumbotron">
+                    <!-- Item Report -->
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Most Sold Item</h3>
@@ -147,6 +154,8 @@ if ($_SESSION['loggedin'] == null) {
                             <div id="least_sold_item_chart"></div>
                         </div>
                     </div>
+                    <!-- Item Report End -->
+
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
@@ -169,6 +178,8 @@ if ($_SESSION['loggedin'] == null) {
                     </div>
                 </div>
                 <div class="jumbotron">
+                    <!-- Category Report -->
+
                     <div class="row report-box">
                         <div class="col-md-6 box">
                             <h3>Most Popular Category</h3>
@@ -179,6 +190,8 @@ if ($_SESSION['loggedin'] == null) {
                             <div id="least_popular_category_chart"></div>
                         </div>
                     </div>
+                    <!-- Category Report End-->
+
                 </div>
             </div>
         </div>
@@ -186,19 +199,23 @@ if ($_SESSION['loggedin'] == null) {
 </div>
 
 <script type="text/javascript">
+    // Sets current date to date input
     document.getElementById('to_date').valueAsDate = new Date();
     document.getElementById('product_to_date').valueAsDate = new Date();
     document.getElementById('category_to_date').valueAsDate = new Date();
 
+    // Function executed upon button click
     function ordersReport(){
         var fromDate = $('#from_date').val();
         var toDate = $('#to_date').val();
 
+        // Gets data by date
         var request = $.ajax({
             url: '../api/orders-report.php',
             type: "GET",
             data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
             success: function (data) {
+                // Sets Google Chart graphs to each section
                 var results = JSON.parse(data);
                 for(var i = 0; i < results.length; i++){
                     switch(results[i]["type"]){
@@ -240,6 +257,7 @@ if ($_SESSION['loggedin'] == null) {
         return request;
     }
 
+    // Most Sold Item Report
     function soldItemReport(){
         var fromDate = $('#product_from_date').val();
         var toDate = $('#product_to_date').val();
@@ -259,6 +277,7 @@ if ($_SESSION['loggedin'] == null) {
         leastSoldItemReport(fromDate, toDate);
     }
 
+    // Least Sold Item Report
     function leastSoldItemReport(fromDate, toDate){
         var temp_title = "Least Items Sold (MAX 3)";
         $.ajax({
@@ -272,6 +291,7 @@ if ($_SESSION['loggedin'] == null) {
         });
     }
 
+    // Item Sold Overview
     function itemSoldChart(chart_data, chart_main_title, div){
         var jsonData = JSON.parse(chart_data);
         var data = new google.visualization.DataTable();

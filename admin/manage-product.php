@@ -61,12 +61,16 @@ include '../api/db-access.php';
             </thead>
             <tbody>
             <?php
+
+            // Gets list of all products linked to the Website
             $productList = $db->displayAllProducts($_SESSION["WebsiteID"]);
 
+            // Loops through each product
             while ($row = $productList->fetch_assoc()) {
 
                 ?>
                 <tr>
+                    <!-- PRODUCT DETAILS -->
                     <td><?php echo $row["Name"]; ?></td>
                     <td><?php echo $row["Price"]; ?></td>
                     <td><?php echo $row["Stock"]; ?></td>
@@ -85,6 +89,7 @@ include '../api/db-access.php';
     </div>
 </div>
 <script type="text/javascript">
+    // WowJS Animation Set
     function animateCSS(element, animationName, callback) {
         const node = document.querySelector(element);
         node.classList.add('animated', animationName);
@@ -98,6 +103,7 @@ include '../api/db-access.php';
         node.addEventListener('animationend', handleAnimationEnd);
     }
 
+    // Removing the animation
     $('#cancelBtn').click(function () {
         const node = document.querySelector(".edit-product-form");
         node.classList.remove('animated', 'slideInUp');
@@ -111,6 +117,7 @@ include '../api/db-access.php';
         });
     });
 
+    // Animation for editing product
     function editProduct(name, price, stock, productID) {
         animateCSS('.product-table', 'slideOutRight', function () {
             $('.edit-product-form').css("display", "block");

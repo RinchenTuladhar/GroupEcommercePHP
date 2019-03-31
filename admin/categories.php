@@ -41,6 +41,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                 <p>Seperate each category by commas.</p>
                 <select class="form-control" name="category">
                     <?php
+                    // Prints out all categories
                     if ($categoryList->num_rows > 0) {
                         while ($row = $categoryList->fetch_assoc()) {
                             ?>
@@ -49,7 +50,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                         }
                     }
 
-
+                    // Resets counter of loop
                     mysqli_data_seek($categoryList, 0);
                     ?>
                 </select>
@@ -67,8 +68,11 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
         <h2>List of Categories</h2>
         <ul class="list-group">
             <?php
+            // Loops through all categories
             if ($categoryList->num_rows > 0) {
                 while ($row = $categoryList->fetch_assoc()) {
+
+                    // Prints all sub categpories
                     $subCategories = $db->getSubCategories($row["Title"], $row["WebsiteID"]);
                     ?>
                     <li class="list-group-item">
@@ -109,6 +113,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
 </div>
 <script type="text/javascript">
     function deleteCategory(cat, subcat) {
+        // When delete is clicked, category is checked to see if is deletable
         var request = $.ajax({
             url: '../api/delete-category.php',
             type: "POST",

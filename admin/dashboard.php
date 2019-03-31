@@ -88,6 +88,7 @@ if ($_SESSION['loggedin'] == null) {
         <h2 class="text-center">This Week's Stats</h2>
         <hr/>
         <div class="dashboard-week-stats row">
+            <!-- DASHBOARD STATISTICS -->
             <div class="col-md-12 row">
                 <div class="col-md-4 stat-box">
                     <h5>Orders Made</h5>
@@ -132,19 +133,8 @@ if ($_SESSION['loggedin'] == null) {
                 </span>
                 </div>
             </div>
+            <!-- END OF DASHBOARD STATISTICS -->
             <hr/>
-        </div>
-        <h4>Top 3 Products in the last 30 days</h4>
-        <?php
-        $mostSold30 = $db->getMostSold(30, $_SESSION["WebsiteID"]);
-
-        ?>
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4"></div>
         </div>
     </div>
 </div>
