@@ -1,6 +1,13 @@
 <?php
 $url = $_SERVER['REQUEST_URI'];
 $splitUrl = array_filter(explode('/', $url));
+
+$domainName = null;
+
+if(isset($_SESSION["hasDomain"]["DomainName"])){
+    $domainName = $_SESSION["hasDomain"]["DomainName"];
+}
+$_SESSION["WebsiteDetails"] = $db->getWebsiteID($domainName);
 ?>
 
 <body>
