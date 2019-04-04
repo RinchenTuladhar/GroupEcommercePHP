@@ -86,7 +86,7 @@ if ($_SESSION["hasDomain"]["DomainName"] != null) {
 						aria-hidden="true"></i> Reports</a></li>
 				<li><a href="catalogue.php" target="_blank">
 				<i class="fa fa-book" aria-hidden="true"></i></i> Catalogue</a></li>
-
+                <li><a href="debug.php"><i class="fa fa-cogs"></i> Testing</a></li>
 			</ul>
 		</div>
 	</div>

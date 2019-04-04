@@ -17,7 +17,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $_SESSION['customer']['FirstName'] = $user["FirstName"];
         $_SESSION["customer"]["LastName"] = $user["LastName"];
 
-        header("Location: ../index.php");
+        header("Location: ../debug.php");
     } else {
         $_SESSION['Error'] = "Your email / password is Incorrect. Please try again!";
         header("Location:../login.php");

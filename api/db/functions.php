@@ -20,6 +20,17 @@ class Functions
 
     }
 
+    public function debug($sql){
+        $statement = "INSERT INTO users (Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES";
+        $statement .= $sql;
+
+        echo $statement;
+        $query = $this->conn->prepare($statement);
+        $result = $query->execute();
+        $query->close();
+        return $result;
+    }
+
     public function createAdmin($firstName, $lastName, $email, $password)
     {
         $timestamp = time();
