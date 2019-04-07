@@ -34,7 +34,7 @@ $db = new Functions();
         }
     }
 
-    $db->debug($sqlStatement);
+    $db->debug($sqlStatement, $websiteID, $email);
 
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 

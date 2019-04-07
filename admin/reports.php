@@ -263,7 +263,7 @@ if ($_SESSION['loggedin'] == null) {
         var toDate = $('#product_to_date').val();
 
 
-        var temp_title = "Top Items Sold (MAX 3)";
+        var temp_title = "Top Items Sold (MAX 5)";
         $.ajax({
             url: '../api/products-most-sold-report.php',
             type: "GET",
@@ -279,7 +279,7 @@ if ($_SESSION['loggedin'] == null) {
 
     // Least Sold Item Report
     function leastSoldItemReport(fromDate, toDate){
-        var temp_title = "Least Items Sold (MAX 3)";
+        var temp_title = "Least Items Sold (MAX 5)";
         $.ajax({
             url: '../api/products-least-sold-report.php',
             type: "GET",

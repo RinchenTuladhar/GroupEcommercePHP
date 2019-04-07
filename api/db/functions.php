@@ -20,15 +20,59 @@ class Functions
 
     }
 
-    public function debug($sql){
-        $statement = "INSERT INTO users (Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES";
-        $statement .= $sql;
+    public function debug($sql, $websiteID, $email){
+        // Creating Users
+        $userStatement = "INSERT INTO users (Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES";
+        $userStatement .= $sql;
 
-        echo $statement;
-        $query = $this->conn->prepare($statement);
+        $query = $this->conn->prepare($userStatement);
         $result = $query->execute();
         $query->close();
-        return $result;
+
+        // Get products
+        $listOfProducts = $this->displayAllProducts($websiteID);
+
+        $orderID = uniqid();
+
+        // Store product as order detail
+        $maxProducts = 0; // Max amount of products
+
+        while($row = $listOfProducts->fetch_assoc()){
+            if($maxProducts < 10){
+                $this->checkOut($orderID, $row["ProductID"], 2, $email, $websiteID);
+            }
+            $maxProducts++;
+        }
+
+        // order details as order
+
+
+        // Reduce stock by 1 for each product
+
+
+        //return $result;
+    }
+
+    public function checkOut($orderID, $productID, $quantity, $email, $websiteID){
+        $time = time();
+
+        $query = $this->conn->prepare("INSERT INTO orderdetails VALUES(?, ?, ?)");
+        $query->bind_param("sss", $orderID, $productID, $quantity);
+        $query->execute();
+
+        $query->close();
+
+        $query = $this->conn->prepare("INSERT INTO orders VALUES(?, ?, ?, ?)");
+        $query->bind_param("ssss", $orderID, $email, $time, $websiteID);
+        $query->execute();
+        $query->close();
+
+        $query = $this->conn->prepare("UPDATE products SET stock = (stock - $quantity) WHERE WebsiteID = ?
+AND ProductID = ?");
+        $query->bind_param("ss", $websiteID, $productID);
+        $query->execute();
+        $query->close();
+
     }
 
     public function createAdmin($firstName, $lastName, $email, $password)
@@ -375,7 +419,7 @@ class Functions
         }
 
         if ($i > 1) {
-            $orderQuery .= " GROUP BY ProductID ORDER BY SUM(Quantity) DESC LIMIT 3";
+            $orderQuery .= " GROUP BY ProductID ORDER BY SUM(Quantity) DESC LIMIT 5";
 
             $query = $this->conn->prepare($orderQuery);
             $query->execute();
@@ -406,7 +450,7 @@ class Functions
         }
 
         if ($i > 1) {
-            $orderQuery .= "GROUP BY orderdetails.ProductID ORDER BY SUM(Quantity) DESC LIMIT 3";
+            $orderQuery .= "GROUP BY orderdetails.ProductID ORDER BY SUM(Quantity) DESC LIMIT 5";
 
             $query = $this->conn->prepare($orderQuery);
             $query->execute();
@@ -437,7 +481,7 @@ class Functions
         }
 
         if ($i > 1) {
-            $orderQuery .= "GROUP BY orderdetails.ProductID ORDER BY SUM(Quantity) ASC LIMIT 3";
+            $orderQuery .= "GROUP BY orderdetails.ProductID ORDER BY SUM(Quantity) ASC LIMIT 5";
 
             $query = $this->conn->prepare($orderQuery);
             $query->execute();
