@@ -34,7 +34,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 </div>
                 <div class="form-group">
                     <label for="password">Password*:</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <input type="password" class="form-control" id="password" name="password" minlength="12" required>
                     <span id="result"></span> <br>
                 </div>
                 <input type="submit" class="btn btn-default" value="Register">
