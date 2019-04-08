@@ -20,7 +20,8 @@ class Functions
 
     }
 
-    public function debug($sql, $websiteID, $email){
+    public function debug($sql, $websiteID, $email)
+    {
         // Creating Users
         $userStatement = "INSERT INTO users (Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES";
         $userStatement .= $sql;
@@ -37,8 +38,8 @@ class Functions
         // Store product as order detail
         $maxProducts = 0; // Max amount of products
 
-        while($row = $listOfProducts->fetch_assoc()){
-            if($maxProducts < 10){
+        while ($row = $listOfProducts->fetch_assoc()) {
+            if ($maxProducts < 10) {
                 $this->checkOut($orderID, $row["ProductID"], 2, $email, $websiteID);
             }
             $maxProducts++;
@@ -53,7 +54,8 @@ class Functions
         //return $result;
     }
 
-    public function checkOut($orderID, $productID, $quantity, $email, $websiteID){
+    public function checkOut($orderID, $productID, $quantity, $email, $websiteID)
+    {
         $time = time();
 
         $query = $this->conn->prepare("INSERT INTO orderdetails VALUES(?, ?, ?)");
@@ -144,17 +146,17 @@ AND ProductID = ?");
 
         return $query;
     }
-    
+
     public function getWebsiteID($websiteName)
     {
         $query = $this->conn->prepare("SELECT * FROM websites WHERE DomainName = ?");
         $query->bind_param("s", $websiteName);
         $query->execute();
         $result = $query->get_result()->fetch_assoc();
-        
+
         $query->close();
         return $result;
-        
+
     }
 
     public function createCategory($category, $websiteID)
@@ -166,7 +168,7 @@ AND ProductID = ?");
             if ($i == (sizeof($str_arr) - 1)) {
                 $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "', 0, $i);";
             } else {
-                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "', 0, $i);";
+                $sqlStatement .= "('" . str_replace(' ', '', $str_arr[$i]) . "' , '" . $websiteID . "', 0, $i),";
             }
         }
 
@@ -181,9 +183,20 @@ AND ProductID = ?");
 
     public function createSubCategory($category, $websiteID, $subCategory)
     {
-        $query = $this->conn->prepare("INSERT INTO subcategory(Category, WebsiteID, SubCategory) VALUES(?, ?, ?)");
-        $query->bind_param('sss', $category, $websiteID, $subCategory);
+        $str_arr = explode(",", $subCategory);
 
+        $sqlStatement = "INSERT INTO subcategory(Category, WebsiteID, SubCategory) VALUES ";
+
+        for ($i = 0; $i < sizeof($str_arr); $i++) {
+            if ($i == (sizeof($str_arr) - 1)) {
+                $sqlStatement .= "('" . str_replace(' ', '', $category) . "' , '" . $websiteID . "', '$str_arr[$i]');";
+            } else {
+                $sqlStatement .= "('" . str_replace(' ', '', $category) . "' , '" . $websiteID . "', '$str_arr[$i]'),";
+            }
+        }
+
+        echo $sqlStatement;
+        $query = $this->conn->prepare($sqlStatement);
         $result = $query->execute();
         $query->close();
         return $result;
@@ -320,14 +333,15 @@ AND ProductID = ?");
 
         return $result;
     }
-    
-    public function getProductBySubCategory($websiteID, $category, $subCategory){
+
+    public function getProductBySubCategory($websiteID, $category, $subCategory)
+    {
         $query = $this->conn->prepare("SELECT * FROM products WHERE WebsiteID = ? AND Category = ? AND SubCategory = ?");
         $query->bind_param("sss", $websiteID, $category, $subCategory);
         $query->execute();
         $result = $query->get_result();
         $query->close();
-        
+
         return $result;
     }
 
@@ -342,7 +356,8 @@ AND ProductID = ?");
         return $result;
     }
 
-    public function updateProductInfo($productID, $name, $price, $stock){
+    public function updateProductInfo($productID, $name, $price, $stock)
+    {
         $query = $this->conn->prepare("UPDATE products SET Name = ?, Price = ?, Stock = ? WHERE ProductID = ?");
         $query->bind_param("ssis", $name, $price, $stock, $productID);
         $query->execute();
@@ -355,7 +370,7 @@ AND ProductID = ?");
     {
         $pageContent = $this->getPageContent($websiteID, $category, $subCategory);
         $result = "";
-        
+
         if ($pageContent->num_rows > 0) {
             $query = $this->conn->prepare("UPDATE pages SET Content = ? WHERE WebsiteID = ? AND Category = ? AND SubCategory = ?");
             $query->bind_param("ssss", $content, $websiteID, $category, $subCategory);
@@ -367,7 +382,7 @@ AND ProductID = ?");
             $result = $query->execute();
             $query->close();
         }
-        
+
         return $result;
     }
 
@@ -640,7 +655,8 @@ WHERE orders.Timestamp >= ? AND orders.Timestamp <= ? AND orders.WebsiteID = ?;"
         return $result;
     }
 
-    public function getMostPopularCategoryByDate($from, $to, $websiteID){
+    public function getMostPopularCategoryByDate($from, $to, $websiteID)
+    {
         $query = $this->conn->prepare("SELECT SUM(orderdetails.Quantity) As Quantity, products.Category FROM products 
 INNER JOIN orderdetails ON orderdetails.ProductID = products.ProductID
 INNER JOIN orders ON orders.OrderID = orderdetails.OrderID
@@ -654,7 +670,8 @@ GROUP BY products.Category ORDER BY SUM(orderdetails.Quantity) DESC;");
         return $result;
     }
 
-    public function getLeastPopularCategoryByDate($from, $to, $websiteID){
+    public function getLeastPopularCategoryByDate($from, $to, $websiteID)
+    {
         $query = $this->conn->prepare("SELECT SUM(orderdetails.Quantity) As Quantity, products.Category FROM products 
 INNER JOIN orderdetails ON orderdetails.ProductID = products.ProductID
 INNER JOIN orders ON orders.OrderID = orderdetails.OrderID
