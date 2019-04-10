@@ -40,7 +40,7 @@ class Functions
 
         while ($row = $listOfProducts->fetch_assoc()) {
             if ($maxProducts < 10) {
-                $this->checkOut($orderID, $row["ProductID"], 2, $email, $websiteID);
+                $this->checkOut($orderID, $row["ProductID"], rand(1,5), $email, $websiteID);
             }
             $maxProducts++;
         }
