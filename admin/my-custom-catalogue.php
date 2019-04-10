@@ -99,6 +99,8 @@ h1 {
 </style>';
 
 // Get list of categories
+$counter = 0;
+
 foreach($listOfCategories as $row){
     // Get list of sub category for the category
     $subCategoryList = $db->getSubCategories($row, $_SESSION["WebsiteID"]);
@@ -109,6 +111,7 @@ foreach($listOfCategories as $row){
         $productList = $db->getProductBySubCategory($_SESSION["WebsiteID"], $row, $subCatRow["SubCategory"]);
 
         // If product exists, print off each one with name, price and image
+        
         if($productList->num_rows > 0){
             $html .= "<h1>" . $subCatRow["SubCategory"] . "</h1>";
             while($productRow = $productList->fetch_assoc()){
@@ -117,12 +120,16 @@ foreach($listOfCategories as $row){
                 $html .= "<p> &pound;" . $productRow["Price"] . "</p>";
             }
 
-            $html .= '<br pagebreak="true"/>';
+            // Stops creating page after last page.
+            if($counter < sizeof($listOfCategories)){
+                $html .= '<br pagebreak="true"/>';
+            }
         }
-
-
     }
+    $counter++;
 }
+
+$html .= "<h2>END OF DOCUMENT</h2>";
 
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
