@@ -117,7 +117,7 @@ foreach($listOfCategories as $row){
             while($productRow = $productList->fetch_assoc()){
                 $html .= '<img src="../sites/' . $_SESSION['WebsiteDetails']['DomainName'] .'/img/items/'. $productRow["ProductID"] . '.jpg" width="250px" height="auto">';
                 $html .= "<h3>" . $productRow["Name"] . "</h3>";
-                $html .= "<p> &pound;" . $productRow["Price"] . "</p>";
+                $html .= "<p> &pound;" . number_format($productRow["Price"],2) . "</p>";
             }
 
             // Stops creating page after last page.
