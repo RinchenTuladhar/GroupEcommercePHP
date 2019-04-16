@@ -123,13 +123,18 @@ if ($_SESSION['loggedin'] == null) {
                     <span id="stat-week-sales">
                     <?php
                     $i = 0;
-                    while ($row = $mostSold7->fetch_assoc()) {
-                        if ($i == 0) {
-                            ?>
-                            <p><?php echo ($db->getProductInfo($row["ProductID"])->fetch_assoc())["Name"]; ?></p>
-                        <?php }
-                        $i++;
-                    } ?>
+                    if($mostSold7->num_rows > 0){
+                        while ($row = $mostSold7->fetch_assoc()) {
+                            if ($i == 0) {
+                                ?>
+                                <p><?php echo ($db->getProductInfo($row["ProductID"])->fetch_assoc())["Name"]; ?></p>
+                            <?php }
+                            $i++;
+                        }
+                    } else {
+                        echo "<p>No Items Sold</p>";
+                    }
+                    ?>
                 </span>
                 </div>
             </div>
