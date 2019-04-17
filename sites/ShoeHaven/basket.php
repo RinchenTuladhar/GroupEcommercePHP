@@ -28,6 +28,7 @@ $totalPrice = 0;
             <div class="row">
                 <div class=" col-md-8">
                     <?php
+                    if(isset($_SESSION['customer'])){
                     $basketItems = $db->getBasket($_SESSION['customer']['email'], $_SESSION["WebsiteDetails"]["WebsiteID"]);
                     while ($row = $basketItems->fetch_assoc()) {
                         $item = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $row["ProductID"]);
@@ -49,7 +50,7 @@ $totalPrice = 0;
                                 </div>
                             </div>
                         </div>
-                    <?php } ?>
+                    <?php }} ?>
                 </div>
                 <div class="col-md-4">
                     <h2>Total</h2>

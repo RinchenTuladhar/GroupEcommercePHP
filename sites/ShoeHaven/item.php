@@ -37,13 +37,18 @@ $query = $_SERVER['QUERY_STRING'];
 						</p>
 						<h2>Description</h2>
 						<p><?php echo $item["Description"]; ?></p>
-						<input type="hidden" class="item-id"
-							value="<?php echo $item['ProductID']?>"> <input type="number"
-							class="form-control item-amount" value="1" id="item-amount"> <br>
-						<input type="button" id="basketBtn" class="btn btn-default"
-							value="Add To Basket">
-                        <input type="button" id="sharedBasketBtn" class="btn btn-warning" value="Add to Shared Basket">
-					</div>
+
+                        <?php if(isset($_SESSION['customer'])){?>
+                            <input type="hidden" class="item-id"
+                                value="<?php echo $item['ProductID']?>"> <input type="number"
+                                class="form-control item-amount" value="1" id="item-amount"> <br>
+                            <input type="button" id="basketBtn" class="btn btn-default"
+                                value="Add To Basket">
+                            <input type="button" id="sharedBasketBtn" class="btn btn-warning" value="Add to Shared Basket">
+					    <?php } else {
+                            echo "<hr/><h4>Please log in to add item to basket!</h4>";
+                        } ?>
+                    </div>
 				</div>
 
 			</div>
