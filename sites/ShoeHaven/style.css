@@ -257,3 +257,12 @@ img {
     border: 1px solid #dddddd;
     border-radius: 5px;
 }
+
+/******
+*
+*  BASKET PAGE
+*
+ */
+.basket-container .sharing-section{
+    display: none;
+}

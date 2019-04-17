@@ -42,6 +42,7 @@ $query = $_SERVER['QUERY_STRING'];
 							class="form-control item-amount" value="1" id="item-amount"> <br>
 						<input type="button" id="basketBtn" class="btn btn-default"
 							value="Add To Basket">
+                        <input type="button" id="sharedBasketBtn" class="btn btn-warning" value="Add to Shared Basket">
 					</div>
 				</div>
 
@@ -64,8 +65,20 @@ $query = $_SERVER['QUERY_STRING'];
         }).done(function( value ) {
             $('#basket-price').text(value);
         });
+    });
 
+    $('#sharedBasketBtn').click(function() {
+        var itemID = $('.item-id').val();
+        var price = parseFloat($('.item-price').text());
+        var quantity = $('#item-amount').val();
 
+        $.ajax({
+            type: "POST",
+            url: "api/add-to-shared-basket.php",
+            data: { id: itemID, price: price, quantity: quantity}
+        }).done(function( value ) {
+            $('#basket-price').text(value);
+        });
     });
 </script>
 </html>

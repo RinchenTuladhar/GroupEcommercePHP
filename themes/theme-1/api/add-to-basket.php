@@ -13,11 +13,3 @@ $price = $_POST["price"];
 $quantity = $_POST["quantity"];
 
 $basket = $db->addToBasket($websiteID, $email, $productID, $quantity);
-
-if(isset($_SESSION["TotalPrice"])){
-    $_SESSION["TotalPrice"] = $_SESSION["TotalPrice"] + ($price * $quantity);
-} else {
-    $_SESSION["TotalPrice"] = $price * $quantity;
-}
-
-echo number_format((float)$_SESSION["TotalPrice"], 2, '.', '');

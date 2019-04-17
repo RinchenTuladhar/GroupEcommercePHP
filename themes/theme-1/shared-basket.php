@@ -6,6 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $query = $_SERVER['QUERY_STRING'];
 
 $totalPrice = 0;
+
 ?>
 
 <html>
@@ -18,17 +19,19 @@ $totalPrice = 0;
 <div class="home-page item-main">
     <?php
     include 'navbar.php';
+
+    $user = $db->getUserByEmail($_SESSION["customer"]["email"], $_SESSION["WebsiteDetails"]["WebsiteID"]);
+    $sharedBasket = $user["SharedBasket"];
     ?>
     <div class="main basket-container">
         <div class="item-container container">
 
-            <h1>Basket</h1>
-            <a class="btn btn-warning" href="shared-basket.php">View Shared Basket</a>
+            <h1>Group Basket</h1>
             <p></p>
             <div class="row">
                 <div class=" col-md-8">
                     <?php
-                    $basketItems = $db->getBasket($_SESSION['customer']['email'], $_SESSION["WebsiteDetails"]["WebsiteID"]);
+                    $basketItems = $db->getBasket($sharedBasket, $_SESSION["WebsiteDetails"]["WebsiteID"]);
                     while ($row = $basketItems->fetch_assoc()) {
                         $item = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $row["ProductID"]);
                         $totalPrice = $totalPrice + $item["Price"] * $row["Quantity"];
@@ -55,32 +58,13 @@ $totalPrice = 0;
                     <h2>Total</h2>
                     <hr/>
                     <p><strong>Sub-total: </strong>£<?php echo $totalPrice ?></p>
-                    <a class="btn btn-success" value="Checkout" href="api/checkout.php">Checkout</a>
-                    <p></p>
-                    <input type="button" class="btn btn-warning" value="Share Basket" id="share-basket-btn">
-                    <div class="sharing-section">
-                        <form action="api/share-basket.php" method="POST">
-                            <label for="shared-email">Enter user email:</label>
-                            <input type="email" class="form-control" name="shared-email">
-                            <br>
-                            <input type="submit" class="btn btn-success" value="Share">
-                        </form>
-                    </div>
                 </div>
 
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $('#share-basket-btn').click(function () {
-        if ($('.sharing-section').css('display') == "block") {
-            $('.sharing-section').css('display', 'none');
-        } else {
-            $('.sharing-section').css('display', 'block');
-        }
-    });
-</script>
+
 </body>
 
 </html>

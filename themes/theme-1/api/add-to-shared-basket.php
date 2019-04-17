@@ -8,7 +8,7 @@ $db = new Functions();
 
 $productID = $_POST["id"];
 $websiteID = $_SESSION["WebsiteDetails"]["WebsiteID"];
-$email = $_SESSION['customer']['email'];
+$email = $_SESSION['customer']['SharedBasket'];
 $price = $_POST["price"];
 $quantity = $_POST["quantity"];
 

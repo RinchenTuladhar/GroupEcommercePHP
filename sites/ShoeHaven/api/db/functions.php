@@ -29,7 +29,15 @@ class Functions
 
         $query->close();
         return $result;
+    }
 
+    public function getUserByEmail($email, $websiteID){
+        $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $email, $websiteID);
+        $query->execute();
+        $result  = $query->get_result()->fetch_assoc();
+        $query->close();
+        return $result;
     }
 
     public function createCustomer($firstName, $lastName, $email, $password, $websiteID)
@@ -175,6 +183,16 @@ class Functions
         }
 
     }
+
+    public function addSharedBasket($userEmail, $sharedEmail, $websiteID){
+        $query = $this->conn->prepare("UPDATE users SET SharedBasket = ? WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("sss", $userEmail, $sharedEmail, $websiteID);
+        $result = $query->execute();
+        $query->close();
+
+        return $result;
+    }
+
 
     public function getBasket($userEmail, $websiteID)
     {
