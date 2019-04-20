@@ -56,6 +56,7 @@ class Functions
     public function updateCustomer($firstName, $lastName, $oldEmail, $email, $websiteID){
         $query = $this->conn->prepare("UPDATE users SET FirstName = ?, LastName = ?, Email = ? WHERE Email = ? AND Admin = 0 AND WebsiteID = ?");
         $query->bind_param("sssss", $firstName, $lastName, $email, $oldEmail, $websiteID);
+        var_dump("UPDATE users SET FirstName = $firstName, LastName = $lastName, Email = $email WHERE Email = $oldEmail AND Admin = 0 AND WebsiteID = $websiteID");
         $result = $query->execute();
         $query->close();
 

@@ -11,11 +11,18 @@ $lastName = $_POST["last_name"];
 $email = $_POST["email"];
 $oldEmail = $_POST["old_email"];
 
-$_SESSION['customer']['email'] = $email;
 $_SESSION['customer']['FirstName'] = $firstName;
 $_SESSION["customer"]["LastName"] = $lastName;
 
+if($oldEmail != $email){
+   $doesUserExist = $db->getUserByEmail($email, $_SESSION["WebsiteDetails"]["WebsiteID"]);
 
-$editInfo = $db->updateCustomer($firstName, $lastName, $oldEmail, $email, $_SESSION["WebsiteDetails"]["WebsiteID"]);
-
-header('Location: ../my-account.php');
+   if($doesUserExist === null){
+       $editInfo = $db->updateCustomer($firstName, $lastName, $oldEmail, $email, $_SESSION["WebsiteDetails"]["WebsiteID"]);
+       var_dump($editInfo);
+       if($editInfo){
+           $_SESSION['customer']['email'] = $email;
+       }
+   }
+}
+//header('Location: ../my-account.php');

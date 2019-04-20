@@ -97,13 +97,13 @@ if ($_SESSION['loggedin'] == null) {
                         <label for="from_date">
                             From:
                         </label>
-                        <input type="date" name="from_date" id="from_date" class="form-control">
+                        <input type="date" name="from_date" id="from_date" class="form-control" required>
                     </div>
                     <div class="col-md-5">
                         <label for="to_date">
                             To:
                         </label>
-                        <input type="date" name="to_date" id="to_date" class="form-control">
+                        <input type="date" name="to_date" id="to_date" class="form-control" required>
                     </div>
                     <div class="col-md-2">
                         <br>
@@ -145,13 +145,13 @@ if ($_SESSION['loggedin'] == null) {
                         <label for="product_from_date">
                             From:
                         </label>
-                        <input type="date" name="product_from_date" id="product_from_date" class="form-control">
+                        <input type="date" name="product_from_date" id="product_from_date" class="form-control" required>
                     </div>
                     <div class="col-md-5">
                         <label for="product_to_date">
                             To:
                         </label>
-                        <input type="date" name="product_to_date" id="product_to_date" class="form-control">
+                        <input type="date" name="product_to_date" id="product_to_date" class="form-control" required>
                     </div>
                     <div class="col-md-2">
                         <br>
@@ -181,13 +181,13 @@ if ($_SESSION['loggedin'] == null) {
                         <label for="category_from_date">
                             From:
                         </label>
-                        <input type="date" name="category_from_date" id="category_from_date" class="form-control">
+                        <input type="date" name="category_from_date" id="category_from_date" class="form-control" required>
                     </div>
                     <div class="col-md-5">
                         <label for="category_to_date">
                             To:
                         </label>
-                        <input type="date" name="category_to_date" id="category_to_date" class="form-control">
+                        <input type="date" name="category_to_date" id="category_to_date" class="form-control" required>
                     </div>
                     <div class="col-md-2">
                         <br>
@@ -227,50 +227,53 @@ if ($_SESSION['loggedin'] == null) {
         var fromDate = $('#from_date').val();
         var toDate = $('#to_date').val();
 
-        // Gets data by date
-        var request = $.ajax({
-            url: '../api/orders-report.php',
-            type: "GET",
-            data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
-            success: function (data) {
-                // Sets Google Chart graphs to each section
-                var results = JSON.parse(data);
-                for (var i = 0; i < results.length; i++) {
-                    switch (results[i]["type"]) {
-                        case "Orders":
-                            if (results[i]["result"] == null) {
-                                $("#report-orders-created").html("0");
-                            } else {
-                                $("#report-orders-created").html(results[i]["result"]);
-                            }
+        if(fromDate && toDate){
+            var request = $.ajax({
+                url: '../api/orders-report.php',
+                type: "GET",
+                data: {websiteID: '<?php echo $_SESSION["WebsiteID"];?>', from: fromDate, to: toDate},
+                success: function (data) {
+                    // Sets Google Chart graphs to each section
+                    var results = JSON.parse(data);
+                    for (var i = 0; i < results.length; i++) {
+                        switch (results[i]["type"]) {
+                            case "Orders":
+                                if (results[i]["result"] == null) {
+                                    $("#report-orders-created").html("0");
+                                } else {
+                                    $("#report-orders-created").html(results[i]["result"]);
+                                }
 
-                            break;
-                        case "Revenue":
-                            if (results[i]["result"] == null) {
-                                $("#report-orders-revenue").html("£0");
-                            } else {
-                                $("#report-orders-revenue").html("£" + results[i]["result"]);
-                            }
-                            break;
-                        case "Profit":
-                            if (results[i]["result"] == null) {
-                                $("#report-orders-profit").html("£0");
-                            } else {
-                                $("#report-orders-profit").html("£" + results[i]["result"]);
-                            }
-                            break;
-                        case "Purchased":
-                            if (results[i]["result"] == null) {
-                                $("#report-orders-items-purchased").html("0");
-                            } else {
-                                $("#report-orders-items-purchased").html(results[i]["result"]);
-                            }
-                            break;
+                                break;
+                            case "Revenue":
+                                if (results[i]["result"] == null) {
+                                    $("#report-orders-revenue").html("£0");
+                                } else {
+                                    $("#report-orders-revenue").html("£" + results[i]["result"]);
+                                }
+                                break;
+                            case "Profit":
+                                if (results[i]["result"] == null) {
+                                    $("#report-orders-profit").html("£0");
+                                } else {
+                                    $("#report-orders-profit").html("£" + results[i]["result"]);
+                                }
+                                break;
+                            case "Purchased":
+                                if (results[i]["result"] == null) {
+                                    $("#report-orders-items-purchased").html("0");
+                                } else {
+                                    $("#report-orders-items-purchased").html(results[i]["result"]);
+                                }
+                                break;
+                        }
                     }
+                    $.notify("Successfully Updated!", "success");
                 }
-                $.notify("Successfully Updated!", "success");
-            }
-        });
+            });
+
+        }
+        // Gets data by date
 
         return request;
     }

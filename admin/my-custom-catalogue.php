@@ -17,6 +17,9 @@ foreach($_POST as $categoryName){
     array_push($listOfCategories, $categoryName);
 }
 
+if(sizeof($listOfCategories) === 0){
+    header("Location: catalogue.php");
+}
 
 /******* GATHERING PDF DATA *********/
 
