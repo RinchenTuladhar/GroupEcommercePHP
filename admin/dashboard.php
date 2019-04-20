@@ -31,7 +31,7 @@ if ($_SESSION['loggedin'] == null) {
     <h1> Welcome <?php echo $_SESSION["FirstName"]; ?></h1>
     <?php if ($_SESSION["hasDomain"]["DomainName"] == null) {
         ?>
-        <div class="row indicator">
+        <div class="indicator">
             <i class="fa fa-lock"></i> <br>
             <form action="../api/domainname.php" method="POST">
                 <h3>Step 1: Please enter a domain name to get started.</h3> <br>
@@ -87,9 +87,9 @@ if ($_SESSION['loggedin'] == null) {
     <div class="dashboard-statistics">
         <h2 class="text-center">This Week's Stats</h2>
         <hr/>
-        <div class="dashboard-week-stats row">
+        <div class="dashboard-week-stats">
             <!-- DASHBOARD STATISTICS -->
-            <div class="col-md-12 row">
+            <div class="row col-md-12">
                 <div class="col-md-4 stat-box">
                     <h5>Orders Made</h5>
                     <span id="stat-week-sales"><p>

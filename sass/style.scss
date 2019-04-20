@@ -21,15 +21,22 @@ body {
   .navbar-nav li.nav-item {
     margin: 0px 15px;
   }
+
 }
 
 .home-page .navigation-menu {
   background: transparent !important;
   position: absolute !important;
+
 }
 
 .home-page .navigation-menu:hover {
   background: #0E4CC7;;
+}
+
+.responsive-tab i{
+  display: none;
+  color: white;
 }
 
 /* * * * * *
@@ -57,10 +64,10 @@ body {
   }
 
   .navigation-list {
-     button {
-       background: transparent;
-       border: 0px;
-     }
+    button {
+      background: transparent;
+      border: 0px;
+    }
   }
   .view-my-store {
     a {
@@ -127,7 +134,7 @@ body {
     width: 100%;
   }
   .navbar {
-    background:#0E4CC7;
+    background: #0E4CC7;
     ul li {
       list-style-type: none;
       color: white;
@@ -226,24 +233,50 @@ body {
   }
 }
 
+@media only screen and (max-width: 600px) {
+  .admin-main {
+    margin-left: 0px;
+    .view-my-store a {
+      font-size: 5vw;
+    }
+  }
+
+  .admin-navigation {
+    .sidebar.left {
+      display: none;
+      z-index: 9999;
+    }
+    .responsive-tab i{
+      display: block;
+    }
+  }
+
+}
+
 .ct-series-a {
   fill: #00a79d;
 }
-.ct-series-b  {
+
+.ct-series-b {
   fill: #1c75bc;
 }
-.ct-series-c  {
+
+.ct-series-c {
   fill: #92278f;
 }
-.ct-series-d  {
+
+.ct-series-d {
   fill: #fbb040;
 }
-.ct-series-e  {
+
+.ct-series-e {
   fill: #f15a29;
 }
+
 .ct-series-f {
   fill: #be1e2d;
 }
-.ct-label{
+
+.ct-label {
   fill: white;
 }
