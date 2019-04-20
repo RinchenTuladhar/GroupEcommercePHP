@@ -22,7 +22,12 @@ $query = $_SERVER['QUERY_STRING'];
                                 
 			$parentCategory = $db->getParentCategory($_SESSION["WebsiteDetails"]["WebsiteID"], $query);
 			$parentCategory = $parentCategory->fetch_assoc()["Category"];
-			
+
+			// If category does not exist
+            if($parentCategory === null){
+                echo "<script> location.href='error.php'; </script>";
+                exit;
+            }
 			$content = $db->getContent($_SESSION["WebsiteDetails"]["WebsiteID"], $parentCategory, $query);
                                                 
                 echo (htmlspecialchars_decode($content->fetch_assoc()["Content"]));
