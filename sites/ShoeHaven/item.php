@@ -41,7 +41,7 @@ $query = $_SERVER['QUERY_STRING'];
                         <?php if(isset($_SESSION['customer'])){?>
                             <input type="hidden" class="item-id"
                                 value="<?php echo $item['ProductID']?>"> <input type="number"
-                                class="form-control item-amount" value="1" id="item-amount"> <br>
+                                class="form-control item-amount" value="1" id="item-amount" min="1" max="<?php echo $item['Stock']; ?>"> <br>
                             <input type="button" id="basketBtn" class="btn btn-default"
                                 value="Add To Basket">
                             <input type="button" id="sharedBasketBtn" class="btn btn-warning" value="Add to Shared Basket">

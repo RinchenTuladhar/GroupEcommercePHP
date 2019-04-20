@@ -43,7 +43,7 @@ $totalPrice = 0;
                                     <p><?php echo($item["Name"]); ?></p>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="number" class="form-control" value="<?php echo $row["Quantity"]; ?>">
+                                    <input type="number" class="form-control" value="<?php echo $row["Quantity"]; ?>" min="1" max="<?php echo $row['Stock'];?>">
                                 </div>
                                 <div class="col-md-3">
                                     £<?php echo $item["Price"]; ?>
