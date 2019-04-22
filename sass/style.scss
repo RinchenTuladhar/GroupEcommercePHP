@@ -11,7 +11,7 @@ body {
   padding: 10px;
 
   .navbar-dark .navbar-nav .nav-link {
-    color: white;
+    color: rgba(255, 255, 255, 0.94) !important;
   }
 
   .navbar-dark .navbar-nav .nav-link:hover {
@@ -21,6 +21,7 @@ body {
   .navbar-nav li.nav-item {
     margin: 0px 15px;
   }
+
 
 }
 
@@ -34,7 +35,7 @@ body {
   background: #0E4CC7;;
 }
 
-.responsive-tab i{
+.responsive-tab{
   display: none;
   color: white;
 }
@@ -44,6 +45,10 @@ body {
 *  ADMIN NAVBAR
 *
  * * * * */
+
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
 
 .admin-main {
   margin-left: 260px;
@@ -177,7 +182,7 @@ body {
       text-align: center;
     }
 
-    #stat-week-sales {
+    .stat-week-sales {
       p {
         color: green;
         font-size: 30px;
@@ -246,7 +251,7 @@ body {
       display: none;
       z-index: 9999;
     }
-    .responsive-tab i{
+    .responsive-tab {
       display: block;
     }
   }

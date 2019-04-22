@@ -11,7 +11,7 @@ if ($_SESSION['loggedin'] == null) {
 
 ?>
 
-<html>
+<html lang="en">
 <head>
     <?php include '../api/scripts.php'; ?>
     <link rel="stylesheet" href="../css/style.css">
@@ -92,7 +92,7 @@ if ($_SESSION['loggedin'] == null) {
             <div class="row col-md-12">
                 <div class="col-md-4 stat-box">
                     <h5>Orders Made</h5>
-                    <span id="stat-week-sales"><p>
+                    <span class="stat-week-sales"><p>
                         <?php
                         $i = 0;
                         while ($row = $amountOfSales->fetch_assoc()){
@@ -107,7 +107,7 @@ if ($_SESSION['loggedin'] == null) {
                 </div>
                 <div class="col-md-4 stat-box">
                     <h5>Revenue</h5>
-                    <span id="stat-week-sales"><p>
+                    <span class="stat-week-sales"><p>
                         £<?php
                             $total = 0;
                             while ($row = $revenue->fetch_assoc()) {
@@ -120,7 +120,7 @@ if ($_SESSION['loggedin'] == null) {
                 </div>
                 <div class="col-md-4 stat-box">
                     <h5>Most Popular Item</h5>
-                    <span id="stat-week-sales">
+                    <span class="stat-week-sales">
                     <?php
                     $i = 0;
                     if($mostSold7->num_rows > 0){

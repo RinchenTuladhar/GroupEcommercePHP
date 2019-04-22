@@ -8,7 +8,7 @@ body {
   z-index: 2;
   padding: 10px; }
   .navigation-menu .navbar-dark .navbar-nav .nav-link {
-    color: white; }
+    color: rgba(255, 255, 255, 0.94) !important; }
   .navigation-menu .navbar-dark .navbar-nav .nav-link:hover {
     cursor: pointer; }
   .navigation-menu .navbar-nav li.nav-item {
@@ -21,7 +21,7 @@ body {
 .home-page .navigation-menu:hover {
   background: #0E4CC7; }
 
-.responsive-tab i {
+.responsive-tab {
   display: none;
   color: white; }
 
@@ -30,6 +30,9 @@ body {
 *  ADMIN NAVBAR
 *
  * * * * */
+.navbar-dark .navbar-nav .nav-link {
+  color: white; }
+
 .admin-main {
   margin-left: 260px; }
   .admin-main .indicator {
@@ -115,7 +118,7 @@ body {
     font-weight: 100; }
 .main .dashboard-week-stats h5 {
   text-align: center; }
-.main .dashboard-week-stats #stat-week-sales p {
+.main .dashboard-week-stats .stat-week-sales p {
   color: green;
   font-size: 30px;
   text-align: center; }
@@ -160,7 +163,7 @@ body {
   .admin-navigation .sidebar.left {
     display: none;
     z-index: 9999; }
-  .admin-navigation .responsive-tab i {
+  .admin-navigation .responsive-tab {
     display: block; } }
 .ct-series-a {
   fill: #00a79d; }

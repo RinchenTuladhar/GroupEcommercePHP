@@ -10,7 +10,7 @@ if ($_SESSION['loggedin'] == null) {
 }
 ?>
 
-<html>
+<html lang="en">
 <head>
     <?php include '../api/scripts.php'; ?>
     <link rel="stylesheet" href="../css/style.css">

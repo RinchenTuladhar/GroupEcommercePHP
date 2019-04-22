@@ -18,7 +18,7 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($domainName);
                 <li class="nav-item"><a class="navbar-brand" href="dashboard.php">Admin
                         Panel</a></li>
                 <div class="responsive-tab">
-                    <i class="fa fa-bars" id="open-menu"></i>
+                    <p class="fa fa-bars" id="open-menu"></p>
                 </div>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -37,17 +37,17 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($domainName);
                             href="../sites/<?php echo $_SESSION["hasDomain"]["DomainName"] ?>/index.php"
                             target="_blank">View My Store</a></li>
             <?php } ?>
-            <li><a href="dashboard.php"><i class="fa fa-home"></i>
+            <li><a href="dashboard.php"><p class="fa fa-home"></p>
                     Dashboard</a></li>
             <?php
 
             if ($_SESSION["hasDomain"]["DomainName"] != null) {
                 ?>
-                <li><a href="categories.php"><i class="fa fa-list-ul"></i>
+                <li><a href="categories.php"><p class="fa fa-list-ul"></p>
                         Categories List</a></li>
-                <li><a href="navigation.php"><i class="fa fa-sitemap"></i> Edit
+                <li><a href="navigation.php"><p class="fa fa-sitemap"></p> Edit
                         Navigation</a></li>
-                <li><a href="edit-pages.php"><i class="fa fa-pencil"></i> Edit Pages</a></li>
+                <li><a href="edit-pages.php"><p class="fa fa-pencil"></p> Edit Pages</a></li>
 
                 <li>
                     <div class="accordion" id="productAccordion">
@@ -55,14 +55,14 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($domainName);
                             <div class="card-header" id="productOptions">
                                 <h5 class="mb-0">
                                     <button type="button" data-toggle="collapse"
-                                            data-target="#collapseProductOptions" aria-expanded="true"
-                                            aria-controls="collapseOne">
-                                        <i class="fa fa-shopping-basket"></i> Products
+                                            data-target="#collapse_product_options" aria-expanded="true"
+                                            aria-controls="collapse_product">
+                                        <p class="fa fa-shopping-basket"></p> Products
                                     </button>
                                 </h5>
                             </div>
 
-                            <div id="collapseProductOptions"
+                            <div id="collapse_product_options"
                                  class="collapse
                             <?php
                                  if (strpos($splitUrl[3], 'add-product') !== false) {
@@ -71,7 +71,7 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($domainName);
                                      echo "show";
                                  }
                                  ?>"
-                                 aria-labelledby="productOptions" data-parent="#productAccordion">
+                                 >
                                 <div class="card-body">
                                     <p>
                                         <a href="add-product.php"> Add New Product</a>
@@ -85,11 +85,11 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($domainName);
 
                 </li>
             <?php } ?>
-            <li><a href="reports.php"><i class="fa fa-bar-chart"
-                                         aria-hidden="true"></i> Reports</a></li>
+            <li><a href="reports.php"><p class="fa fa-bar-chart"
+                                         aria-hidden="true"></p> Reports</a></li>
             <li><a href="catalogue.php" target="_blank">
-                    <i class="fa fa-book" aria-hidden="true"></i></i> Catalogue</a></li>
-            <li><a href="debug.php"><i class="fa fa-cogs"></i> Testing</a></li>
+                    <p class="fa fa-book" aria-hidden="true"></p></i> Catalogue</a></li>
+            <li><a href="debug.php"><p class="fa fa-cogs"></p> Testing</a></li>
         </ul>
     </div>
 </div>
