@@ -161,7 +161,9 @@ AND ProductID = ?");
 
     public function createCategory($category, $websiteID)
     {
+        $category = $this->conn->real_escape_string($category);
         $str_arr = explode(",", $category);
+
         $sqlStatement = "INSERT INTO categories(Title, WebsiteID, Navigation, NavOrder) VALUES ";
 
         for ($i = 0; $i < sizeof($str_arr); $i++) {
@@ -172,7 +174,7 @@ AND ProductID = ?");
             }
         }
 
-        echo $sqlStatement;
+
         $query = $this->conn->prepare($sqlStatement);
         $query->execute();
 
@@ -183,6 +185,7 @@ AND ProductID = ?");
 
     public function createSubCategory($category, $websiteID, $subCategory)
     {
+        $subCategory = $this->conn->real_escape_string($subCategory);
         $str_arr = explode(",", $subCategory);
 
         $sqlStatement = "INSERT INTO subcategory(Category, WebsiteID, SubCategory) VALUES ";

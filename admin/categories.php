@@ -79,30 +79,32 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                         <?php echo $row["Title"]; ?>
                         <span class="float-right">
                             <i class="fa fa-times"
-                                           onclick="deleteCategory('<?php echo $row["Title"]; ?>', null);"></i>
+                               onclick="deleteCategory('<?php echo $row["Title"]; ?>', null);"></i>
                         </span>
                     </li>
                     <?php
+                    if ($subCategories != false) {
+                        if ($subCategories->num_rows > 0) {
+                            ?>
+                            <ul>
+                                <?php
+                                while ($subRow = $subCategories->fetch_assoc()) {
+                                    ?>
+                                    <li class="list-group-item">
 
-                    if ($subCategories->num_rows > 0) {
-                        ?>
-                        <ul>
-                            <?php
-                            while ($subRow = $subCategories->fetch_assoc()) {
-                                ?>
-                                <li class="list-group-item">
-
-                                    <?php echo $subRow["SubCategory"]; ?>
-                                    <span class="float-right">
+                                        <?php echo $subRow["SubCategory"]; ?>
+                                        <span class="float-right">
                                         <i class="fa fa-times"
                                            onclick="deleteCategory('<?php echo $subRow["Category"]; ?>', '<?php echo $subRow["SubCategory"]; ?>');"></i>
                                     </span>
-                                </li>
-                                <?php
-                            }
-                            ?>
-                        </ul>
-                        <?php
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+                            </ul>
+                            <?php
+                        }
+
                     }
                 }
 
