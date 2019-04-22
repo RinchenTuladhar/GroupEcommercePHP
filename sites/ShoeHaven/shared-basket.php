@@ -32,7 +32,14 @@ $totalPrice = 0;
                 <div class=" col-md-8">
                     <?php
                     $basketItems = $db->getBasket($sharedBasket, $_SESSION["WebsiteDetails"]["WebsiteID"]);
+
+                    $itemAddedBy = null;
                     while ($row = $basketItems->fetch_assoc()) {
+                        if($itemAddedBy === null || $itemAddedBy != $row["SharedEmail"]){
+                            $itemAddedBy = $row["SharedEmail"];
+
+                            echo $itemAddedBy;
+                        }
                         $item = $db->getItemInformation($_SESSION["WebsiteDetails"]["WebsiteID"], $row["ProductID"]);
                         $totalPrice = $totalPrice + $item["Price"] * $row["Quantity"];
                         ?>

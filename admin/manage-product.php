@@ -125,8 +125,8 @@ include '../api/db-access.php';
         });
 
         $('#product-name').val(name);
-        $('#product-stock').val(price);
-        $('#product-price').val(stock);
+        $('#product-stock').val(stock);
+        $('#product-price').val(price);
         $('#product-id').val(productID);
     }
 </script>

@@ -5,6 +5,7 @@ require_once 'db/functions.php';
 $db = new Functions();
 
 $sharedEmail = $_POST["shared-email"];
+$sharedBasket = null;
 
 if(isset($sharedEmail)){
     $user = $db->getUserByEmail($sharedEmail, $_SESSION["WebsiteDetails"]["WebsiteID"]);
@@ -15,3 +16,5 @@ if(isset($sharedEmail)){
         }
     }
 }
+
+header('Location: ../shared-basket.php');

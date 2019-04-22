@@ -162,7 +162,7 @@ class Functions
         return $result;
     }
 
-    public function addToBasket($websiteID, $userEmail, $productID, $quantity)
+    public function addToBasket($websiteID, $userEmail, $productID, $quantity, $shared)
     {
 
         $query = $this->conn->prepare("SELECT COUNT(*) As count FROM cart WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
@@ -177,8 +177,8 @@ class Functions
             $query->bind_param("ssss", $quantity, $websiteID, $userEmail, $productID);
             $query->execute();
         } else {
-            $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?)");
-            $query->bind_param("ssss", $websiteID, $userEmail, $productID, $quantity);
+            $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?,?)");
+            $query->bind_param("sssss", $websiteID, $userEmail, $productID, $quantity, $shared);
             $query->execute();
             $query->close();
         }
@@ -186,8 +186,10 @@ class Functions
     }
 
     public function addSharedBasket($userEmail, $sharedEmail, $websiteID){
+
+        echo "UPDATE users SET SharedBasket = $sharedEmail WHERE Email = $sharedEmail AND WebsiteID = $websiteID";
         $query = $this->conn->prepare("UPDATE users SET SharedBasket = ? WHERE Email = ? AND WebsiteID = ?");
-        $query->bind_param("sss", $userEmail, $sharedEmail, $websiteID);
+        $query->bind_param("sss", $userEmail , $sharedEmail, $websiteID);
         $result = $query->execute();
         $query->close();
 
@@ -197,7 +199,7 @@ class Functions
 
     public function getBasket($userEmail, $websiteID)
     {
-        $query = $this->conn->prepare("SELECT * FROM cart WHERE WebsiteID = ? AND UserEmail = ?");
+        $query = $this->conn->prepare("SELECT * FROM cart WHERE WebsiteID = ? AND UserEmail = ? ORDER BY SharedEmail");
         $query->bind_param("ss", $websiteID, $userEmail);
         $query->execute();
 

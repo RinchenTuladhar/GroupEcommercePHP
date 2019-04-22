@@ -9,7 +9,10 @@ $db = new Functions();
 $productID = $_POST["id"];
 $websiteID = $_SESSION["WebsiteDetails"]["WebsiteID"];
 $email = $_SESSION['customer']['SharedBasket'];
+$sharedEmail = $_SESSION['customer']['email'];
 $price = $_POST["price"];
 $quantity = $_POST["quantity"];
 
-$basket = $db->addToBasket($websiteID, $email, $productID, $quantity);
+$basket = $db->addToBasket($websiteID, $email, $productID, $quantity, $sharedEmail);
+
+header('Location: ../shared-basket.php');

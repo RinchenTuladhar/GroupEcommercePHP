@@ -23,7 +23,9 @@ $totalPrice = 0;
         <div class="item-container container">
 
             <h1>Basket</h1>
+            <?php if(isset($_SESSION['customer']['SharedBasket'])){?>
             <a class="btn btn-warning" href="shared-basket.php">View Shared Basket</a>
+            <?php }?>
             <p></p>
             <div class="row">
                 <div class=" col-md-8">

@@ -12,4 +12,4 @@ $email = $_SESSION['customer']['email'];
 $price = $_POST["price"];
 $quantity = $_POST["quantity"];
 
-$basket = $db->addToBasket($websiteID, $email, $productID, $quantity);
+$basket = $db->addToBasket($websiteID, $email, $productID, $quantity, null);
