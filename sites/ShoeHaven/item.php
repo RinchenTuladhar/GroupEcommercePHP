@@ -37,12 +37,18 @@ $query = $_SERVER['QUERY_STRING'];
 						</p>
 						<h2>Description</h2>
 						<p><?php echo $item["Description"]; ?></p>
-						<input type="hidden" class="item-id"
-							value="<?php echo $item['ProductID']?>"> <input type="number"
-							class="form-control item-amount" value="1" id="item-amount"> <br>
-						<input type="button" id="basketBtn" class="btn btn-default"
-							value="Add To Basket">
-					</div>
+
+                        <?php if(isset($_SESSION['customer'])){?>
+                            <input type="hidden" class="item-id"
+                                value="<?php echo $item['ProductID']?>"> <input type="number"
+                                class="form-control item-amount" value="1" id="item-amount" min="1" max="<?php echo $item['Stock']; ?>"> <br>
+                            <input type="button" id="basketBtn" class="btn btn-default"
+                                value="Add To Basket">
+                            <input type="button" id="sharedBasketBtn" class="btn btn-warning" value="Add to Shared Basket">
+					    <?php } else {
+                            echo "<hr/><h4>Please log in to add item to basket!</h4>";
+                        } ?>
+                    </div>
 				</div>
 
 			</div>
@@ -64,8 +70,20 @@ $query = $_SERVER['QUERY_STRING'];
         }).done(function( value ) {
             $('#basket-price').text(value);
         });
+    });
 
+    $('#sharedBasketBtn').click(function() {
+        var itemID = $('.item-id').val();
+        var price = parseFloat($('.item-price').text());
+        var quantity = $('#item-amount').val();
 
+        $.ajax({
+            type: "POST",
+            url: "api/add-to-shared-basket.php",
+            data: { id: itemID, price: price, quantity: quantity}
+        }).done(function( value ) {
+            $('#basket-price').text(value);
+        });
     });
 </script>
 </html>

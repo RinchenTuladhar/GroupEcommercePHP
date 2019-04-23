@@ -21,6 +21,10 @@ body {
 .home-page .navigation-menu:hover {
   background: #0E4CC7; }
 
+.responsive-tab i {
+  display: none;
+  color: white; }
+
 /* * * * * *
 *
 *  ADMIN NAVBAR
@@ -147,6 +151,17 @@ body {
     color: #0e4cc7;
     font-size: 7vw; }
 
+@media only screen and (max-width: 600px) {
+  .admin-main {
+    margin-left: 0px; }
+    .admin-main .view-my-store a {
+      font-size: 5vw; }
+
+  .admin-navigation .sidebar.left {
+    display: none;
+    z-index: 9999; }
+  .admin-navigation .responsive-tab i {
+    display: block; } }
 .ct-series-a {
   fill: #00a79d; }
 

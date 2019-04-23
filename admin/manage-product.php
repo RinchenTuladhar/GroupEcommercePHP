@@ -31,17 +31,17 @@ include '../api/db-access.php';
                     <label for="product-name">
                         Product Name:
                     </label>
-                    <input type="text" class="form-control" name="name" id="product-name">
+                    <input type="text" class="form-control" name="name" id="product-name" minlength="1">
 
                     <label for="product-stock">
                         Stock:
                     </label>
-                    <input type="number" class="form-control" name="stock" id="product-stock">
+                    <input type="number" class="form-control" name="stock" id="product-stock" min="0">
 
                     <label for="product-price">
                         Product Price (£):
                     </label>
-                    <input type="text" class="form-control" name="price" id="product-price">
+                    <input type="number" class="form-control" name="price" id="product-price" min="0">
                     <input type="hidden" class="form-control" name="product-id" id="product-id">
                     <br>
                     <input type="button" id="cancelBtn" class="btn btn-danger float-right" value="Cancel">
@@ -125,8 +125,8 @@ include '../api/db-access.php';
         });
 
         $('#product-name').val(name);
-        $('#product-stock').val(price);
-        $('#product-price').val(stock);
+        $('#product-stock').val(stock);
+        $('#product-price').val(price);
         $('#product-id').val(productID);
     }
 </script>

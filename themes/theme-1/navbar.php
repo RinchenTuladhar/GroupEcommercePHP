@@ -16,6 +16,17 @@ $_SESSION["SiteName"] = $siteName;
 
 $_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
 
+if(isset($_SESSION['customer'])){
+    $user = $db->getUserByEmail($_SESSION['customer']['email'], $_SESSION["WebsiteDetails"]["WebsiteID"]);
+    if(!isset($_SESSION['customer']['SharedBasket']) && $user['SharedBasket'] != null){
+        $_SESSION['customer']['email'] = $user["Email"];
+        $_SESSION['customer']['FirstName'] = $user["FirstName"];
+        $_SESSION["customer"]["LastName"] = $user["LastName"];
+        $_SESSION['customer']['SharedBasket'] = $user["SharedBasket"];
+    }
+}
+
+
 ?>
 
 <body>
@@ -56,12 +67,8 @@ $_SESSION["WebsiteDetails"] = $db->getWebsiteID($siteName);
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item">
                     <a class="nav-link" href="basket.php"><i class="fa fa-shopping-cart"></i>
-                        £<span id="basket-price"><?php
-                            if (isset($_SESSION["TotalPrice"])) {
-                                echo number_format((float)$_SESSION["TotalPrice"], 2, '.', '');
-                            } else {
-                                echo "0.00";
-                            } ?></span></a>
+                    Basket
+                    </a>
                 </li>
                 <?php if (!isset($_SESSION["store_loggedin"]) || $_SESSION["store_loggedin"] == null) {
                     ?>

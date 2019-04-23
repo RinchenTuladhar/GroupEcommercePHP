@@ -29,7 +29,15 @@ class Functions
 
         $query->close();
         return $result;
+    }
 
+    public function getUserByEmail($email, $websiteID){
+        $query = $this->conn->prepare("SELECT * FROM users WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("ss", $email, $websiteID);
+        $query->execute();
+        $result  = $query->get_result()->fetch_assoc();
+        $query->close();
+        return $result;
     }
 
     public function createCustomer($firstName, $lastName, $email, $password, $websiteID)
@@ -48,6 +56,7 @@ class Functions
     public function updateCustomer($firstName, $lastName, $oldEmail, $email, $websiteID){
         $query = $this->conn->prepare("UPDATE users SET FirstName = ?, LastName = ?, Email = ? WHERE Email = ? AND Admin = 0 AND WebsiteID = ?");
         $query->bind_param("sssss", $firstName, $lastName, $email, $oldEmail, $websiteID);
+        var_dump("UPDATE users SET FirstName = $firstName, LastName = $lastName, Email = $email WHERE Email = $oldEmail AND Admin = 0 AND WebsiteID = $websiteID");
         $result = $query->execute();
         $query->close();
 
@@ -153,7 +162,7 @@ class Functions
         return $result;
     }
 
-    public function addToBasket($websiteID, $userEmail, $productID, $quantity)
+    public function addToBasket($websiteID, $userEmail, $productID, $quantity, $shared)
     {
 
         $query = $this->conn->prepare("SELECT COUNT(*) As count FROM cart WHERE WebsiteID = ? AND UserEmail = ? AND ProductID = ?");
@@ -168,17 +177,29 @@ class Functions
             $query->bind_param("ssss", $quantity, $websiteID, $userEmail, $productID);
             $query->execute();
         } else {
-            $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?)");
-            $query->bind_param("ssss", $websiteID, $userEmail, $productID, $quantity);
+            $query = $this->conn->prepare("INSERT INTO cart VALUES(?,?,?,?,?)");
+            $query->bind_param("sssss", $websiteID, $userEmail, $productID, $quantity, $shared);
             $query->execute();
             $query->close();
         }
 
     }
 
+    public function addSharedBasket($userEmail, $sharedEmail, $websiteID){
+
+        echo "UPDATE users SET SharedBasket = $sharedEmail WHERE Email = $sharedEmail AND WebsiteID = $websiteID";
+        $query = $this->conn->prepare("UPDATE users SET SharedBasket = ? WHERE Email = ? AND WebsiteID = ?");
+        $query->bind_param("sss", $userEmail , $sharedEmail, $websiteID);
+        $result = $query->execute();
+        $query->close();
+
+        return $result;
+    }
+
+
     public function getBasket($userEmail, $websiteID)
     {
-        $query = $this->conn->prepare("SELECT * FROM cart WHERE WebsiteID = ? AND UserEmail = ?");
+        $query = $this->conn->prepare("SELECT * FROM cart WHERE WebsiteID = ? AND UserEmail = ? ORDER BY SharedEmail");
         $query->bind_param("ss", $websiteID, $userEmail);
         $query->execute();
 
