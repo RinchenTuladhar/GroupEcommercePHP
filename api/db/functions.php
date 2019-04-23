@@ -26,6 +26,8 @@ class Functions
         $userStatement = "INSERT INTO users (Email, FirstName, LastName, EncryptedPassword, WebsiteID, Admin, Timestamp) VALUES";
         $userStatement .= $sql;
 
+        echo $userStatement;
+        
         $query = $this->conn->prepare($userStatement);
         $result = $query->execute();
         $query->close();
