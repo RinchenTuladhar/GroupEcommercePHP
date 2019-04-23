@@ -410,7 +410,15 @@ AND ProductID = ?");
         return $result;
     }
 
+    public function getRecentOrders($websiteID, $limit){
+        $query = $this->conn->prepare("SELECT OrderID, Email, Timestamp FROM orders WHERE WebsiteID = ? ORDER BY Timestamp DESC LIMIT ?");
+        $query->bind_param("ss", $websiteID, $limit);
+        $query->execute();
+        $result = $query->get_result();
+        $query->close();
 
+        return $result;
+    }
     /**************** DATA CHART ************/
 
     public function getMostSold($timeBefore, $websiteID)

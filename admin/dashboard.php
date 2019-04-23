@@ -123,7 +123,7 @@ if ($_SESSION['loggedin'] == null) {
                     <span class="stat-week-sales">
                     <?php
                     $i = 0;
-                    if($mostSold7->num_rows > 0){
+                    if ($mostSold7->num_rows > 0) {
                         while ($row = $mostSold7->fetch_assoc()) {
                             if ($i == 0) {
                                 ?>
@@ -140,6 +140,38 @@ if ($_SESSION['loggedin'] == null) {
             </div>
             <!-- END OF DASHBOARD STATISTICS -->
             <hr/>
+            <div class="col-md-12">
+                <div class="jumbotron recent-orders">
+                    <h3>Recent Orders</h3>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Order #</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $orders = $db->getRecentOrders($_SESSION["WebsiteDetails"]["WebsiteID"], 10);
+
+                        if ($orders->num_rows > 0) {
+                            while ($row = $orders->fetch_assoc()) {
+
+                                ?>
+                                <tr>
+                                    <th scope="row"><?php echo $row["OrderID"]; ?></th>
+                                    <th scope="row"><?php echo $row["Email"]; ?></th>
+                                    <th scope="row"><?php echo date("d M Y H:m:s", $row["Timestamp"]); ?></th>
+                                </tr>
+                            <?php }
+                        } else {
+                            echo "<p>No Orders</p>";
+                        } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
