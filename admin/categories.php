@@ -29,7 +29,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
             <h2>Add new categories</h2>
             <form action="../api/create-category.php" method="POST">
                 <p>Seperate each category by commas.</p>
-                <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies">
+                <input type="text" class="form-control" name="category" placeholder="E.g Shirt, Trousers, Hoodies" aria-label="E.g Shirt, Trousers, Hoodies">
                 <br>
                 <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
                 <input type="submit" class="btn btn-success float-right" value="Submit">
@@ -56,7 +56,7 @@ $categoryList = $db->getCategories($_SESSION["WebsiteID"]);
                 </select>
                 <br>
                 <input type="text" class="form-control" name="sub-category"
-                       placeholder="E.g for Accessories - Bags, Ties, Wallets">
+                       placeholder="E.g for Accessories - Bags, Ties, Wallets" aria-label="E.g for Accessories - Bags, Ties, Wallets">
                 <br>
                 <input type="hidden" name="website_id" value="<?php echo $_SESSION["WebsiteID"]; ?>">
                 <input type="submit" class="btn btn-success float-right" value="Submit">

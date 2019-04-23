@@ -48,7 +48,7 @@ if ($_SESSION['loggedin'] == null) {
                                 <?php if ($row["Navigation"] == 1) { ?>
                                     <button type="button"
                                             onclick="navClick('<?php echo $row["Title"] ?>', 1, '<?php echo $_SESSION["WebsiteID"]; ?>', this);"
-                                            id="navClick">
+                                            id="">
 								<i class="fa fa-check-square"></i>
 							</button>
 
@@ -56,7 +56,7 @@ if ($_SESSION['loggedin'] == null) {
                                 } else {
                                     ?>
                                     <!-- SELECT CATEGORY -->
-                                    <button type="button" id="navClick"
+                                    <button type="button" id=""
                                             onclick="navClick('<?php echo $row["Title"] ?>', 0, '<?php echo $_SESSION["WebsiteID"]; ?>', this);">
 								<i class="fa fa-square"></i>
 							</button>
@@ -90,14 +90,14 @@ if ($_SESSION['loggedin'] == null) {
             success: function () {
                 // Updates check / uncheck box
                 if (isChecked == 1) {
-                    input.outerHTML = '<button type="button" id="navClick"\n' +
+                    input.outerHTML = '<button type="button"' +
                         '\t\t\t\t\t\t\t\tonclick="navClick(\'' + value + '\', 0, \'<?php echo $_SESSION["WebsiteID"];?>\', this);">\n' +
                         '\t\t\t\t\t\t\t\t<i class="fa fa-square"></i>\n' +
                         '\t\t\t\t\t\t\t</button>';
                 } else {
                     input.outerHTML = '<button type="button"\n' +
                         '\t\t\t\t\t\t\t\tonclick="navClick(\'' + value + '\', 1, \'<?php echo $_SESSION["WebsiteID"];?>\', this);"\n' +
-                        '\t\t\t\t\t\t\t\tid="navClick">\n' +
+                        '\t\t\t\t\t\t\t\t>\n' +
                         '\t\t\t\t\t\t\t\t<i class="fa fa-check-square"></i>\n' +
                         '\t\t\t\t\t\t\t</button>';
                 }
