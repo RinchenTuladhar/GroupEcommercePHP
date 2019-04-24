@@ -76,7 +76,7 @@ include '../api/db-access.php';
                     <td><?php echo $row["Stock"]; ?></td>
                     <td><?php echo $row["Category"]; ?></td>
                     <td><input type="button" value="Edit"
-                               onclick="editProduct('<?php echo $row["Name"]; ?>','<?php echo $row["Price"]; ?>', '<?php echo $row["Stock"]; ?>', '<?php echo $row["ProductID"]; ?>')"
+                               onclick="editProduct('<?php echo addslashes($row["Name"]); ?>','<?php echo $row["Price"]; ?>', '<?php echo $row["Stock"]; ?>', '<?php echo $row["ProductID"]; ?>')"
                                class="btn btn-success"></td>
                 </tr>
                 <?php

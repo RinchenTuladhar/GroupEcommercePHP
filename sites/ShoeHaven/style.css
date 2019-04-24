@@ -232,9 +232,10 @@ img {
 }
 
 .item-container .item-row {
-    border: 1px solid #222222;
+    border: 1px solid #cecece;
     padding: 15px;
     margin-bottom: 10px;
+    border-radius: 5px;
 }
 
 .item-container .item-amount {
